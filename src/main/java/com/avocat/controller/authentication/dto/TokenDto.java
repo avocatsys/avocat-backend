@@ -1,11 +1,15 @@
 package com.avocat.controller.authentication.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Getter
 public class TokenDto {
 
     @JsonProperty("access_token")
-    private final String token;
+    private String token;
 
     private TokenDto(String token) {
         this.token = token;
