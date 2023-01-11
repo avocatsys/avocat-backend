@@ -3,6 +3,7 @@ package com.avocat.avocat.controller.authentication;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
