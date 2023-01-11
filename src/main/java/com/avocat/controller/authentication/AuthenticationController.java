@@ -26,7 +26,7 @@ public class AuthenticationController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/token")
-    public ResponseEntity<TokenDto> auth(@RequestBody @Valid final UserApp userApp) {
+    public ResponseEntity<TokenDto> authentication(@RequestBody @Valid final UserApp userApp) {
 
             var username = userApp.getUsername();
 

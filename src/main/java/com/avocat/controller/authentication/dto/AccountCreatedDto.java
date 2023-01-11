@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class UserCreatedDto {
+public class AccountCreatedDto {
 
     @JsonProperty("user_id")
     private final UUID id;
@@ -13,12 +13,12 @@ public class UserCreatedDto {
     @JsonProperty("username")
     private final String username;
 
-    private UserCreatedDto(UUID id, String username) {
+    private AccountCreatedDto(UUID id, String username) {
         this.id = id;
         this.username = username;
     }
 
-    public static UserCreatedDto from(UserApp userApp) {
-        return new UserCreatedDto(userApp.getId(), userApp.getUsername());
+    public static AccountCreatedDto from(UserApp userApp) {
+        return new AccountCreatedDto(userApp.getId(), userApp.getUsername());
     }
 }
