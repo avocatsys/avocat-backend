@@ -2,6 +2,9 @@ package com.avocat.persistence.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,11 +24,11 @@ public class UserApp {
     @Column(name = "user_id", nullable = false)
     private UUID id;
 
-    @Email(message = "Formato de e-mail inválido.")
+    @Email(message = "invalid email format")
     @Column(nullable = false, unique = true)
     private String username;
 
-    @NotEmpty(message = "Formato de senha inválido.")
+    @NotEmpty(message = "invalid password format")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -57,7 +60,7 @@ public class UserApp {
 
         public Builder(String username, String password) {
             this.username = username;
-            this.password = password;
+            this.password = new BCryptPasswordEncoder().encode(password);
         }
 
         public Builder group(Group group) {

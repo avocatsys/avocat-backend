@@ -18,7 +18,7 @@ public class Privilege {
     @Column(name = "privilege_id", nullable = false)
     private UUID id;
 
-    @NotEmpty(message = "Descrição inválida.")
+    @NotEmpty(message = "invalid privilege description format")
     @Column(nullable = false, unique = true)
     private String name;
 }

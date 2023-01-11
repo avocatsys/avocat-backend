@@ -18,7 +18,7 @@ public class Group {
     @Column(name = "group_id", nullable = false)
     private UUID id;
 
-    @NotEmpty(message = "Descrição inválida.")
+    @NotEmpty(message = "invalid group description format")
     @Column(nullable = false, unique = true)
     private String name;
 }
