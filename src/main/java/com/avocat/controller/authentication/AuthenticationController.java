@@ -2,6 +2,7 @@ package com.avocat.controller.authentication;
 
 import com.avocat.controller.authentication.dto.TokenDto;
 import com.avocat.persistence.entity.UserApp;
+import com.avocat.security.custom.CustomAuthenticationManager;
 import com.avocat.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@RequestMapping(name = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private CustomAuthenticationManager customAuthenticationManager;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -30,7 +31,7 @@ public class AuthenticationController {
 
             var username = userApp.getUsername();
 
-            var authentication = authenticationManager
+            var authentication = customAuthenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username, userApp.getPassword()));
 
             var token = jwtTokenProvider.genereToken(authentication);
