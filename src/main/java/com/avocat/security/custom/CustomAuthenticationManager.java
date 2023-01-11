@@ -51,7 +51,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         if (user.isEmpty())
             throw new UsernameNotFoundException(username);
 
-        return (UserDetails) new UserApp.Builder(user.get().getUsername(), user.get().getPassword()).build();
+        return new UserApp.Builder(user.get().getUsername(), user.get().getPassword()).build();
         //@formatter:on
     }
 }

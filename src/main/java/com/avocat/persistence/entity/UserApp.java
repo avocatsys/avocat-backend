@@ -3,12 +3,15 @@ package com.avocat.persistence.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -17,7 +20,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "users")
-public class UserApp {
+public class UserApp implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -48,6 +51,31 @@ public class UserApp {
         this.group = builder.group;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;//todo Verificar uma maneira de manter esse atributo dinâmico.
+    }
+
     public static class Builder {
 
         //mandatory
@@ -60,7 +88,7 @@ public class UserApp {
 
         public Builder(String username, String password) {
             this.username = username;
-            this.password = new BCryptPasswordEncoder().encode(password);
+            this.password = password;
         }
 
         public Builder group(Group group) {

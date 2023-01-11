@@ -26,7 +26,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(c -> c
-                        .antMatchers(HttpMethod.POST, "/account").permitAll()
+                        .antMatchers(HttpMethod.POST, "/v1/account").permitAll()
+                        .antMatchers(HttpMethod.POST, "/v1/authentication/token").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationManager(authenticationManager)
