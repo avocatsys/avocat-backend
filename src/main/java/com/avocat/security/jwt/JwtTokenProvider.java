@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -48,16 +46,16 @@ public class JwtTokenProvider {
 
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 
-        ArrayList<String> authsList = new ArrayList<>(authorities.size());
+        ArrayList<String> authoritiesList = new ArrayList<>(authorities.size());
 
         for (GrantedAuthority authority : authorities) {
-            authsList.add(authority.getAuthority());
+            authoritiesList.add(authority.getAuthority());
         }
 
         //@formatter:off
         return Jwts.builder()
                 .setSubject(userApp.getUsername())
-                .claim("roles", authsList)
+                .claim("roles", authoritiesList)
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(Instant.now().plus(Duration.ofSeconds(jwtExpiration))))
                 .signWith(this.secretKey, SignatureAlgorithm.HS256)
@@ -72,27 +70,21 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        //List<GrantedAuthority> authorityList = Arrays.asList((GrantedAuthority) body.get("roles"));
+        String username = body.getSubject();
+        List<GrantedAuthority> authorities = getRoles(body);
 
+        return new UsernamePasswordAuthenticationToken(username, token, authorities);
+    }
+
+    private List<GrantedAuthority> getRoles(Claims body) {
         Collection<?> roles = body.get("roles", Collection.class);
-
-        List<GrantedAuthority> authorities;
-
-        if (null != roles) {
-            ArrayList<GrantedAuthority> authsList = new ArrayList<>(roles.size());
-
-            for (Object role : roles) {
-                authsList.add(new SimpleGrantedAuthority(role.toString()));
-            }
-
-            authorities = Collections.unmodifiableList(authsList);
+        if(roles != null) {
+            return roles.stream()
+                    .map(authority -> new SimpleGrantedAuthority(authority.toString()))
+                    .collect(Collectors.toList());
         } else {
-            authorities = Collections.emptyList();
+            return Collections.emptyList();
         }
-
-        User principal = new User(body.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
     public boolean validateToken(String token) {
