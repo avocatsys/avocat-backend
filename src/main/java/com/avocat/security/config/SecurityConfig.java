@@ -1,12 +1,16 @@
 package com.avocat.security.config;
 
 import com.avocat.security.custom.CustomAuthenticationManager;
+import com.avocat.security.custom.CustomMethodSecurityExpressionHandler;
 import com.avocat.security.jwt.JwtTokenAuthenticationFilter;
 import com.avocat.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,7 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class SecurityConfig {
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfig extends GlobalMethodSecurityConfiguration {
 
     @Autowired
     private CustomAuthenticationManager authenticationManager;
@@ -34,5 +39,10 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
         //@formatter:on
+    }
+
+    @Override
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        return new CustomMethodSecurityExpressionHandler();
     }
 }

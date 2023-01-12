@@ -10,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +21,8 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -42,25 +44,55 @@ public class JwtTokenProvider {
 
     public String genereToken(Authentication auth) {
 
-        UserApp usuario = (UserApp) auth.getPrincipal();
-        Claims claims = Jwts.claims().setSubject(usuario.getUsername());
+        UserApp userApp = (UserApp) auth.getPrincipal();
 
-        var expira = Date.from(Instant.now().plus(Duration.ofSeconds(jwtExpiration)));
+        Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+        ArrayList<String> authsList = new ArrayList<>(authorities.size());
+
+        for (GrantedAuthority authority : authorities) {
+            authsList.add(authority.getAuthority());
+        }
 
         //@formatter:off
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(userApp.getUsername())
+                .claim("roles", authsList)
                 .setIssuedAt(new Date())
-                .setExpiration(expira)
+                .setExpiration(Date.from(Instant.now().plus(Duration.ofSeconds(jwtExpiration))))
                 .signWith(this.secretKey, SignatureAlgorithm.HS256)
                 .compact();
         //@formatter:on
     }
 
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token).getBody();
-        User principal = new User(claims.getSubject(), "", Collections.emptyList());
-        return new UsernamePasswordAuthenticationToken(principal, token, Collections.emptyList());
+
+        Claims body = Jwts.parser()
+                .setSigningKey(this.secretKey)
+                .parseClaimsJws(token)
+                .getBody();
+
+        //List<GrantedAuthority> authorityList = Arrays.asList((GrantedAuthority) body.get("roles"));
+
+        Collection<?> roles = body.get("roles", Collection.class);
+
+        List<GrantedAuthority> authorities;
+
+        if (null != roles) {
+            ArrayList<GrantedAuthority> authsList = new ArrayList<>(roles.size());
+
+            for (Object role : roles) {
+                authsList.add(new SimpleGrantedAuthority(role.toString()));
+            }
+
+            authorities = Collections.unmodifiableList(authsList);
+        } else {
+            authorities = Collections.emptyList();
+        }
+
+        User principal = new User(body.getSubject(), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
     public boolean validateToken(String token) {
