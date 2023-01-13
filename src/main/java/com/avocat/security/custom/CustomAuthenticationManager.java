@@ -41,7 +41,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
             throw new DisabledException("User account is not active");
         }
 
-        return new UsernamePasswordAuthenticationToken(user, null, null);
+        return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }
 
     public UserDetails loadUserByUsername(String username) {
@@ -51,7 +51,10 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         if (user.isEmpty())
             throw new UsernameNotFoundException(username);
 
-        return new UserApp.Builder(user.get().getUsername(), user.get().getPassword()).build();
+        return new UserApp.Builder(user.get().getUsername(), user.get()
+                .getPassword())
+                .privilege(user.get().getPrivileges())
+                .build();
         //@formatter:on
     }
 }
