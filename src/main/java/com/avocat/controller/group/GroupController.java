@@ -1,5 +1,6 @@
 package com.avocat.controller.group;
 
+import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Group;
 import com.avocat.persistence.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,19 @@ public class GroupController {
     @PreAuthorize("hasPermission('group', 'write') or hasRole('ROLE_ADMIN') ")
     @PutMapping
     public ResponseEntity<Group> update(@RequestBody Group group) {
+        var result = groupRepository.findById(group.getId()).orElseThrow(() -> new ResourceNotFoundException("resource not found"));
+        var updated = Group.from(group, result);
         return ResponseEntity.status(HttpStatus.OK).body(groupRepository.save(group));
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<Group> findById(@RequestBody Group group, @PathVariable("groupId") UUID groupId) throws Exception {
-        var result = groupRepository.findById(groupId).orElseThrow(() -> new Exception("xx"));//todo criar exception customizada.
-        var updated = Group.from(group, result);
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupRepository.save(updated));
+    public ResponseEntity<Group> findById(@PathVariable("groupId") UUID groupId) throws Exception {
+        var result = groupRepository.findById(groupId).orElseThrow(() -> new ResourceNotFoundException("resource not found"));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping
     public ResponseEntity<List<Group>> findAll() {
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(groupRepository.findAll());
     }
 }

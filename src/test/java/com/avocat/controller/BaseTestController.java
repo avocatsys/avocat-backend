@@ -5,6 +5,7 @@ import com.avocat.persistence.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -49,7 +50,14 @@ public class BaseTestController {
     private long jwtExpiration;
 
     private SecretKey secretKey;
-    
+
+    protected String defaultAccessToken;
+
+    @BeforeEach
+    public void init(){
+        defaultAccessToken = generateToken("e77d4056-0284-452b-8156-f20badcc8662@owtest.com");
+    }
+
     @PostConstruct
     public void setUpSecretKey() {
         var secret = Base64.getEncoder().encodeToString(this.jwtSecret.getBytes());

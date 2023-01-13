@@ -1,5 +1,6 @@
 package com.avocat.security.custom;
 
+import com.avocat.exceptions.InvalidPermissionOrRoleException;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,6 +41,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                 return true;
             }
         }
-        return false;
+        throw new InvalidPermissionOrRoleException("Access is denied. Invalid permission or role");
     }
 }
