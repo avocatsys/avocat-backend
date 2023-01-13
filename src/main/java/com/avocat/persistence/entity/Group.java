@@ -29,4 +29,9 @@ public class Group {
     public static Group create(String name) {
         return new Group(name);
     }
+
+    public static Group from(Group updateGroup, Group resultGroup) {
+        resultGroup.setName(updateGroup.getName());
+        return resultGroup;
+    }
 }

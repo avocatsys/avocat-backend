@@ -1,6 +1,6 @@
-package com.avocat.avocat.controller.authentication;
+package com.avocat.controller.authentication;
 
-import com.avocat.avocat.controller.RestControllerBaseTest;
+import com.avocat.controller.BaseTestController;
 import com.avocat.controller.authentication.dto.AccountCreatedDto;
 import com.avocat.persistence.entity.UserApp;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CreateAccountControllerTest extends RestControllerBaseTest {
+public class CreateAccountControllerTest extends BaseTestController {
 
     @Test
     void givenNewUser_whenCreatedAccount_thenReturnHttpStatusCreated_201() throws Exception {
