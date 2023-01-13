@@ -27,7 +27,7 @@ public class AuthenticationController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/token")
-    public ResponseEntity<TokenDto> authentication(@RequestBody @Valid final UserApp userApp) {
+    public ResponseEntity<TokenDto> authentication(@RequestBody @Valid UserApp userApp) {
 
             var username = userApp.getUsername();
 
@@ -36,6 +36,6 @@ public class AuthenticationController {
 
             var token = jwtTokenProvider.genereToken(authentication);
 
-            return ResponseEntity.ok(TokenDto.create(token));
+            return ResponseEntity.ok().body(TokenDto.create(token));
     }
 }

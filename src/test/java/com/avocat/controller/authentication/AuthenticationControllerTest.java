@@ -1,8 +1,10 @@
-package com.avocat.avocat.controller.authentication;
+package com.avocat.controller.authentication;
 
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.UserRepository;
+import com.avocat.util.JsonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +32,6 @@ public class AuthenticationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @BeforeEach
     public void setUp() {
         //@formatter:off
@@ -50,7 +49,7 @@ public class AuthenticationControllerTest {
         this.mockMvc
             .perform(
                 post("/v1/authentication/token")
-                .content(this.objectMapper.writeValueAsBytes(new UserApp.Builder("owtest@malito.com", "123").build()))
+                .content(JsonUtil.asJsonString(new UserApp.Builder("owtest@malito.com", "123").build()))
                 .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
