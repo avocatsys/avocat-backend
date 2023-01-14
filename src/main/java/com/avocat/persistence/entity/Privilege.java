@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "privileges")
-public class Privilege {
+public class Privilege extends AuditEntity{
 
     @Id
     @GeneratedValue

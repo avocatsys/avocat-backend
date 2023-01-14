@@ -1,20 +1,15 @@
 package com.avocat.persistence.entity;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
@@ -40,15 +35,10 @@ public class UserApp implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "privilege_id"))
     private Set<Privilege> privileges;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
-    private Group group;
-
     private UserApp(Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
         this.privileges = builder.privileges;
-        this.group = builder.group;
     }
 
     @Override

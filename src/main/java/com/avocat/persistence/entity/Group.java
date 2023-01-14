@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "groups")
-public class Group {
+public class Group extends AuditEntity {
 
     @Id
     @GeneratedValue
@@ -21,6 +21,10 @@ public class Group {
     @NotEmpty(message = "invalid group description format")
     @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private UserApp userApp;
 
     private Group(String name) {
         this.name = name;
