@@ -11,12 +11,8 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "groups")
+@AttributeOverride(name = "id", column = @Column(name = "group_id", nullable = false))
 public class Group extends AuditEntity {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "group_id", nullable = false)
-    private UUID id;
 
     @NotEmpty(message = "invalid group description format")
     @Column(nullable = false, unique = true)
