@@ -11,12 +11,8 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "privileges")
-public class Privilege extends AuditEntity{
-
-    @Id
-    @GeneratedValue
-    @Column(name = "privilege_id", nullable = false)
-    private UUID id;
+@AttributeOverride(name = "id", column = @Column(name = "privilege_id", nullable = false))
+public class Privilege extends AuditEntity {
 
     @NotEmpty(message = "invalid privilege description format")
     @Column(nullable = false, unique = true)

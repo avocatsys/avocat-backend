@@ -1,5 +1,7 @@
 package com.avocat.controller.group;
 
+import com.avocat.controller.GenericController;
+import com.avocat.controller.GenericControllerImpl;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Group;
 import com.avocat.persistence.repository.GroupRepository;
@@ -15,8 +17,9 @@ import java.util.UUID;
 
 @RequestMapping(path = "/v1/groups", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-public class GroupController {
+public class GroupController extends GenericControllerImpl<Group> {
 
+    /*
     @Autowired
     private GroupRepository groupRepository;
 
@@ -43,5 +46,5 @@ public class GroupController {
     @GetMapping
     public ResponseEntity<List<Group>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(groupRepository.findAll());
-    }
+    }*/
 }

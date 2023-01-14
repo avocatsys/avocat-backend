@@ -1,20 +1,27 @@
 package com.avocat.persistence.entity;
 
-import lombok.Data;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
 @Data
-@EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public class AuditEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class AuditEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue
+    private UUID id;
 
     //todo Depois implementar um mecanismo de auditar e gararantir que esse campo seja preenchido ref: https://www.baeldung.com/database-auditing-jpa
     @Column(name = "branch_office_ref", updatable = false)
