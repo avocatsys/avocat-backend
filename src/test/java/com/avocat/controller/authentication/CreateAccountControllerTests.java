@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CreateAccountControllerTest extends BaseTestController {
+public class CreateAccountControllerTests extends BaseTestController {
 
     @Test
     void givenNewUser_whenCreatedAccount_thenReturnHttpStatusCreated_201() throws Exception {
