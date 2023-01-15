@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<ErrorDetails> handleAsBadRequest(RuntimeException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);

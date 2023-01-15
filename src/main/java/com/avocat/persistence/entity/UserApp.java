@@ -35,6 +35,10 @@ public class UserApp implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "privilege_id"))
     private Set<Privilege> privileges;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_office_id", referencedColumnName = "branch_office_id")
+    private BranchOffice branchOffice;
+
     private UserApp(Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
