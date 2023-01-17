@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: v007
+      author: michael
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: customers
+            constraintName: fk_customers_users
+            referencedColumnNames: user_id
+            referencedTableName: users

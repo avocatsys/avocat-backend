@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: v001
+      author: michael
+      changes:
+        - sql:
+              sql: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; #Enable uuid-ossp module to use the function uuid_generate_v4()
+        - createTable:
+            tableName: privileges
+            columns:
+              - column:
+                  name: privilege_id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: branch_office_ref
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    updatable: false
+              - column:
+                  name: created_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: removed_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: updated_date
+                  type: timestamp
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)

@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: v006
+      author: michael
+      changes:
+        - createTable:
+            tableName: users_privileges
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: privilege_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_privileges
+            constraintName: fk_users_privileges_users
+            referencedColumnNames: user_id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            baseColumnNames: privilege_id
+            baseTableName: users_privileges
+            constraintName: fk_users_privileges_privileges
+            referencedColumnNames: privilege_id
+            referencedTableName: privileges
