@@ -30,7 +30,7 @@ public class AuditEntity implements Serializable {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    protected UUID id;
 
     @Column(name = "branch_office_ref", updatable = false, nullable = false)
     protected UUID branchOffice;

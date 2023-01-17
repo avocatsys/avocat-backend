@@ -18,5 +18,9 @@ databaseChangeLog:
                   INSERT INTO public.privileges (privilege_id, name, branch_office_ref) VALUES('2234d142-7a4a-4a8c-8431-b9a7a24c41de'::uuid, 'ROLE_ADMIN', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);
                   INSERT INTO public.privileges (privilege_id, name, branch_office_ref) VALUES('6e5775ca-5b5c-4893-95b9-a4e0dce4cb0a'::uuid, 'GROUP_WRITE', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);
                   INSERT INTO public.privileges (privilege_id, name, branch_office_ref) VALUES('18ed3002-f2d6-4f77-9497-a4d7f7e7387d'::uuid, 'GROUP_READ', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);
-                  INSERT INTO public.privileges (privilege_id, name, branch_office_ref ) VALUES('06d608f3-3058-44bc-9fe4-d12c36a43f0c'::uuid, 'ROLE_USER', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);"
+                  INSERT INTO public.privileges (privilege_id, name, branch_office_ref ) VALUES('06d608f3-3058-44bc-9fe4-d12c36a43f0c'::uuid, 'ROLE_USER', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);
+                   
+                  INSERT INTO public.users_privileges (user_id, privilege_id) VALUES('6ef9a225-016f-40f0-ba0d-eae64a270a9e'::uuid, '2234d142-7a4a-4a8c-8431-b9a7a24c41de'::uuid);
+                  INSERT INTO public.users_privileges (user_id, privilege_id) VALUES('c17ceaa8-5475-450b-9409-f3545548ca6d'::uuid, '06d608f3-3058-44bc-9fe4-d12c36a43f0c'::uuid);"
+
           comment: "Mandatory inserts for integration tests to work"

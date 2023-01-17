@@ -20,6 +20,7 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: branch_office_ref
                   type: varchar(100)

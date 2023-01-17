@@ -1,7 +1,7 @@
 package com.avocat.security.custom;
 
 import com.avocat.persistence.entity.UserApp;
-import com.avocat.persistence.repository.UserRepository;
+import com.avocat.persistence.repository.UserAppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,7 +23,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserAppRepository userRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
