@@ -1,14 +1,14 @@
 package com.avocat.persistence.repository;
 
-import com.avocat.persistence.entity.UserApp;
+import com.avocat.persistence.entity.Privilege;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserApp, UUID> {
+public interface PrivilegeRepository extends JpaRepository<Privilege, UUID> {
 
-    Optional<UserApp> findByUsername(String email);
+    Set<Privilege> findByName(String name);
 }

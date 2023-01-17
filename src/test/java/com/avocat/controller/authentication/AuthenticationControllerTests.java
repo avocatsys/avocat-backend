@@ -1,7 +1,7 @@
 package com.avocat.controller.authentication;
 
 import com.avocat.persistence.entity.UserApp;
-import com.avocat.persistence.repository.UserRepository;
+import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.util.JsonUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthenticationControllerTests {
 
     @MockBean
-    private UserRepository userRepository;
+    private UserAppRepository userRepository;
 
     @Autowired
     private MockMvc mockMvc;

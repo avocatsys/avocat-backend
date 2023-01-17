@@ -15,6 +15,14 @@ import java.util.UUID;
 public class Privilege extends AuditEntity {
 
     @NotEmpty(message = "invalid privilege description format")
-    @Column(nullable = false, unique = true)
+    @Column
     private String name;
+
+    public Privilege(String name) {
+        this.name = name;
+    }
+
+    public static Privilege create(String name){
+        return new Privilege(name);
+    }
 }

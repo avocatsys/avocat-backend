@@ -30,11 +30,11 @@ public class UserApp implements UserDetails {
     @NotEmpty(message = "invalid password format")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_privileges",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "privilege_id"))
-    private Set<Privilege> privileges;
+    private Set<Privilege> privileges = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_office_id", referencedColumnName = "branch_office_id")
