@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: v008
+      author: michael
+      changes:
+        - sql:
+            sql: "INSERT INTO public.users (user_id, password, username)
+                  VALUES('6ef9a225-016f-40f0-ba0d-eae64a270a9e'::uuid, '$2a$10$7VNaJgxehazkAiojI3Nbc.ZQEcZBn8f4X1w6GR5zKU3iEbCt//ghO', 'efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com');
+                  INSERT INTO public.users (user_id, password, username)
+                  VALUES('c17ceaa8-5475-450b-9409-f3545548ca6d'::uuid, '$2a$10$DHFmMJ05RQVdtymQT3wD.eLkA4bjPiVnLhBy855Pyyc/ZJRSgaehC', 'e77d4056-0284-452b-8156-f20badcc8662@owtest.com');
+                  
+                  INSERT INTO public.customers (customer_id, full_name, office_name, email, user_id)
+                  VALUES('d5d7da4a-4520-446e-9a6a-aaf4b76f803f'::uuid, 'João Pedro Martins', 'Cliente Padrão para Testes de Integração', 'efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com', '6ef9a225-016f-40f0-ba0d-eae64a270a9e'::uuid);
+                  
+                  INSERT INTO public.branch_offices (branch_office_id, corporate_name, branch_office_name, code_office, cpf_cnpj, customer_id)
+                  VALUES('65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid, 'BranchOffice Integration Test', 'BranchOffice Integration Test', 'BIT', '37130713000180', 'd5d7da4a-4520-446e-9a6a-aaf4b76f803f'::uuid);
+
+                  INSERT INTO public.privileges (privilege_id, name, branch_office_ref) VALUES('2234d142-7a4a-4a8c-8431-b9a7a24c41de'::uuid, 'ROLE_ADMIN', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);
+                  INSERT INTO public.privileges (privilege_id, name, branch_office_ref) VALUES('6e5775ca-5b5c-4893-95b9-a4e0dce4cb0a'::uuid, 'GROUP_WRITE', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);
+                  INSERT INTO public.privileges (privilege_id, name, branch_office_ref) VALUES('18ed3002-f2d6-4f77-9497-a4d7f7e7387d'::uuid, 'GROUP_READ', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);
+                  INSERT INTO public.privileges (privilege_id, name, branch_office_ref ) VALUES('06d608f3-3058-44bc-9fe4-d12c36a43f0c'::uuid, 'ROLE_USER', '65344a5e-81ce-4eb3-b16b-955d26b73ede'::uuid);"
+          comment: "Mandatory inserts for integration tests to work"

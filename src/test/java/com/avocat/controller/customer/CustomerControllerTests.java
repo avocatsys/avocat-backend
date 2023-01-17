@@ -3,7 +3,6 @@ package com.avocat.controller.customer;
 import com.avocat.persistence.entity.Customer;
 import com.avocat.util.JsonUtil;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.support.discovery.SelectorResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,8 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,8 +39,6 @@ public class CustomerControllerTests {
                 ).andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.customerId").isNotEmpty());
-                //.andExpect(jsonPath("$.fullName").value(contains(fullName)))
-                //.andExpect(jsonPath("$.fullOffice").value(contains(officeNAme)));
         //@formatter:on
     }
 }

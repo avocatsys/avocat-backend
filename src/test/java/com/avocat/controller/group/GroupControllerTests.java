@@ -28,7 +28,6 @@ public class GroupControllerTests extends BaseTestController {
                             .characterEncoding("utf-8")
                             .content(JsonUtil.asJsonString(Group.create("Test" + UUID.randomUUID()))))
                 .andExpect(status().isCreated());
-
     }
 
     @Test

@@ -55,7 +55,7 @@ public class BaseTestController {
 
     @BeforeEach
     public void init(){
-        defaultAccessToken = generateToken("e77d4056-0284-452b-8156-f20badcc8662@owtest.com");
+        defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
     }
 
     @PostConstruct

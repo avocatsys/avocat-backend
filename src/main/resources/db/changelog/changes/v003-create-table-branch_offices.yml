@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: v003
+      author: michael
+      changes:
+        - createTable:
+            tableName: branch_offices
+            columns:
+              - column:
+                  name: branch_office_id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: corporate_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: branch_office_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code_office
+                  type: varchar(100)
+              - column:
+                  name: state_registration_name
+                  type: varchar(100)
+              - column:
+                  name: cpf_cnpj
+                  type: varchar(14)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: uuid
+        - addForeignKeyConstraint:
+            baseColumnNames: customer_id
+            baseTableName: branch_offices
+            constraintName: fk_branch_offices_customers
+            referencedColumnNames: customer_id
+            referencedTableName: customers

@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: v004
+      author: michael
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: privilege_id
+                  type: uuid
+              - column:
+                  name: branch_office_id
+                  type: uuid
+        - addForeignKeyConstraint:
+            baseColumnNames: privilege_id
+            baseTableName: users
+            constraintName: fk_users_privileges
+            referencedColumnNames: privilege_id
+            referencedTableName: privileges
+        - addForeignKeyConstraint:
+            baseColumnNames: branch_office_id
+            baseTableName: users
+            constraintName: fk_users_branch_offices
+            referencedColumnNames: branch_office_id
+            referencedTableName: branch_offices

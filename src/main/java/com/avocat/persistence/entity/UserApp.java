@@ -26,6 +26,7 @@ public class UserApp implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(name = "password", nullable = false)
     @NotEmpty(message = "invalid password format")
     private String password;
 
