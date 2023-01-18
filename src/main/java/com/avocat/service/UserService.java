@@ -42,10 +42,12 @@ public class UserService {
         var userResult = userAppRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user id: " + user.getId() + " not found"));
 
-        if(user.getPrivileges().isEmpty())
+        if(user.getPrivileges().isEmpty()) {
             user.setPrivileges(getDefaultPrivilege(user));
+        } else {
+            userResult.setPrivileges(user.getPrivileges());
+        }
 
-        userResult.setPrivileges(user.getPrivileges());
         userResult.setUsername(user.getUsername());
         userResult.setBranchOffice(user.getBranchOffice());
         userResult.setBranchOffice(branchOfficeResult);
