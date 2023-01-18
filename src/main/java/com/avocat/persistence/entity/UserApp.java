@@ -1,5 +1,6 @@
 package com.avocat.persistence.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -84,6 +85,7 @@ public class UserApp implements UserDetails {
         //optional
         private Set<Privilege> privileges = new HashSet<>();
         private Group group = null;
+        private BranchOffice branchOffice;
 
         public Builder(String username, String password) {
             this.username = username;
@@ -97,6 +99,11 @@ public class UserApp implements UserDetails {
 
         public Builder privilege(Set<Privilege> privileges) {
             this.privileges = privileges;
+            return this;
+        }
+
+        public Builder branchOffice(BranchOffice branchOffice) {
+            this.branchOffice = branchOffice;
             return this;
         }
 

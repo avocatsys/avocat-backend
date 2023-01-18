@@ -35,8 +35,35 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: email
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
                   name: customer_id
                   type: uuid
+              - column:
+                  name: branch_office_ref
+                  type: varchar(100)
+              - column:
+                  name: created_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: removed_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: updated_date
+                  type: timestamp
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
         - addForeignKeyConstraint:
             baseColumnNames: customer_id
             baseTableName: branch_offices

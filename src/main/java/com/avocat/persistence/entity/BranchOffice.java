@@ -39,4 +39,37 @@ public class BranchOffice extends AuditEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customers;
+
+    public static class Builder {
+
+        //mandatory
+        private String cpfCnpj;
+        private String email;
+        private String corporteName;
+        private String branchOfficeName;
+        private Customer customer;
+
+        //optional
+        private String codeOffice;
+        private String stateRegistration;//inscrição estadual
+
+        public Builder(String cpfCnpj, String email, String corporteName,
+                       String branchOfficeName, Customer customer) {
+            this.cpfCnpj = cpfCnpj;
+            this.email = email;
+            this.corporteName = corporteName;
+            this.branchOfficeName = branchOfficeName;
+            this.customer = customer;
+        }
+
+        public Builder codeOffice(String codeOffice) {
+            this.codeOffice = codeOffice;
+            return this;
+        }
+
+        public Builder stateRegistration(String stateRegistration) {
+            this.stateRegistration = stateRegistration;
+            return this;
+        }
+    }
 }
