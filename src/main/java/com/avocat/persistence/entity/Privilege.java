@@ -1,5 +1,6 @@
 package com.avocat.persistence.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
