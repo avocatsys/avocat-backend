@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @RequestMapping(path = "/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,38 +1,39 @@
-package com.avocat.service;
+package com.avocat.service.generic;
 
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.AuditEntity;
 import com.avocat.persistence.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-public class GenericServiceImpl<T extends AuditEntity> implements GenericService<T> {
+public abstract class GenericService<T extends AuditEntity> {
 
     @Autowired
     private GenericRepository<T> genericRepository;
 
-    @Override
+    @Transactional
     public T create(T obj) {
         return genericRepository.save(obj);
     }
 
-    @Override
+    public abstract T update(UUID id, T obj);
+
+    @Transactional
     public void delete(UUID id) {
-        var result = genericRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("resource not found"));
+        var result = genericRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("resource not found"));
         genericRepository.delete(result);
     }
 
-    @Override
     public List<T> findAll() {
         return genericRepository.findAll();
     }
 
-    @Override
-    public T findById(UUID id) {
-        return genericRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("resource not found"));
+    public T findById(UUID id){
+        return genericRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("resource not found"));
     }
 }

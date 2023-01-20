@@ -12,8 +12,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class GroupControllerTests extends BaseTestController {
@@ -28,6 +28,35 @@ public class GroupControllerTests extends BaseTestController {
                             .characterEncoding("utf-8")
                             .content(JsonUtil.asJsonString(Group.create("Test" + UUID.randomUUID()))))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void givenAGroup_whenUpdateGroup_thenWillReturnUpdatedGroupAndHttpStatus_200() throws Exception {
+
+        String putJson = """ 
+                        { "name": "GROUP_TEST" } 
+                        """;
+
+        mockMvc.perform(
+                        put("/v1/groups/a56fec46-68a3-4fef-8a2d-c38ecc111516")
+                                .header("Authorization", "Bearer " + generateToken("owtestintegration@xemail.com"))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8")
+                                .content(putJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("a56fec46-68a3-4fef-8a2d-c38ecc111516"))
+                .andExpect(jsonPath("$.name").value("GROUP_TEST"));
+    }
+
+    @Test
+    void givenAUUIDGroup_whenDeleteGroup_thenWillReturnHttpStatus_200() throws Exception {
+
+        mockMvc.perform(
+                        delete("/v1/groups/c20aa486-0b89-4c87-ae43-5d45ab007375")
+                                .header("Authorization", "Bearer " + generateToken("owtestintegration@xemail.com"))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8"))
+                .andExpect(status().isOk());
     }
 
     @Test

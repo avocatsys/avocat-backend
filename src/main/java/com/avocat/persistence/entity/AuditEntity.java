@@ -35,10 +35,10 @@ public class AuditEntity implements Serializable {
     @Column(name = "branch_office_ref", updatable = false, nullable = false)
     protected UUID branchOffice;
 
-    @Column(name = "created_date", updatable = false)
+    @Column(name = "created_date")
     protected LocalDateTime createdDate;
 
-    @Column(name = "removed_date", updatable = false)
+    @Column(name = "removed_date")
     protected LocalDateTime removedDate;
 
     @Column(name = "updated_date")
