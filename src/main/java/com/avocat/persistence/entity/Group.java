@@ -1,6 +1,7 @@
 package com.avocat.persistence.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 @NoArgsConstructor
+@Getter
 @Data
 @Entity
 @Table(name = "groups")
