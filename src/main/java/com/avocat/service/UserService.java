@@ -49,7 +49,6 @@ public class UserService {
         }
 
         userResult.setUsername(user.getUsername());
-        userResult.setBranchOffice(user.getBranchOffice());
         userResult.setBranchOffice(branchOfficeResult);
 
         return UserAppDto.from(userAppRepository.save(userResult));
