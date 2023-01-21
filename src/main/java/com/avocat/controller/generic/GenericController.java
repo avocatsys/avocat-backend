@@ -1,7 +1,7 @@
 package com.avocat.controller.generic;
 
 import com.avocat.persistence.entity.AuditEntity;
-import com.avocat.service.GroupService;
+import com.avocat.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.UUID;
 public abstract class GenericController<T extends AuditEntity> {
 
     @Autowired
-    private GroupService<T> groupService;
+    public GenericService<T> genericService;
 
     @PostMapping
     public abstract ResponseEntity<T> create(@RequestBody T obj);
@@ -29,12 +29,12 @@ public abstract class GenericController<T extends AuditEntity> {
     @PreAuthorize("hasRole('{ ROLE_ADMIN, ROLE_USER }')")
     @GetMapping
     public ResponseEntity<List<T>> findAll() {//todo trocar para pageble
-        return ResponseEntity.status(HttpStatus.OK).body(groupService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(genericService.findAll());
     }
 
     @PreAuthorize("hasRole('{ ROLE_ADMIN, ROLE_USER }')")
     @GetMapping("/{id}")
     public ResponseEntity<T> findById(@PathVariable("id") UUID id) {
-        return ResponseEntity.status(HttpStatus.OK).body(groupService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(genericService.findById(id));
     }
 }
