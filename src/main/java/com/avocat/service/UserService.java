@@ -9,6 +9,7 @@ import com.avocat.persistence.repository.PrivilegeRepository;
 import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.persistence.types.PrivilegesTypes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,6 +31,7 @@ public class UserService {
     @Transactional
     public UserAppDto create(UserApp user) {
         user.setPrivileges(getDefaultPrivilege(user));
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return UserAppDto.from(userAppRepository.save(user));
     }
 
