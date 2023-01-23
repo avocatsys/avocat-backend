@@ -1,14 +1,16 @@
-package com.avocat.service.generic;
+package com.avocat.service;
 
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.AuditEntity;
 import com.avocat.persistence.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public abstract class GenericService<T extends AuditEntity> {
 
     @Autowired
