@@ -1,7 +1,7 @@
-package com.avocat.controller.generic;
+package com.avocat.controller;
 
 import com.avocat.persistence.entity.AuditEntity;
-import com.avocat.service.generic.GenericService;
+import com.avocat.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

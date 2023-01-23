@@ -1,11 +1,13 @@
 package com.avocat.persistence.entity;
 
+import com.avocat.service.PrivilegeService;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.UUID;
 
 @NoArgsConstructor

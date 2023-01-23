@@ -4,7 +4,6 @@ import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.AuditEntity;
 import com.avocat.persistence.entity.Group;
 import com.avocat.persistence.repository.GroupRepository;
-import com.avocat.service.generic.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
