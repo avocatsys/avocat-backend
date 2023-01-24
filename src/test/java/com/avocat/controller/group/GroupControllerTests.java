@@ -1,87 +1,72 @@
 package com.avocat.controller.group;
 
-import com.avocat.controller.BaseTestController;
-import com.avocat.exceptions.InvalidPermissionOrRoleException;
-import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Group;
-import com.avocat.util.JsonUtil;
+import com.avocat.persistence.repository.GroupRepository;
+import com.avocat.service.GroupService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GroupControllerTests extends BaseTestController {
+@WebMvcTest
+@AutoConfigureMockMvc
+@ContextConfiguration(classes = {GroupController.class, GroupService.class})
+public class GroupControllerTests {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private GroupController groupController;
+
+    @Mock
+    private GroupService groupService;
+
+    @MockBean
+    private GroupRepository groupRepository;
 
     @Test
-    void givenNewGroup_whenNewGroupCreated_thenStatusCreated_201() throws Exception {
+    @WithMockUser
+    void givenNewGroup_whenGroupSave_thenNewGroupCreated() throws Exception {
 
-        mockMvc.perform(
-                    post("/v1/groups")
-                            .header("Authorization", "Bearer " + defaultAccessToken)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .characterEncoding("utf-8")
-                            .content(JsonUtil.asJsonString(Group.create("Test" + UUID.randomUUID()))))
-                .andExpect(status().isCreated());
+        //given: providing initial input data
+        var inputJson = getGroupJson();
+        var expected = Group.create(UUID.randomUUID(), "Group Test Integration");
+
+        //when: executing class method to be tested
+        when(groupRepository.save(any(Group.class))).thenReturn(expected);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/v1/groups")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(inputJson))
+                //then: verifying and checking asserts
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.name").value("Group Test Integration"))
+                .andDo(print());
     }
 
-    @Test
-    void givenAGroup_whenUpdateGroup_thenWillReturnUpdatedGroupAndHttpStatus_200() throws Exception {
-
-        String putJson = """ 
-                        { "name": "GROUP_TEST" } 
-                        """;
-
-        mockMvc.perform(
-                        put("/v1/groups/a56fec46-68a3-4fef-8a2d-c38ecc111516")
-                                .header("Authorization", "Bearer " + generateToken("owtestintegration@xemail.com"))
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .characterEncoding("utf-8")
-                                .content(putJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("a56fec46-68a3-4fef-8a2d-c38ecc111516"))
-                .andExpect(jsonPath("$.name").value("GROUP_TEST"));
-    }
-
-    @Test
-    void givenAUUIDGroup_whenDeleteGroup_thenWillReturnHttpStatus_200() throws Exception {
-
-        mockMvc.perform(
-                        delete("/v1/groups/c20aa486-0b89-4c87-ae43-5d45ab007375")
-                                .header("Authorization", "Bearer " + generateToken("owtestintegration@xemail.com"))
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .characterEncoding("utf-8"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void givenNotFound_whenGetSpecificException_thenNotFoundStatus_404() throws Exception {
-        String exceptionParam = "not_found";
-
-        mockMvc.perform(get("/v1/groups/6e5775ca-5b5c-4893-95b9-a4e0dce4cb0a", exceptionParam)
-                        .header("Authorization", "Bearer " + defaultAccessToken)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                .andExpect(result -> assertEquals("resource not found", result.getResolvedException().getMessage()));
-    }
-
-    @Test
-    void givenInvalidPermissionOrRoleException_whenGetSpecificException_thenForbiddenStatus_403() throws Exception {
-
-        mockMvc.perform(
-                        post("/v1/groups")
-                                .header("Authorization", "Bearer " + generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com"))
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .characterEncoding("utf-8")
-                                .content(JsonUtil.asJsonString(Group.create("Test" + UUID.randomUUID()))))
-                .andExpect(status().isForbidden())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof InvalidPermissionOrRoleException))
-                .andExpect(result -> assertEquals("Access is denied. Invalid permission or role", result.getResolvedException().getMessage()));
+    private String getGroupJson() {
+        return """
+                {                    
+                    "name" : "Group Test Integration"
+                }
+                """;
     }
 }

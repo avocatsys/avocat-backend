@@ -24,16 +24,17 @@ public class Group extends AuditEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserApp userApp;
 
-    private Group(String name) {
+    private Group(UUID id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public static Group create(String name) {
-        return new Group(name);
+    public static Group create(UUID id, String name) {
+        return new Group(id, name);
     }
 
-    public static Group from(Group updateGroup, Group resultGroup) {
-        resultGroup.setName(updateGroup.getName());
-        return resultGroup;
+    public static Group from(Group source, Group target) {
+        target.setName(source.getName());
+        return target;
     }
 }
