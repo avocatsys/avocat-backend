@@ -7,22 +7,42 @@ import com.avocat.persistence.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 
 @Service
-public class GroupService<T extends AuditEntity> extends GenericService<T> {
+public class GroupService<T extends AuditEntity> {
 
     @Autowired
     private GroupRepository groupRepository;
 
-    @Override
-    public T update(UUID id, T obj) {
+    @Transactional
+    public Group create(Group group) {
+        return groupRepository.save(group);
+    }
 
-        var groupResult = groupRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("resource not found"));
+    @Transactional
+    public Group update(UUID id, Group group) {
+        Group groupResult = getGroup(id);
+        return groupRepository.save(Group.from(group, groupResult));
+    }
 
-        var groupUpdated = Group.from((Group) obj, groupResult);
+    @Transactional
+    public void delete(UUID id) {
+        groupRepository.delete(getGroup(id));
+    }
 
-        return (T) groupRepository.save(groupUpdated);
+    public List<Group> findAll() {
+        return groupRepository.findAll();
+    }
+
+    public Group findById(UUID id) {
+        return getGroup(id);
+    }
+
+    private Group getGroup(UUID id) {
+        return groupRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }
 }
