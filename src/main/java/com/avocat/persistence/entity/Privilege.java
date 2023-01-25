@@ -1,14 +1,13 @@
 package com.avocat.persistence.entity;
 
-import com.avocat.service.PrivilegeService;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
-import java.util.UUID;
 
 @NoArgsConstructor
 @Data
@@ -27,5 +26,10 @@ public class Privilege extends AuditEntity {
 
     public static Privilege create(String name){
         return new Privilege(name);
+    }
+
+    public static Privilege from(Privilege resource, Privilege target) {
+        target.setName(resource.getName());
+        return target;
     }
 }

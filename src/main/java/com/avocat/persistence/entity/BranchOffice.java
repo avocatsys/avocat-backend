@@ -40,6 +40,16 @@ public class BranchOffice extends AuditEntity {
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customers;
 
+    private BranchOffice(Builder builder) {
+        this.corporteName = builder.corporteName;
+        this.branchOfficeName = builder.branchOfficeName;
+        this.codeOffice = builder.codeOffice;
+        this.stateRegistration = builder.stateRegistration;
+        this.cpfCnpj = builder.cpfCnpj;
+        this.email = builder.email;
+        this.customers = builder.customer;
+    }
+
     public static class Builder {
 
         //mandatory
@@ -71,5 +81,20 @@ public class BranchOffice extends AuditEntity {
             this.stateRegistration = stateRegistration;
             return this;
         }
+
+        public BranchOffice build() {
+            return new BranchOffice(this);
+        }
+
+    }
+
+    public static BranchOffice from(BranchOffice source, BranchOffice target) {
+        target.setBranchOfficeName(source.getBranchOfficeName());
+        target.setCorporteName(source.getCorporteName());
+        target.setCodeOffice(source.getCodeOffice());
+        target.setCpfCnpj(source.getCpfCnpj());
+        target.setEmail(source.getEmail());
+        target.setStateRegistration(source.getStateRegistration());
+        return target;
     }
 }

@@ -1,69 +1,99 @@
 package com.avocat.controller.privilege;
 
+import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Privilege;
-import com.avocat.persistence.repository.PrivilegeRepository;
+import com.avocat.persistence.entity.UserApp;
+import com.avocat.persistence.repository.UserAppRepository;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
+import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
-@ExtendWith(SpringExtension.class)
-//@AutoConfigureMockMvc
-//@WebMvcTest(controllers = PrivilegeController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PrivilegeControllerTests {
 
-    @Mock
-    private PrivilegeController privilegeController;
+    @Autowired
+    TestRestTemplate testRestTemplate;
 
-    //@InjectMocks
-    //private GenericService genericService;
+    @Value("${token.jwt.secret}")
+    private String jwtSecret;
 
-    @Mock
-    private PrivilegeRepository privilegeRepository;
+    @Value("${token.jwt.expiration}")
+    private long jwtExpiration;
 
-    //@Autowired
-    private MockMvc mockMvc;
+    private SecretKey secretKey;
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private UserAppRepository userRepository;
+
+    protected String defaultAccessToken;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(privilegeController).build();
-        //genericService = mock(GenericService.class);
+    public void init(){
+        defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
+    }
+
+    @PostConstruct
+    public void setUpSecretKey() {
+        var secret = Base64.getEncoder().encodeToString(this.jwtSecret.getBytes());
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     @Test
-    @WithMockUser(username = "admin")
-    void shouldReturnListOfPrivileges() throws Exception {
+    void givenNewPrivilege_whenPrivilegeSave_thenShouldReturnPrivilegeCreated() throws Exception {
 
+        URI uri = new URI("http://localhost:" + port + "/avocat/v1/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/privileges");
 
-        var privilegeList = List.of(
-                new Privilege("ROLE_ADMIN"),
-                new Privilege("GROUP_WRITE"),
-                new Privilege("ROLE_USER"));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + defaultAccessToken);
 
-        when(privilegeRepository.findAll()).thenReturn(privilegeList);
+        HttpEntity<List<Privilege>> request = new HttpEntity<>(headers);
+        ResponseEntity<List<Privilege>> result = this.testRestTemplate.exchange(uri, HttpMethod.GET, request, new ParameterizedTypeReference<>() {});
 
-        mockMvc.perform(
-                        MockMvcRequestBuilders.get("/v1/privileges")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .characterEncoding("utf-8"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                //.andExpect(jsonPath("$.size()").value(privilegeList.size()))
-                .andDo(print());
+        Assertions.assertEquals(result.getStatusCode(), HttpStatus.CREATED);
+    }
+
+    public String generateToken(String email) {
+
+        UserApp user = userRepository.findByUsername(email).orElseThrow(() -> new ResourceNotFoundException("user not found" + email));
+
+        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+
+        ArrayList<String> authoritiesList = new ArrayList<>(authorities.size());
+
+        for (GrantedAuthority authority : authorities) {
+            authoritiesList.add(authority.getAuthority());
+        }
+
+        //@formatter:off
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .claim("roles", authoritiesList)
+                .setIssuedAt(new Date())
+                .setExpiration(Date.from(Instant.now().plus(Duration.ofSeconds(jwtExpiration))))
+                .signWith(this.secretKey, SignatureAlgorithm.HS256)
+                .compact();
+        //@formatter:on
     }
 }
