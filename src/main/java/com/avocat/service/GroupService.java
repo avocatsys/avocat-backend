@@ -3,6 +3,7 @@ package com.avocat.service;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.AuditEntity;
 import com.avocat.persistence.entity.Group;
+import com.avocat.persistence.repository.BranchOfficeRepository;
 import com.avocat.persistence.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,20 @@ public class GroupService<T extends AuditEntity> {
     @Autowired
     private GroupRepository groupRepository;
 
+    @Autowired
+    private BranchOfficeService branchOfficeService;
+
     @Transactional
-    public Group create(Group group) {
+    public Group create(UUID id, Group group) {
+        var branchOffice = branchOfficeService.findById(id);
+        group.setBranchOffice(branchOffice.getId());
         return groupRepository.save(group);
     }
 
     @Transactional
     public Group update(UUID id, Group group) {
-        Group groupResult = getGroup(id);
-        return groupRepository.save(Group.from(group, groupResult));
+        var result = getGroup(id);
+        return groupRepository.save(Group.from(group, result));
     }
 
     @Transactional

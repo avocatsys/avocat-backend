@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping(path = "/v1/groups", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController
+@RequestMapping(path = "/v1/branch-office/{branch_office_id}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GroupController {
 
     @Autowired
@@ -20,8 +21,8 @@ public class GroupController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('GROUP_WRITE')")
     @PostMapping
-    public ResponseEntity<Group> create(@RequestBody Group obj) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.create(obj));
+    public ResponseEntity<Group> create(@PathVariable("branch_office_id") UUID id, @RequestBody Group obj) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.create(id, obj));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('GROUP_WRITE')")

@@ -1,5 +1,6 @@
 package com.avocat.controller;
 
+import com.avocat.controller.privilege.PrivilegeController;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.UserAppRepository;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
