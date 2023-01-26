@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/v1/branch-office/{branch_office_id}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/branch-office/{branchOfficeId}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GroupController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class GroupController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('GROUP_WRITE')")
     @PostMapping
-    public ResponseEntity<Group> create(@PathVariable("branch_office_id") UUID id, @RequestBody Group obj) {
+    public ResponseEntity<Group> create(@PathVariable("branchOfficeId") UUID id, @RequestBody Group obj) {
         return ResponseEntity.status(HttpStatus.CREATED).body(groupService.create(id, obj));
     }
 
