@@ -14,10 +14,17 @@ import java.util.UUID;
 public class BranchOfficeService {
 
     @Autowired
+    private CustomerService customerService;
+
+    @Autowired
     private BranchOfficeRepository branchOfficeRepository;
 
     @Transactional
-    public BranchOffice create(BranchOffice branchOffice) {
+    public BranchOffice create(UUID customerId, BranchOffice branchOffice) {
+
+        var ownerCustomer = customerService.findById(customerId);
+        branchOffice.setCustomers(ownerCustomer);
+
         return branchOfficeRepository.save(branchOffice);
     }
 

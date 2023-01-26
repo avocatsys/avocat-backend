@@ -1,6 +1,7 @@
 package com.avocat.service;
 
 import com.avocat.controller.customer.dto.CustomerDto;
+import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Customer;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.CustomerRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 @Service
 public class CustomerService {
@@ -38,5 +40,9 @@ public class CustomerService {
         var result = customerRepository.save(customer);
 
         return CustomerDto.from(result);
+    }
+
+    public Customer findById(UUID customerId) {
+        return customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("resource not found."));
     }
 }

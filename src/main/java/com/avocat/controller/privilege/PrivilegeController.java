@@ -19,19 +19,19 @@ public class PrivilegeController {
     @Autowired
     private PrivilegeService privilegeService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('Privilege_WRITE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('PRIVILEGE_WRITE')")
     @PostMapping
     public ResponseEntity<Privilege> create(@PathVariable("branchOfficeId") UUID id, @RequestBody Privilege obj) {
         return ResponseEntity.status(HttpStatus.CREATED).body(privilegeService.create(id, obj));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('Privilege_WRITE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('PRIVILEGE_WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<Privilege> update(@PathVariable("id") UUID id, @RequestBody Privilege obj) {
         return ResponseEntity.ok().body(privilegeService.update(id, obj));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('Privilege_WRITE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('PRIVILEGE_WRITE')")
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") UUID id) {
         privilegeService.delete(id);
@@ -40,7 +40,7 @@ public class PrivilegeController {
 
     @GetMapping
     public ResponseEntity<List<Privilege>> findAll(@PathVariable("branchOfficeId") UUID id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(privilegeService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(privilegeService.findAll());
     }
 
     @GetMapping("/{id}")
