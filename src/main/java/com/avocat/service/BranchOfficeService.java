@@ -1,5 +1,6 @@
 package com.avocat.service;
 
+import com.avocat.controller.branchoffice.dto.BranchOfficeDto;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.BranchOffice;
 import com.avocat.persistence.repository.BranchOfficeRepository;
@@ -23,7 +24,7 @@ public class BranchOfficeService {
     public BranchOffice create(UUID customerId, BranchOffice branchOffice) {
 
         var ownerCustomer = customerService.findById(customerId);
-        branchOffice.setCustomers(ownerCustomer);
+        branchOffice.setCustomer(ownerCustomer);
 
         return branchOfficeRepository.save(branchOffice);
     }
@@ -40,15 +41,17 @@ public class BranchOfficeService {
         return branchOfficeRepository.save(result);
     }
 
-    public List<BranchOffice> findAll(BranchOffice branchOffice) {
-        return branchOfficeRepository.findAll();//todo fazer o select buscando pelo customerId.
+    public List<BranchOfficeDto> findAllByCustomer_Id(UUID id) {
+        var result = branchOfficeRepository.findAllByCustomer_Id(id);
+        return result.stream().map(n -> new BranchOfficeDto(n)).toList();
     }
 
-    public BranchOffice findById(UUID id) {
-        return getBranchOffice(id);//todo fechar a consulta pelo custmer Id.
+    public BranchOfficeDto findById(UUID branchOfficeId) {
+        var result = getBranchOffice(branchOfficeId);//todo fechar a consulta pelo custmer Id.
+        return new BranchOfficeDto(result);
     }
 
-    private BranchOffice getBranchOffice(UUID id) {
+    public BranchOffice getBranchOffice(UUID id) {
         return branchOfficeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }

@@ -1,5 +1,6 @@
 package com.avocat.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ public class UserApp implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "privilege_id"))
     private Set<Privilege> privileges = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_office_id", referencedColumnName = "branch_office_id")
     private BranchOffice branchOffice;

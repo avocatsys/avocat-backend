@@ -1,8 +1,7 @@
 package com.avocat.controller.user;
 
-import com.avocat.controller.BaseTestController;
+import com.avocat.common.AbstractMockMvcController;
 import com.avocat.persistence.entity.UserApp;
-import com.avocat.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -13,19 +12,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserAppControllerTests extends BaseTestController {
+public class UserAppControllerTests extends AbstractMockMvcController {
 
     @Test
     public void givenNewUserWithPrivilegedAdmin_whenCreate_thenWillReturnHttpStatusCreated_201() throws Exception {
-
-        var newUser = new UserApp.Builder("newUserTest" + UUID.randomUUID() + "@owtest.com","12345678").build();
 
         mockMvc.perform(
                         post("/v1/users")
                                 .header("Authorization", "Bearer " + defaultAccessToken)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .characterEncoding("utf-8")
-                                .content(JsonUtil.asJsonString(newUser)))
+                                .content(getNewUserAppJson()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.userId").isNotEmpty());
     }
@@ -40,5 +37,14 @@ public class UserAppControllerTests extends BaseTestController {
                                 .characterEncoding("utf-8")
                                 .content(UserResourceJson.getUserUpdate()))
                 .andExpect(status().isOk());
+    }
+
+    private String getNewUserAppJson() {
+        return """
+                {
+                    "username":"%s",
+                    "password":"12345678"
+                }
+                """.formatted("newUserTest" + UUID.randomUUID());
     }
 }

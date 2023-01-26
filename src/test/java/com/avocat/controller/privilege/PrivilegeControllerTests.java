@@ -1,6 +1,6 @@
 package com.avocat.controller.privilege;
 
-import com.avocat.controller.AbstractBaseController;
+import com.avocat.common.AbstractRestTestController;
 import com.avocat.persistence.entity.Privilege;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-public class PrivilegeControllerTests extends AbstractBaseController {
+public class PrivilegeControllerTests extends AbstractRestTestController {
 
     @Test
     void shouldGetAllPrivilegesWithHttpStatus200() throws Exception {
