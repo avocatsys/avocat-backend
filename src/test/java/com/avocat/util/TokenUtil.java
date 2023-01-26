@@ -1,4 +1,4 @@
-package com.avocat.controller;
+package com.avocat.util;
 
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.UserApp;
@@ -9,10 +9,6 @@ import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.annotation.PostConstruct;
@@ -25,18 +21,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AbstractBaseController {
-
-    @LocalServerPort
-    private int port;
-
-    protected String HOST;
-
-    protected HttpHeaders headers = new HttpHeaders();
-
-    @Autowired
-    protected TestRestTemplate testRestTemplate;
+public class TokenUtil {
 
     @Value("${token.jwt.secret}")
     private String jwtSecret;
@@ -53,17 +38,9 @@ public class AbstractBaseController {
 
     @BeforeEach
     public void init(){
-        defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
-        headers.set("Authorization", "Bearer " + defaultAccessToken);
-    }
-
-    @PostConstruct
-    public void setUp() {
-
-        HOST = "http://localhost:" + port;
-
         var secret = Base64.getEncoder().encodeToString(this.jwtSecret.getBytes());
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
     }
 
     public String generateToken(String email) {

@@ -1,23 +1,28 @@
 package com.avocat.persistence.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.br.CNPJ;
-import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "branch_offices")
 @AttributeOverride(name = "id", column = @Column(name = "branch_office_id", nullable = false))
 public class BranchOffice extends AuditEntity {
 
+    @NotEmpty(message = "invalid corporate name format. Can`t be null or empty.")
     @Column(name = "corporate_name", nullable = false)
-    private String corporteName;
+    private String corporateName;
 
+    @NotEmpty(message = "invalid branch office name format. Can`t be null or empty.")
     @Column(name = "branch_office_name", nullable = false)
     private String branchOfficeName;
 
@@ -28,26 +33,27 @@ public class BranchOffice extends AuditEntity {
     private String stateRegistration;//inscrição estadual
 
     @CNPJ(message = "invalid cnpj format")
-    @CPF(message = "invalid cpf format")
     @Column(name = "cpf_cnpj", nullable = false)
     private String cpfCnpj;
 
-    @Column(name = "email", nullable = false)
+    @NotEmpty(message = "invalid e-mail format. Can`t be null or empty.")
     @Email(message = "invalid format email")
+    @Column(name = "email", nullable = false)
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    private Customer customers;
+    private Customer customer;
 
     private BranchOffice(Builder builder) {
-        this.corporteName = builder.corporteName;
+        Assert.notNull(builder.customer, "Customer is required");
+        this.corporateName = builder.corporteName;
         this.branchOfficeName = builder.branchOfficeName;
         this.codeOffice = builder.codeOffice;
         this.stateRegistration = builder.stateRegistration;
         this.cpfCnpj = builder.cpfCnpj;
         this.email = builder.email;
-        this.customers = builder.customer;
+        this.customer = builder.customer;
     }
 
     public static class Builder {
@@ -90,7 +96,7 @@ public class BranchOffice extends AuditEntity {
 
     public static BranchOffice from(BranchOffice source, BranchOffice target) {
         target.setBranchOfficeName(source.getBranchOfficeName());
-        target.setCorporteName(source.getCorporteName());
+        target.setCorporateName(source.getCorporateName());
         target.setCodeOffice(source.getCodeOffice());
         target.setCpfCnpj(source.getCpfCnpj());
         target.setEmail(source.getEmail());

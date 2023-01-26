@@ -2,7 +2,6 @@ package com.avocat.controller.authentication;
 
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.UserAppRepository;
-import com.avocat.util.JsonUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +46,20 @@ public class AuthenticationControllerTests {
         this.mockMvc
             .perform(
                 post("/v1/authentication/token")
-                .content(JsonUtil.asJsonString(new UserApp.Builder("owtest@malito.com", "123").build()))
+                .content(getUserAppJson())
                 .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.access_token").isNotEmpty());
         //@formatter:on
+    }
+
+    private String getUserAppJson() {
+        return """
+                {
+                    "username":"owtest@malito.com",
+                    "password":"123"
+                }
+                """;
     }
 }

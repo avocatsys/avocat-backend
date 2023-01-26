@@ -7,10 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Optional;
 
 /**
- * <p>
- *     Essa classe é utilizada para auditar as modificações realizadas nos registros. Assim essa classe captura
- *     o usuário logado (principal) e preenche as colunas createdBy e updatedBy nas tabelas do banco de dados.
- * </p>
+ * Essa classe é utilizada para auditar as modificações realizadas nos registros. Assim essa classe captura
+ * o usuário logado (principal) e preenche as colunas createdBy e updatedBy nas tabelas do banco de dados.
  */
 public class CustomAuditAwareImpl implements AuditorAware<String> {
 

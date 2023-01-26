@@ -1,5 +1,6 @@
 package com.avocat.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
@@ -32,7 +33,7 @@ public class Customer {
     @Email(message = "invalid format email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private UserApp user;
 

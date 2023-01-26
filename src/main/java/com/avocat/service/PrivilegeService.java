@@ -22,7 +22,7 @@ public class PrivilegeService {
 
     @Transactional
     public Privilege create(UUID id, Privilege privilege) {
-        var branchOffice = branchOfficeService.findById(id);
+        var branchOffice = branchOfficeService.getBranchOffice(id);
         privilege.setBranchOffice(branchOffice.getId());
         return privilegeRepository.save(privilege);
     }
