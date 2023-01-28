@@ -1,12 +1,8 @@
 package com.avocat.controller.customer;
 
-import com.avocat.persistence.entity.Customer;
+import com.avocat.common.AbstractMockMvcController;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
@@ -15,29 +11,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-public class CustomerControllerTests {
-
-    @Autowired
-    private MockMvc mockMvc;
+public class CustomerControllerTests extends AbstractMockMvcController {
 
     @Test
-    public void givenCustomerNew_whenSignup_thenSignupCustomer_201() throws Exception {
-        //todo rescrever teste
-        var fullName = UUID.randomUUID();
-        var officeNAme = "Test Integration " + fullName;
-        var email = fullName + "@testintegration.com";
+    public void shouldCreateNewCustomerThenWillReturnHttpStatus201() throws Exception {
 
-        //@formatter:off
         this.mockMvc
                 .perform(
                         post("/v1/customers/signup")
-                                //.content(JsonUtil.asJsonString(Customer.getInstanceWithOutUser(fullName.toString(), officeNAme, email)))
+                                .content(getNewCustomerJson())
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.customerId").isNotEmpty());
-        //@formatter:on
+    }
+
+    private String getNewCustomerJson() {
+        return """
+                {
+                    "fullName":"%s",
+                    "officeName":"%s",
+                    "email":"%s"               
+                }
+                """.formatted(
+                "Test integration " + UUID.randomUUID().toString().substring(0, 10),
+                "Test integration " + UUID.randomUUID().toString().substring(0, 10),
+                UUID.randomUUID().toString().substring(0, 10) + "@owtest.com");
     }
 }
