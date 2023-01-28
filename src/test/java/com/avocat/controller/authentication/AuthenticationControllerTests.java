@@ -1,5 +1,6 @@
 package com.avocat.controller.authentication;
 
+import com.avocat.common.AbstractMockMvcController;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.UserAppRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,45 +20,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-public class AuthenticationControllerTests {
-
-    @MockBean
-    private UserAppRepository userRepository;
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @BeforeEach
-    public void setUp() {
-        //@formatter:off
-        given(
-            this.userRepository.findByUsername("owtest@malito.com"))
-            .willReturn(Optional.of(
-                    new UserApp.Builder("owtest@malito.com", "$2a$10$ielFeDLFnuavoyASyyfA4.W6L8N2vMLFa5JMF5aPpMw5InBY1.fnK").build()
-            ));
-        //@formatter:on
-    }
+public class AuthenticationControllerTests extends AbstractMockMvcController {
 
     @Test
-    public void givenUserToAuthentication_whenAuthenticate_thenWillGenerateToken_200() throws Exception {
-        //@formatter:off
-        this.mockMvc
-            .perform(
-                post("/v1/authentication/token")
-                .content(getUserAppJson())
-                .contentType(MediaType.APPLICATION_JSON)
-            )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.access_token").isNotEmpty());
-        //@formatter:on
+    public void shouldMakeAuthenticationOfUserThenWillReturnGeneratedTokenWithHttpStatus200() throws Exception {
+
+        mockMvc.perform(
+                        post("/v1/authentication/token")
+                                .content(getUserAppJson())
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.access_token").isNotEmpty());
     }
 
     private String getUserAppJson() {
         return """
                 {
-                    "username":"owtest@malito.com",
+                    "username":"e77d4056-0284-452b-8156-f20badcc8662@owtest.com",
                     "password":"123"
                 }
                 """;
