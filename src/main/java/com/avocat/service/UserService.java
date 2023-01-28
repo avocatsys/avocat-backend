@@ -20,7 +20,7 @@ import java.util.UUID;
 public class UserService {
 
     @Autowired
-    private BranchOfficeRepository branchOfficeRepository;
+    private BranchOfficeService branchOfficeService;
 
     @Autowired
     private UserAppRepository userAppRepository;
@@ -29,7 +29,8 @@ public class UserService {
     private PrivilegeRepository privilegeRepository;
 
     @Transactional
-    public UserAppDto create(UserApp user) {
+    public UserAppDto create(UUID branchOfficeId, UserApp user) {
+        user.setBranchOffice(branchOfficeService.getBranchOffice(branchOfficeId));
         user.setPrivileges(getDefaultPrivilege(user));
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return UserAppDto.from(userAppRepository.save(user));
@@ -38,8 +39,7 @@ public class UserService {
     @Transactional
     public UserAppDto update(UUID userId, UUID branchOfficeId, UserApp user) {
 
-        var branchOfficeResult = branchOfficeRepository.findById(branchOfficeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch Office not found"));
+        var branchOfficeResult = branchOfficeService.getBranchOffice(branchOfficeId);
 
         var userResult = userAppRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("user id: " + user.getId() + " not found"));
