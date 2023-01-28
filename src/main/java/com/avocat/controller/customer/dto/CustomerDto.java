@@ -7,13 +7,13 @@ import java.util.UUID;
 
 public class CustomerDto {
 
-    @JsonProperty("customerId")
+    @JsonProperty("customer_id")
     private UUID id;
 
-    @JsonProperty("fullName")
+    @JsonProperty("full_name")
     private String fullName;
 
-    @JsonProperty("officeName")
+    @JsonProperty("office_name")
     private String officeName;
 
     private CustomerDto(Customer customer){

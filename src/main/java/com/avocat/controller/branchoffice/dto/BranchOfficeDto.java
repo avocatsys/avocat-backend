@@ -2,7 +2,6 @@ package com.avocat.controller.branchoffice.dto;
 
 import com.avocat.controller.customer.dto.CustomerDto;
 import com.avocat.persistence.entity.BranchOffice;
-import com.avocat.persistence.entity.Customer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
