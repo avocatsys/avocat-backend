@@ -1,6 +1,7 @@
 package com.avocat.controller.user;
 
 import com.avocat.controller.user.dto.UserAppDto;
+import com.avocat.persistence.entity.Group;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping(path = "/v1/branch-office/{branchOfficeId}/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,7 +24,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserAppDto> create(@PathVariable("branchOfficeId") UUID branchOfficeId, @RequestBody @Valid UserApp user) {
+    public ResponseEntity<UserAppDto> create(
+            @PathVariable("branchOfficeId") UUID branchOfficeId,
+            @RequestBody @Valid UserApp user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(branchOfficeId, user));
     }
 
@@ -32,5 +36,21 @@ public class UserController {
             @PathVariable("branchOfficeId") UUID branchOfficeId,
             @RequestBody UserApp user) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, branchOfficeId, user));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable("id") UUID id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserAppDto>> findAll(@PathVariable("branchOfficeId") UUID branchOfficeId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(branchOfficeId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserAppDto> findById(@PathVariable("id") UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
     }
 }

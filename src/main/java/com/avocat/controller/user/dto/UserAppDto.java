@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class UserAppDto {
 
-    @JsonProperty("userId")
+    @JsonProperty("user_id")
     private UUID id;
 
     @JsonProperty("username")

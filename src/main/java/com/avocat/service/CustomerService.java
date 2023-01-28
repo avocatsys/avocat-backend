@@ -34,7 +34,7 @@ public class CustomerService {
 
         var userCreated = userRepository.save(
                 new UserApp.Builder(customer.getEmail(), new BCryptPasswordEncoder()
-                        .encode("12345678")).privilege(privilege).build());
+                        .encode("12345678")).privilege(privilege).build());//todo verificar essa regra da senha chumabada no codigo.
 
         customer.setUser(userCreated);
         var result = customerRepository.save(customer);
