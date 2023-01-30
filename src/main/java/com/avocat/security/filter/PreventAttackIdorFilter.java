@@ -1,9 +1,13 @@
 package com.avocat.security.filter;
 
 import com.avocat.exceptions.IDORException;
+import com.avocat.exceptions.InvalidPermissionOrRoleException;
 import com.avocat.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -21,6 +25,8 @@ import java.util.UUID;
  */
 @Component
 public class PreventAttackIdorFilter implements Filter {
+
+    Logger logger = LoggerFactory.getLogger(PreventAttackIdorFilter.class);
 
     @Autowired
     private UserService userService;
@@ -43,7 +49,7 @@ public class PreventAttackIdorFilter implements Filter {
         if(userLogged.isPresent()) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            throw new IDORException("Idor attack identified " + username);
+            logger.warn("IDOR attack attempt with user: " + username);
         }
     }
 }
