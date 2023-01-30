@@ -37,7 +37,7 @@ public class UserAppControllerTests extends AbstractMockMvcController {
         mockMvc.perform(get("/v1/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/users")
                         .header("Authorization", "Bearer " + defaultAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8").content(getNewUserAppJson()))
+                        .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

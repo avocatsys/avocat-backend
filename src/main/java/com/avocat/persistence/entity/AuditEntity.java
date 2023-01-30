@@ -3,6 +3,7 @@ package com.avocat.persistence.entity;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.core.ApplicationContext;
+import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -32,6 +33,7 @@ public class AuditEntity implements Serializable {
     @GeneratedValue
     protected UUID id;
 
+    @Type(type="org.hibernate.type.UUIDCharType")
     @Column(name = "branch_office_ref", updatable = false, nullable = false)
     protected UUID branchOffice;
 
