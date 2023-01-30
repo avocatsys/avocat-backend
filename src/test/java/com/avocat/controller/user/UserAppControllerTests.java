@@ -28,7 +28,7 @@ public class UserAppControllerTests extends AbstractMockMvcController {
                                 .characterEncoding("utf-8")
                                 .content(getNewUserAppJson()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.userId").isNotEmpty());
+                .andExpect(jsonPath("$.user_id").isNotEmpty());
     }
 
     @Test

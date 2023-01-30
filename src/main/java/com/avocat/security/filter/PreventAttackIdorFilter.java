@@ -1,13 +1,10 @@
 package com.avocat.security.filter;
 
-import com.avocat.exceptions.IDORException;
-import com.avocat.exceptions.InvalidPermissionOrRoleException;
 import com.avocat.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Set;
 import java.util.UUID;
 
 /*
@@ -26,7 +24,9 @@ import java.util.UUID;
 @Component
 public class PreventAttackIdorFilter implements Filter {
 
-    Logger logger = LoggerFactory.getLogger(PreventAttackIdorFilter.class);
+    private Logger logger = LoggerFactory.getLogger(PreventAttackIdorFilter.class);
+
+    private Set<String> whiteList = Set.of("/v1/account", "/v1/authentication/token", "/v1/customers/signup");
 
     @Autowired
     private UserService userService;
@@ -35,21 +35,25 @@ public class PreventAttackIdorFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String username = request.getUserPrincipal().getName();
         String uri = request.getRequestURI();
 
-        UUID uriBranchOfficeId = null;
+        if(!whiteList.stream().anyMatch(i -> uri.contains(i))){
 
-        if(uri.contains("v1/branch-office/")) {
-            uriBranchOfficeId = UUID.fromString(uri.split("/")[3]);
+            String username = request.getUserPrincipal().getName();
+            UUID uriBranchOfficeId = null;
+
+            if (uri.contains("v1/branch-office/")) {
+                uriBranchOfficeId = UUID.fromString(uri.split("/")[3]);
+            }
+
+            var userLogged = userService.findByUsernameAndBranchOfficeId(username, uriBranchOfficeId);
+
+            if (userLogged.isPresent()) {
+                filterChain.doFilter(servletRequest, servletResponse);
+            } else {
+                logger.warn("IDOR attack attempt with user: " + username);
+            }
         }
-
-        var userLogged = userService.findByUsernameAndBranchOfficeId(username, uriBranchOfficeId);
-
-        if(userLogged.isPresent()) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
-            logger.warn("IDOR attack attempt with user: " + username);
-        }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

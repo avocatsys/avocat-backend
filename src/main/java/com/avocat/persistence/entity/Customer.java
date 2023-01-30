@@ -1,6 +1,5 @@
 package com.avocat.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
