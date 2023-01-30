@@ -15,4 +15,6 @@ public interface UserAppRepository extends JpaRepository<UserApp, UUID> {
     Optional<UserApp> findByUsername(String email);
 
     List<UserApp> findAllByBranchOffice_Id(@Param("branchOfficeId") UUID branchOfficeId);
+
+    Optional<UserApp> findByUsernameAndBranchOffice_Id(@Param("email") String email, @Param("branchOfficeId") UUID branchOfficeId);
 }
