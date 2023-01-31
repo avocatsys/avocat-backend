@@ -35,7 +35,7 @@ public class PreventAttackIdorFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String uri = request.getRequestURI();
+        String uri = request.getRequestURI().replace("/avocat/", "");
 
         if(!whiteList.stream().anyMatch(i -> uri.contains(i))){
 
@@ -43,7 +43,7 @@ public class PreventAttackIdorFilter implements Filter {
             UUID uriBranchOfficeId = null;
 
             if (uri.contains("v1/branch-office/")) {
-                uriBranchOfficeId = UUID.fromString(uri.split("/")[3]);
+                uriBranchOfficeId = UUID.fromString(uri.split("/")[2]);
             }
 
             var userLogged = userService.findByUsernameAndBranchOfficeId(username, uriBranchOfficeId);

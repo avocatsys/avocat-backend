@@ -3,6 +3,7 @@ package com.avocat.common;
 import com.avocat.util.TokenUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -34,7 +35,8 @@ public class AbstractRestTestController extends TokenUtil {
     @BeforeEach
     public void init(){
         HOST = "http://localhost:" + port;
-        defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
+        //defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
+        super.init();
         headers.set("Authorization", "Bearer " + defaultAccessToken);
     }
 }
