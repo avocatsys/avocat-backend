@@ -23,7 +23,7 @@ public class CustomerControllerTests extends AbstractMockMvcController {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.customerId").isNotEmpty());
+                .andExpect(jsonPath("$.customer_id").isNotEmpty());
     }
 
     private String getNewCustomerJson() {

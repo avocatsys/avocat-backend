@@ -1,11 +1,17 @@
 package com.avocat.controller.user;
 
 import com.avocat.common.AbstractMockMvcController;
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.result.StatusResultMatchers;
+import org.springframework.util.Assert;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,7 +28,7 @@ public class UserAppControllerTests extends AbstractMockMvcController {
                                 .characterEncoding("utf-8")
                                 .content(getNewUserAppJson()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.userId").isNotEmpty());
+                .andExpect(jsonPath("$.user_id").isNotEmpty());
     }
 
     @Test
@@ -31,7 +37,7 @@ public class UserAppControllerTests extends AbstractMockMvcController {
         mockMvc.perform(get("/v1/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/users")
                         .header("Authorization", "Bearer " + defaultAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8").content(getNewUserAppJson()))
+                        .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
