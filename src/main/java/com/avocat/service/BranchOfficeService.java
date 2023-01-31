@@ -5,6 +5,8 @@ import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.BranchOffice;
 import com.avocat.persistence.repository.BranchOfficeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,9 +43,8 @@ public class BranchOfficeService {
         return branchOfficeRepository.save(result);
     }
 
-    public List<BranchOfficeDto> findAllByCustomer_Id(UUID id) {
-        var result = branchOfficeRepository.findAllByCustomer_Id(id);
-        return result.stream().map(n -> new BranchOfficeDto(n)).toList();
+    public Page<BranchOfficeDto> findAllByCustomer_Id(UUID id, Pageable pageable) {
+        return branchOfficeRepository.findAllByCustomer_Id(id, pageable).map(BranchOfficeDto::new);
     }
 
     public BranchOfficeDto findById(UUID branchOfficeId) {
