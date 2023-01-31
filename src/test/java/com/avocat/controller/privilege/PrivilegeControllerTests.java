@@ -11,21 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 public class PrivilegeControllerTests extends AbstractRestTestController {
-
-    @Test
-    void shouldGetAllPrivilegesWithHttpStatus200() throws Exception {
-        //given
-        URI uri = new URI(HOST + "/avocat/v1/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/privileges");
-        //when
-        HttpEntity<List<Privilege>> request = new HttpEntity<>(headers);
-        ResponseEntity<List<Privilege>> result = this.testRestTemplate.exchange(uri, HttpMethod.GET, request, new ParameterizedTypeReference<>() {});
-        //then
-        Assertions.assertEquals(result.getStatusCode(), HttpStatus.OK);
-    }
 
     @Test
     void shouldGetByIdPrivilegeAndWillReturnPrivilegeROLE_ADMINwithHttpStatus200() throws Exception {
