@@ -2,13 +2,13 @@ package com.avocat.service;
 
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Privilege;
-import com.avocat.persistence.entity.Privilege;
 import com.avocat.persistence.repository.PrivilegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,8 +38,8 @@ public class PrivilegeService {
         privilegeRepository.delete(getPrivilege(id));
     }
 
-    public List<Privilege> findAll() {
-        return privilegeRepository.findAll();
+    public Page<Privilege> findAll(UUID branchOfficeId, Pageable pageable) {
+        return privilegeRepository.findAllByBranchOffice(branchOfficeId, pageable);
     }
 
     public Privilege findById(UUID id) {

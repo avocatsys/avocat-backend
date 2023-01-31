@@ -8,6 +8,9 @@ import com.avocat.persistence.repository.PrivilegeRepository;
 import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.persistence.types.PrivilegesTypes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,9 +65,8 @@ public class UserService {
         userAppRepository.delete(getUserApp(userId));
     }
 
-    public List<UserAppDto> findAll(UUID branchOfficeId) {
-        return userAppRepository.findAllByBranchOffice_Id(branchOfficeId).stream()
-                .map(i -> UserAppDto.from(i)).toList();
+    public Page<UserAppDto> findAll(UUID branchOfficeId, Pageable pageable) {
+        return userAppRepository.findAllByBranchOffice_Id(branchOfficeId, pageable).map(UserAppDto::from);
     }
 
     public UserAppDto findById(UUID userId) {
