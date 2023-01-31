@@ -1,6 +1,7 @@
 package com.avocat.controller;
 
 import com.avocat.exceptions.ErrorDetails;
+import com.avocat.exceptions.IDORException;
 import com.avocat.exceptions.InvalidPermissionOrRoleException;
 import com.avocat.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({InvalidPermissionOrRoleException.class})
+    @ExceptionHandler({InvalidPermissionOrRoleException.class, IDORException.class})
     public ResponseEntity<ErrorDetails> handleAsForbidden(RuntimeException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);

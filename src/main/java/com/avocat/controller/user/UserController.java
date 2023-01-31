@@ -5,6 +5,9 @@ import com.avocat.persistence.entity.Group;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +48,12 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserAppDto>> findAll(@PathVariable("branchOfficeId") UUID branchOfficeId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(branchOfficeId));
+    public ResponseEntity<Page<UserAppDto>> findAll(
+            @PathVariable("branchOfficeId") UUID branchOfficeId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(branchOfficeId, pageable));
     }
 
     @GetMapping("/{id}")
