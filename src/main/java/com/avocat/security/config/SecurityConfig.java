@@ -23,9 +23,10 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
     private CustomAuthenticationManager authenticationManager;
 
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity http, JwtTokenProvider  tokenProvider) throws Exception {
+    protected SecurityFilterChain filterChain(HttpSecurity http, JwtTokenProvider tokenProvider) throws Exception {
         //@formatter:off
         return http
+                .cors().and()
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(c -> c
