@@ -51,6 +51,5 @@ public class PreventAttackIdorFilter implements Filter {
                 logger.warn("IDOR attack attempt with user: " + username);
             }
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

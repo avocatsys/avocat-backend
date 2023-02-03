@@ -1,5 +1,6 @@
 package com.avocat.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -44,13 +45,14 @@ public class BranchOffice extends AuditEntity {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
 
     private BranchOffice(Builder builder) {
         Assert.notNull(builder.customer, "Customer is required");
-        this.corporateName = builder.corporteName;
+        this.corporateName = builder.corporateName;
         this.branchOfficeName = builder.branchOfficeName;
         this.codeOffice = builder.codeOffice;
         this.stateRegistration = builder.stateRegistration;
@@ -64,7 +66,7 @@ public class BranchOffice extends AuditEntity {
         //mandatory
         private String cpfCnpj;
         private String email;
-        private String corporteName;
+        private String corporateName;
         private String branchOfficeName;
         private Customer customer;
 
@@ -76,7 +78,7 @@ public class BranchOffice extends AuditEntity {
                        String branchOfficeName, Customer customer) {
             this.cpfCnpj = cpfCnpj;
             this.email = email;
-            this.corporteName = corporteName;
+            this.corporateName = corporteName;
             this.branchOfficeName = branchOfficeName;
             this.customer = customer;
         }
