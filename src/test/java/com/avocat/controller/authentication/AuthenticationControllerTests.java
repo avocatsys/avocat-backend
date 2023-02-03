@@ -31,14 +31,14 @@ public class AuthenticationControllerTests extends AbstractMockMvcController {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.access_token").isNotEmpty());
+                .andExpect(jsonPath("$.token").isNotEmpty());
     }
 
     private String getUserAppJson() {
         return """
                 {
-                    "username":"e77d4056-0284-452b-8156-f20badcc8662@owtest.com",
-                    "password":"123"
+                    "username":"cde90eff-0@owtest.com",
+                    "password":"12345678"
                 }
                 """;
     }
