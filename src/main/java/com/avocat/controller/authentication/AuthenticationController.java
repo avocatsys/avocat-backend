@@ -1,10 +1,17 @@
 package com.avocat.controller.authentication;
 
-import com.avocat.controller.authentication.dto.TokenDto;
+import com.avocat.controller.authentication.dto.CredentialsDto;
+import com.avocat.exceptions.ResourceNotFoundException;
+import com.avocat.persistence.CustomSpecification;
+import com.avocat.persistence.entity.Customer;
 import com.avocat.persistence.entity.UserApp;
+import com.avocat.persistence.repository.CustomerRepository;
 import com.avocat.security.custom.CustomAuthenticationManager;
 import com.avocat.security.jwt.JwtTokenProvider;
+import com.avocat.service.CustomerService;
+import com.avocat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,16 +32,22 @@ public class AuthenticationController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private CustomerService customerService;
+
     @PostMapping("/token")
-    public ResponseEntity<TokenDto> authentication(@RequestBody @Valid UserApp userApp) {
+    public ResponseEntity<CredentialsDto> authentication(@RequestBody @Valid UserApp userApp) throws Throwable {
 
-            var username = userApp.getUsername();
+        var username = userApp.getUsername();
 
-            var authentication = customAuthenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(username, userApp.getPassword()));
+        Customer userLogged = customerService.findCustomerJoinUserAppByUserName(username);
 
-            var token = jwtTokenProvider.genereToken(authentication);
+        var authentication = customAuthenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(username, userApp.getPassword()));
 
-            return ResponseEntity.ok().body(TokenDto.create(token));
+        var token = jwtTokenProvider.genereToken(authentication);
+        //todo depois fazer adaptar a query para retornar o customerId
+        return ResponseEntity.ok().body(CredentialsDto
+                .create(token, userLogged.getId(), null, userLogged.getUser().getUsername()));
     }
 }

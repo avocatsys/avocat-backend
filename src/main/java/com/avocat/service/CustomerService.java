@@ -2,6 +2,7 @@ package com.avocat.service;
 
 import com.avocat.controller.customer.dto.CustomerDto;
 import com.avocat.exceptions.ResourceNotFoundException;
+import com.avocat.persistence.CustomSpecification;
 import com.avocat.persistence.entity.Customer;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.CustomerRepository;
@@ -9,6 +10,7 @@ import com.avocat.persistence.repository.PrivilegeRepository;
 import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.persistence.types.PrivilegesTypes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +46,12 @@ public class CustomerService {
 
     public Customer findById(UUID customerId) {
         return customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("resource not found."));
+    }
+
+    public Customer findCustomerJoinUserAppByUserName(String username) throws Throwable {
+        var userResult = customerRepository
+                .findOne(Specification.where(CustomSpecification.byUsername(username)));
+
+        return (Customer) userResult.orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }
 }
