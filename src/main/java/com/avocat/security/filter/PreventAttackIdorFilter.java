@@ -46,10 +46,10 @@ public class PreventAttackIdorFilter implements Filter {
             var userLogged = userService.findByUsernameAndBranchOfficeId(username, uriBranchOfficeId);
 
             if (userLogged.isPresent()) {
-                filterChain.doFilter(servletRequest, servletResponse);
-            } else {
-                logger.warn("IDOR attack attempt with user: " + username);
+                logger.warn("IDOR attack attempt with user: " + username);//todo pensar em uma exception personalizada
             }
         }
+
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }
