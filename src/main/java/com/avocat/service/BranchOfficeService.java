@@ -32,8 +32,8 @@ public class BranchOfficeService {
     }
 
     @Transactional
-    public BranchOffice update(UUID id, BranchOffice branchOffice) {
-        var result = getBranchOffice(id);
+    public BranchOffice update(BranchOffice branchOffice) {
+        var result = getBranchOffice(branchOffice.getId());
         return branchOfficeRepository.save(BranchOffice.from(result, branchOffice));
     }
 
