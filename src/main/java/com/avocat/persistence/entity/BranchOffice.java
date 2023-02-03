@@ -99,13 +99,13 @@ public class BranchOffice extends AuditEntity {
 
     }
 
-    public static BranchOffice from(BranchOffice source, BranchOffice target) {
-        target.setBranchOfficeName(source.getBranchOfficeName());
-        target.setCorporateName(source.getCorporateName());
-        target.setCodeOffice(source.getCodeOffice());
-        target.setCpfCnpj(source.getCpfCnpj());
-        target.setEmail(source.getEmail());
-        target.setStateRegistration(source.getStateRegistration());
-        return target;
+    public static BranchOffice from(BranchOffice branchOffice, BranchOffice result) {
+        result.setBranchOfficeName(branchOffice.getBranchOfficeName());
+        result.setCorporateName(branchOffice.getCorporateName());
+        result.setCodeOffice(branchOffice.getCodeOffice());
+        result.setCpfCnpj(branchOffice.getCpfCnpj());
+        result.setEmail(branchOffice.getEmail());
+        result.setStateRegistration(branchOffice.getStateRegistration());
+        return result;
     }
 }

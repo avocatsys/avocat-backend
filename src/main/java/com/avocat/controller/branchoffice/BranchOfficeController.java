@@ -47,7 +47,7 @@ public class BranchOfficeController {
     public ResponseEntity<Page<BranchOfficeDto>> findAll(
             @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "50") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(branchOfficeService.findAllByCustomer_Id(customerId, pageable));
     }
