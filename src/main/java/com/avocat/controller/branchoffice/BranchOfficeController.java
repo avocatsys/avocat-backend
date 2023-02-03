@@ -31,14 +31,14 @@ public class BranchOfficeController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<BranchOffice> update(@PathVariable("id") UUID customerId, @RequestBody BranchOffice branchOffice) {
-        return ResponseEntity.ok().body(branchOfficeService.update(customerId, branchOffice));
+    @PutMapping
+    public ResponseEntity<BranchOffice> update(@RequestBody BranchOffice branchOffice) {
+        return ResponseEntity.ok().body(branchOfficeService.update(branchOffice));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") UUID id) {
+    @DeleteMapping("/{branchOfficeId}")
+    public ResponseEntity delete(@PathVariable("branchOfficeId") UUID id) {
         branchOfficeService.delete(id);
         return ResponseEntity.noContent().build();
     }

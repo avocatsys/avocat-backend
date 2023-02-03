@@ -11,6 +11,8 @@ public class CorsOriginFilter implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        registry.addMapping("/**")
+                //.allowedOrigins("http://localhost:4200")//Se desejar restringir por host. É uma segurança a mais. Vai ficar aqui para ser lembrada dessa possibilidade.
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
     }
 }

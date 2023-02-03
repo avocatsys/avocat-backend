@@ -7,29 +7,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 public record BranchOfficeDto(
-
-        @JsonProperty("branch_office_id")
         UUID id,
-
-        @JsonProperty("corporate_name")
         String corporateName,
-
-        @JsonProperty("branch_office_name")
         String branchOfficeName,
-
-        @JsonProperty("code_office")
         String codeOffice,
-
-        @JsonProperty("state_registration")
         String stateRegistration,
-
-        @JsonProperty("cpf_cnpj")
         String cpfCnpj,
-
-        @JsonProperty("email")
         String email,
-
-        @JsonProperty("customer")
         CustomerDto customerDto
 ) {
     public BranchOfficeDto(BranchOffice branchOffice) {
