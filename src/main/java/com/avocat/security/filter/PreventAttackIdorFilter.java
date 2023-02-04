@@ -39,7 +39,8 @@ public class PreventAttackIdorFilter implements Filter {
             UUID uriBranchOfficeId = null;
 
             if (uri.contains("v1/branch-office/")) {
-                uriBranchOfficeId = UUID.fromString(uri.split("/")[2]);
+                //todo implementar um regex para resolver esse problema
+                uriBranchOfficeId = UUID.fromString(uri.split("/")[3]);
             }
 
             var userLogged = userService.findByUsernameAndBranchOfficeId(username, uriBranchOfficeId);

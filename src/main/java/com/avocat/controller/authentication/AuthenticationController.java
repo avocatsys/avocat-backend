@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @RequestMapping(path = "/v1/authentication/token", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
@@ -39,9 +40,14 @@ public class AuthenticationController {
                 .authenticate(new UsernamePasswordAuthenticationToken(username, userApp.getPassword()));
 
         var token = jwtTokenProvider.genereToken(authentication);
-        //todo depois fazer adaptar a query para retornar o customerId
+
+        UUID branchOfficeId = null;
+
+        if(userLogged.getUser().getBranchOffice() != null)
+            branchOfficeId = userLogged.getUser().getBranchOffice().getId();
+
         return ResponseEntity.ok().body(CredentialsDto
-                .create(token, userLogged.getId(), null, userLogged.getUser().getUsername()));
+                .create(token, userLogged.getId(), branchOfficeId, userLogged.getUser().getUsername()));
     }
 
     @GetMapping("/{token}")
