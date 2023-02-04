@@ -34,7 +34,8 @@ public class AuditEntity implements Serializable {
     protected UUID id;
 
     @Type(type="org.hibernate.type.UUIDCharType")
-    @Column(name = "branch_office_ref", updatable = false, nullable = false)
+    //@Type(type = "pg-uuid")
+    @Column(name = "branch_office_ref")
     protected UUID branchOffice;
 
     @Column(name = "created_date")
@@ -56,11 +57,6 @@ public class AuditEntity implements Serializable {
 
     @PrePersist
     public void onPrePersist() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //todo apos a criação da filial finalizar essa lógica.
-        this.branchOffice = UUID.randomUUID();
-        Assert.notNull(branchOffice, "field branchOffice can not be null");
-
         this.createdDate = LocalDateTime.now();
         log.info("created " + this.createdDate);
     }

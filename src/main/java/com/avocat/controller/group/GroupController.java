@@ -24,8 +24,8 @@ public class GroupController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('GROUP_WRITE')")
     @PostMapping
-    public ResponseEntity<Group> create(@PathVariable("branchOfficeId") UUID id, @RequestBody Group obj) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.create(id, obj));
+    public ResponseEntity<Group> create(@PathVariable("branchOfficeId") UUID branchOfficeId, @RequestBody Group obj) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.create(branchOfficeId, obj));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('GROUP_WRITE')")
@@ -45,7 +45,7 @@ public class GroupController {
     public ResponseEntity<Page<Group>> findAll(
             @PathVariable("branchOfficeId") UUID branchOfficeId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(groupService.findAll(branchOfficeId, pageable));

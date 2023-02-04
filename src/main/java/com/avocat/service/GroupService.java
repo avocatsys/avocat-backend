@@ -23,8 +23,8 @@ public class GroupService<T extends AuditEntity> {
     private BranchOfficeService branchOfficeService;
 
     @Transactional
-    public Group create(UUID id, Group group) {
-        var branchOffice = branchOfficeService.getBranchOffice(id);
+    public Group create(UUID branchOfficeId, Group group) {
+        var branchOffice = branchOfficeService.getBranchOffice(branchOfficeId);
         group.setBranchOffice(branchOffice.getId());
         return groupRepository.save(group);
     }
