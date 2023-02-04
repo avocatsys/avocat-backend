@@ -30,8 +30,8 @@ public class GroupService<T extends AuditEntity> {
     }
 
     @Transactional
-    public Group update(UUID id, Group group) {
-        var result = getGroup(id);
+    public Group update(Group group) {
+        var result = getGroup(group.getId());
         return groupRepository.save(Group.from(group, result));
     }
 

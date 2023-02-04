@@ -29,15 +29,15 @@ public class GroupController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('GROUP_WRITE')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Group> update(@PathVariable("id") UUID id, @RequestBody Group obj) {
-        return ResponseEntity.ok().body(groupService.update(id, obj));
+    @PutMapping
+    public ResponseEntity<Group> update(@RequestBody Group group) {
+        return ResponseEntity.ok().body(groupService.update(group));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('GROUP_WRITE')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") UUID id) {
-        groupService.delete(id);
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity delete(@PathVariable("id") UUID groupId) {
+        groupService.delete(groupId);
         return ResponseEntity.noContent().build();
     }
 
@@ -51,8 +51,8 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.OK).body(groupService.findAll(branchOfficeId, pageable));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Group> findById(@PathVariable("id") UUID id) {
-        return ResponseEntity.status(HttpStatus.OK).body(groupService.findById(id));
+    @GetMapping("/{groupId}")
+    public ResponseEntity<Group> findById(@PathVariable("id") UUID groupId) {
+        return ResponseEntity.status(HttpStatus.OK).body(groupService.findById(groupId));
     }
 }
