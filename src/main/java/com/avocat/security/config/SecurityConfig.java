@@ -27,11 +27,12 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
         //@formatter:off
         return http
                 .cors().and()
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf().disable()
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(c -> c
                         .antMatchers(HttpMethod.POST, "/v1/account").permitAll()
                         .antMatchers(HttpMethod.POST, "/v1/authentication/token").permitAll()
+                        .antMatchers(HttpMethod.GET, "/v1/authentication/token/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/v1/customers/signup").permitAll()
                         .anyRequest().authenticated()
                 )

@@ -22,7 +22,7 @@ public class PreventAttackIdorFilter implements Filter {
 
     private Logger logger = LoggerFactory.getLogger(PreventAttackIdorFilter.class);
 
-    private Set<String> whiteList = Set.of("/v1/account", "/v1/authentication/token", "/v1/customers/signup");
+    private Set<String> whiteList = Set.of("/v1/account", "/v1/authentication", "/v1/customers/signup");
 
     @Autowired
     private UserService userService;
