@@ -43,11 +43,10 @@ public class PrivilegeController {
 
     @GetMapping
     public ResponseEntity<Page<Privilege>> findAll(
-            @PathVariable("branchOfficeId") UUID branchOfficeId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "50") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(privilegeService.findAll(branchOfficeId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(privilegeService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
