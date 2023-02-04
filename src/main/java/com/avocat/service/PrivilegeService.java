@@ -38,8 +38,8 @@ public class PrivilegeService {
         privilegeRepository.delete(getPrivilege(id));
     }
 
-    public Page<Privilege> findAll(UUID branchOfficeId, Pageable pageable) {
-        return privilegeRepository.findAllByBranchOffice(branchOfficeId, pageable);
+    public Page<Privilege> findAll(Pageable pageable) {
+        return privilegeRepository.findAll(pageable);
     }
 
     public Privilege findById(UUID id) {

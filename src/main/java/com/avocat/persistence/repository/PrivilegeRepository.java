@@ -14,5 +14,5 @@ public interface PrivilegeRepository extends JpaRepository<Privilege, UUID> {
 
     Set<Privilege> findByName(String name);
 
-    Page<Privilege> findAllByBranchOffice(UUID branchOfficeId, Pageable pageable);
+    Page<Privilege> findAll(Pageable pageable);
 }
