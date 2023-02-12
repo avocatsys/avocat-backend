@@ -1,5 +1,6 @@
 package com.avocat.security.filter;
 
+import com.avocat.persistence.entity.UserApp;
 import com.avocat.service.UserService;
 import io.jsonwebtoken.lang.Assert;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -41,13 +43,20 @@ public class PreventAttackIdorFilter implements Filter {
             String username = request.getUserPrincipal().getName();
 
             String branchOfficeId = null;
+            String customerId = null;
+            Optional<UserApp> userLogged = Optional.empty();
+
             if (uri.contains("v1/branch-office/")) {
-                branchOfficeId = extractBranchOfficeId(uri);
+                branchOfficeId = extractUUID(uri);
+                userLogged = userService.findByUsernameAndBranchOfficeId(username, UUID.fromString(branchOfficeId));
             }
 
-            var userLogged = userService.findByUsernameAndBranchOfficeId(username, UUID.fromString(branchOfficeId));
+            if (uri.contains("v1/customer/")) {
+                customerId = extractUUID(uri);
+                userLogged = userService.findByUsernameAndBranchOfficeAndCustomer_Id(username, UUID.fromString(customerId));
+            }
 
-            if (userLogged.isPresent()) {
+            if (userLogged.isEmpty()) {
                 logger.warn("IDOR attack attempt with user: " + username);//todo pensar em uma exception personalizada
             }
         }
@@ -55,7 +64,7 @@ public class PreventAttackIdorFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private static String extractBranchOfficeId(String uri) {
+    private static String extractUUID(String uri) {
         String branchOfficeId;
         final String regex = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
         final String string = uri;

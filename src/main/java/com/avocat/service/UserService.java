@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public class UserService {
     @Transactional
     public UserAppDto create(UUID branchOfficeId, UserApp user) {
         user.setBranchOffice(branchOfficeService.getBranchOffice(branchOfficeId));
-        user.setPrivileges(getDefaultPrivilege(user));
+        user.setPrivileges(getPrivileges(user.getPrivileges()));
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return UserAppDto.from(userAppRepository.save(user));
     }
@@ -47,7 +48,7 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("user id: " + user.getId() + " not found"));
 
         if (user.getPrivileges().isEmpty()) {
-            user.setPrivileges(getDefaultPrivilege(user));
+            user.setPrivileges(privilegeRepository.findByName(PrivilegesTypes.ROLE_USER.name()));
         } else {
             userResult.setPrivileges(user.getPrivileges());
         }
@@ -85,7 +86,17 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }
 
-    private Set<Privilege> getDefaultPrivilege(UserApp user) {
-        return privilegeRepository.findByName(PrivilegesTypes.ROLE_USER.name());
+    private Set<Privilege> getPrivileges(Set<Privilege> privilegeSet) {
+        Set<Privilege> privileges = new HashSet<>();
+
+        for(Privilege p : privilegeSet) {
+            var result = privilegeRepository.findById(p.getId());
+            privileges.add(result.get());
+        }
+        return privileges;
+    }
+
+    public Optional<UserApp> findByUsernameAndBranchOfficeAndCustomer_Id(String username, UUID customerId) {
+        return userAppRepository.findByUsernameAndBranchOffice_Customer_Id(username, customerId);
     }
 }
