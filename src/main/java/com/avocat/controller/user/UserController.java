@@ -35,10 +35,9 @@ public class UserController {
 
     @PutMapping("/v1/branch-office/{branchOfficeId}/users")
     public ResponseEntity<UserAppDto> update(
-            @PathVariable("userId") UUID userId,
             @PathVariable("branchOfficeId") UUID branchOfficeId,
             @RequestBody UserApp user) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, branchOfficeId, user));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(branchOfficeId, user));
     }
 
     @DeleteMapping("/v1/branch-office/{branchOfficeId}/users/{id}")
