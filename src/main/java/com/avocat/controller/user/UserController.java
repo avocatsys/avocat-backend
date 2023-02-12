@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping(path = "/v1/branch-office/{branchOfficeId}/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
@@ -26,14 +26,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/v1/branch-office/{branchOfficeId}/users")
     public ResponseEntity<UserAppDto> create(
             @PathVariable("branchOfficeId") UUID branchOfficeId,
             @RequestBody @Valid UserApp user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(branchOfficeId, user));
     }
 
-    @PutMapping
+    @PutMapping("/v1/branch-office/{branchOfficeId}/users")
     public ResponseEntity<UserAppDto> update(
             @PathVariable("userId") UUID userId,
             @PathVariable("branchOfficeId") UUID branchOfficeId,
@@ -41,22 +41,22 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, branchOfficeId, user));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/v1/branch-office/{branchOfficeId}/users/{id}")
     public ResponseEntity delete(@PathVariable("id") UUID id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping("/v1/customer/{customerId}/users")
     public ResponseEntity<Page<UserAppDto>> findAll(
-            @PathVariable("branchOfficeId") UUID branchOfficeId,
+            @PathVariable("customerId") UUID branchOfficeId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "100") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(branchOfficeId, pageable));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/v1/branch-office/{branchOfficeId}/users/{id}")
     public ResponseEntity<UserAppDto> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
     }

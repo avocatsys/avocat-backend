@@ -65,7 +65,7 @@ public class UserService {
     }
 
     public Page<UserAppDto> findAll(UUID branchOfficeId, Pageable pageable) {
-        return userAppRepository.findAllByBranchOffice_Id(branchOfficeId, pageable).map(UserAppDto::from);
+        return userAppRepository.findAllByBranchOffice_Customer_Id(branchOfficeId, pageable).map(UserAppDto::from);
     }
 
     public UserAppDto findById(UUID userId) {
