@@ -40,11 +40,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserAppDto update(UUID userId, UUID branchOfficeId, UserApp user) {
+    public UserAppDto update(UUID branchOfficeId, UserApp user) {
 
         var branchOfficeResult = branchOfficeService.getBranchOffice(branchOfficeId);
 
-        var userResult = userAppRepository.findById(userId)
+        var userResult = userAppRepository.findById(user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("user id: " + user.getId() + " not found"));
 
         if (user.getPrivileges().isEmpty()) {
