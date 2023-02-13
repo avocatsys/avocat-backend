@@ -25,20 +25,22 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: code_office
-                  type: varchar(100)
+                  type: varchar(50)
               - column:
                   name: state_registration_name
-                  type: varchar(100)
+                  type: varchar(50)
               - column:
                   name: cpf_cnpj
-                  type: varchar(14)
+                  type: varchar(20)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: email
                   type: varchar(100)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: customer_id
                   type: uuid
@@ -64,6 +66,12 @@ databaseChangeLog:
               - column:
                   name: modified_by
                   type: varchar(100)
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true
         - addForeignKeyConstraint:
             baseColumnNames: customer_id
             baseTableName: branch_offices

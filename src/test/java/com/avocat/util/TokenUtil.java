@@ -39,7 +39,7 @@ public class TokenUtil {
     public void init(){
         var secret = Base64.getEncoder().encodeToString(this.jwtSecret.getBytes());
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
+        defaultAccessToken = generateToken("redtest@email.com");
     }
 
     public String generateToken(String email) {

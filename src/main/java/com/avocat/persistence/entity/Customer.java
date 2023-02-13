@@ -18,24 +18,24 @@ public class Customer {
 
     @Id
     @GeneratedValue
-    @Column(name = "customer_id", nullable = false)
+    @Column(name = "customer_id")
     private UUID id;
 
     @NotEmpty(message = "invalid format full name")
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
     @NotEmpty(message = "invalid format office name")
-    @Column(name = "office_name", nullable = false)
+    @Column(name = "office_name")
     private String officeName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     @Email(message = "invalid format email")
     private String email;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserApp user;
 
     private Customer(String fullName, String officeName, String email, UserApp user) {

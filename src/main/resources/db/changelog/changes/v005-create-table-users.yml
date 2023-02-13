@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: v004
+      id: v005
       author: michael
       changes:
         - createTable:
@@ -14,21 +14,34 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: username
+                  name: name
                   type: varchar(100)
                   constraints:
                     nullable: false
               - column:
-                  name: password
+                  name: username
                   type: varchar(100)
                   constraints:
                     nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(100)
               - column:
                   name: privilege_id
                   type: uuid
               - column:
                   name: branch_office_id
                   type: uuid
+              - column:
+                  name: group_id
+                  type: uuid
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true
         - addForeignKeyConstraint:
             baseColumnNames: privilege_id
             baseTableName: users
@@ -41,3 +54,9 @@ databaseChangeLog:
             constraintName: fk_users_branch_offices
             referencedColumnNames: branch_office_id
             referencedTableName: branch_offices
+        - addForeignKeyConstraint:
+            baseColumnNames: group_id
+            baseTableName: users
+            constraintName: fk_users_groups
+            referencedColumnNames: group_id
+            referencedTableName: groups

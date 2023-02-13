@@ -35,8 +35,7 @@ public class CustomerService {
         var privilege = privilegeRepository.findByName(PrivilegesTypes.ROLE_ADMIN.name());
 
         var userCreated = userRepository.save(
-                new UserApp.Builder(customer.getEmail(), new BCryptPasswordEncoder()
-                        .encode("12345678")).privilege(privilege).build());//todo verificar essa regra da senha chumabada no codigo.
+                new UserApp.Builder(customer.getEmail(), null).name(customer.getFullName()).privilege(privilege).build());
 
         customer.setUser(userCreated);
         var result = customerRepository.save(customer);

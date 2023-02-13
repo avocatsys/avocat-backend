@@ -37,7 +37,7 @@ public class AuthenticationControllerTests extends AbstractMockMvcController {
     private String getUserAppJson() {
         return """
                 {
-                    "username":"cde90eff-0@owtest.com",
+                    "username":"redtest@email.com",
                     "password":"12345678"
                 }
                 """;

@@ -1,7 +1,6 @@
 package com.avocat.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,14 +20,18 @@ public class UserApp implements UserDetails {
 
     @Id
     @GeneratedValue
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private UUID id;
 
     @Email(message = "invalid email format")
-    @Column(nullable = false, unique = true)
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Email(message = "invalid name format")
+    @Column(name="name")
+    private String name;
+
+    @Column(name = "password")
     @NotEmpty(message = "invalid password format")
     private String password;
 
@@ -88,6 +91,7 @@ public class UserApp implements UserDetails {
         private Set<Privilege> privileges = new HashSet<>();
         private Group group = null;
         private BranchOffice branchOffice;
+        private String name;
 
         public Builder(String username, String password) {
             this.username = username;
@@ -106,6 +110,11 @@ public class UserApp implements UserDetails {
 
         public Builder branchOffice(BranchOffice branchOffice) {
             this.branchOffice = branchOffice;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
             return this;
         }
 

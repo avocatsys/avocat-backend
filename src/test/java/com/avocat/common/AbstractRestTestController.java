@@ -17,7 +17,7 @@ import org.springframework.http.HttpHeaders;
     evitar a utilização de Mocks.
 
     Essa classe executa uma instância real do Servidor tornando possível testar todas as camadas
-    da aplicação principalmente com o bando de dados integrado.
+    da aplicação principalmente com o banco de dados integrado.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AbstractRestTestController extends TokenUtil {
