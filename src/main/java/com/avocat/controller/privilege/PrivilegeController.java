@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
 @RequestMapping(path = "/v1/branch-office/{branchOfficeId}/privileges", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PrivilegeController {
@@ -22,19 +23,16 @@ public class PrivilegeController {
     @Autowired
     private PrivilegeService privilegeService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('PRIVILEGE_WRITE')")
     @PostMapping
     public ResponseEntity<Privilege> create(@PathVariable("branchOfficeId") UUID id, @RequestBody Privilege obj) {
         return ResponseEntity.status(HttpStatus.CREATED).body(privilegeService.create(id, obj));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('PRIVILEGE_WRITE')")
     @PutMapping("/{id}")
     public ResponseEntity<Privilege> update(@PathVariable("id") UUID id, @RequestBody Privilege obj) {
         return ResponseEntity.ok().body(privilegeService.update(id, obj));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAuthority('PRIVILEGE_WRITE')")
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") UUID id) {
         privilegeService.delete(id);

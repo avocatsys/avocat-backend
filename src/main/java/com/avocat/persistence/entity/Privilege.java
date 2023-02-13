@@ -17,7 +17,6 @@ import javax.validation.constraints.NotEmpty;
 public class Privilege extends AuditEntity {
 
     @NotEmpty(message = "invalid privilege description format")
-    @Column
     private String name;
 
     public Privilege(String name) {

@@ -23,7 +23,7 @@ databaseChangeLog:
                     unique: true
               - column:
                   name: branch_office_ref
-                  type: varchar(100)
+                  type: uuid
                   constraints:
                     nullable: false
                     updatable: false
@@ -46,3 +46,9 @@ databaseChangeLog:
               - column:
                   name: modified_by
                   type: varchar(100)
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true

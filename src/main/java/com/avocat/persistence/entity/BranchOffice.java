@@ -23,11 +23,11 @@ import javax.validation.constraints.NotEmpty;
 public class BranchOffice extends AuditEntity {
 
     @NotEmpty(message = "invalid corporate name format. Can`t be null or empty.")
-    @Column(name = "corporate_name", nullable = false)
+    @Column(name = "corporate_name")
     private String corporateName;
 
     @NotEmpty(message = "invalid branch office name format. Can`t be null or empty.")
-    @Column(name = "branch_office_name", nullable = false)
+    @Column(name = "branch_office_name")
     private String branchOfficeName;
 
     @Column(name = "code_office")
@@ -36,13 +36,13 @@ public class BranchOffice extends AuditEntity {
     @Column(name = "state_registration_name")
     private String stateRegistration;//inscrição estadual
 
-    @CNPJ(message = "invalid cnpj format")
-    @Column(name = "cpf_cnpj", nullable = false)
+    //TODO criar um validador que server para cpf e cnpj
+    @Column(name = "cpf_cnpj")
     private String cpfCnpj;
 
     @NotEmpty(message = "invalid e-mail format. Can`t be null or empty.")
     @Email(message = "invalid format email")
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
     @JsonIgnore

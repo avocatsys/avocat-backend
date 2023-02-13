@@ -18,7 +18,6 @@ import java.util.UUID;
 public class Group extends AuditEntity {
 
     @NotEmpty(message = "invalid group description format")
-    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

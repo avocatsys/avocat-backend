@@ -34,7 +34,6 @@ public class AuditEntity implements Serializable {
     protected UUID id;
 
     @Type(type="org.hibernate.type.UUIDCharType")
-    //@Type(type = "pg-uuid")
     @Column(name = "branch_office_ref")
     protected UUID branchOffice;
 
@@ -54,6 +53,9 @@ public class AuditEntity implements Serializable {
     @Column(name = "modified_by")
     @LastModifiedBy
     protected String modifiedBy;
+
+    @Column(name = "active")
+    protected String active;
 
     @PrePersist
     public void onPrePersist() {

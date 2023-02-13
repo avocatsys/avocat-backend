@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: v005
+      id: v004
       author: michael
       changes:
         - createTable:
@@ -18,9 +18,6 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-              - column:
-                  name: user_id
-                  type: uuid
               - column:
                   name: branch_office_ref
                   type: varchar(100)
@@ -46,9 +43,9 @@ databaseChangeLog:
               - column:
                   name: modified_by
                   type: varchar(100)
-        - addForeignKeyConstraint:
-            baseColumnNames: user_id
-            baseTableName: groups
-            constraintName: fk_groups_users
-            referencedColumnNames: user_id
-            referencedTableName: users
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true
