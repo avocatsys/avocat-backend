@@ -13,15 +13,17 @@ public class CredentialsDto {
     private UUID customerId;
     private UUID branchOfficeId;
     private String username;
+    private String name;
 
-    private CredentialsDto(String token, UUID customerId, UUID branchOfficeId, String username) {
+    private CredentialsDto(String token, UUID customerId, UUID branchOfficeId, String username, String name) {
         this.token = token;
         this.customerId = customerId;
         this.branchOfficeId = branchOfficeId;
         this.username = username;
+        this.name = name;
     }
 
-    public static CredentialsDto create(String token, UUID customerId, UUID branchOfficeId, String username) {
-        return new CredentialsDto(token, customerId, branchOfficeId, username);
+    public static CredentialsDto create(String token, UUID customerId, UUID branchOfficeId, String username, String name) {
+        return new CredentialsDto(token, customerId, branchOfficeId, username, name);
     }
 }

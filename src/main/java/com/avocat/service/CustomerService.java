@@ -32,10 +32,10 @@ public class CustomerService {
     @Transactional
     public CustomerDto signupCustomer(Customer customer) {
 
-        var privilege = privilegeRepository.findByName(PrivilegesTypes.ROLE_ADMIN.name());
+        var privilege = privilegeRepository.findByName(PrivilegesTypes.ROLE_OWNER.name());
 
         var userCreated = userRepository.save(
-                new UserApp.Builder(customer.getEmail(), "12345678").name(customer.getFullName()).privilege(privilege).build());
+                new UserApp.Builder(customer.getEmail(), new BCryptPasswordEncoder().encode("12345678")).name(customer.getFullName()).privilege(privilege).build());
 
         customer.setUser(userCreated);
         var result = customerRepository.save(customer);
