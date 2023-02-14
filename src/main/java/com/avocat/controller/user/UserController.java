@@ -1,7 +1,6 @@
 package com.avocat.controller.user;
 
 import com.avocat.controller.user.dto.UserAppDto;
-import com.avocat.persistence.entity.Group;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
 public class UserController {
 
     @Autowired

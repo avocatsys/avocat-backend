@@ -3,6 +3,7 @@ package com.avocat.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.implementation.bind.annotation.Empty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,7 @@ public class UserApp implements UserDetails {
     @Column(name = "username")
     private String username;
 
-    @Email(message = "invalid name format")
+    @NotEmpty(message = "invalid name format")
     @Column(name="name")
     private String name;
 
@@ -46,10 +47,15 @@ public class UserApp implements UserDetails {
     @JoinColumn(name = "branch_office_id", referencedColumnName = "branch_office_id")
     private BranchOffice branchOffice;
 
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    private Group group;
+
     private UserApp(Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
         this.privileges = builder.privileges;
+        this.name = builder.name;
     }
 
     @Override

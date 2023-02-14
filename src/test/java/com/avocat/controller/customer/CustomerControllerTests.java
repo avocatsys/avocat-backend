@@ -23,12 +23,12 @@ public class CustomerControllerTests extends AbstractMockMvcController {
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.customer_id").isNotEmpty());
+                .andExpect(jsonPath("$.id").isNotEmpty());
     }
 
     private String getNewCustomerJson() {
         return """
-                {
+                {                    
                     "fullName":"%s",
                     "officeName":"%s",
                     "email":"%s"               
@@ -36,6 +36,6 @@ public class CustomerControllerTests extends AbstractMockMvcController {
                 """.formatted(
                 "Test integration " + UUID.randomUUID().toString().substring(0, 10),
                 "Test integration " + UUID.randomUUID().toString().substring(0, 10),
-                UUID.randomUUID().toString().substring(0, 10) + "@owtest.com");
+                UUID.randomUUID().toString().substring(0, 10) + "@test.com");
     }
 }

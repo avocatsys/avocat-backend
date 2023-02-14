@@ -24,19 +24,18 @@ public class BranchOfficeController {
     @Autowired
     private BranchOfficeService branchOfficeService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<BranchOffice> create(@PathVariable("customerId") UUID customerId, @Valid @RequestBody BranchOffice branchOffice) {
         return ResponseEntity.status(HttpStatus.CREATED).body(branchOfficeService.create(customerId, branchOffice));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_OWNER')")
     @PutMapping
     public ResponseEntity<BranchOffice> update(@RequestBody BranchOffice branchOffice) {
         return ResponseEntity.ok().body(branchOfficeService.update(branchOffice));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_OWNER')")
     @DeleteMapping("/{branchOfficeId}")
     public ResponseEntity delete(@PathVariable("branchOfficeId") UUID id) {
         branchOfficeService.delete(id);

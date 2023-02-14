@@ -34,9 +34,8 @@ public class AbstractRestTestController extends TokenUtil {
 
     @BeforeEach
     public void init(){
-        HOST = "http://localhost:" + port;
-        //defaultAccessToken = generateToken("efd5cbc3-337b-49d3-8155-3550109c06ca@hotmail.com");
         super.init();
+        HOST = "http://localhost:" + port;
         headers.set("Authorization", "Bearer " + defaultAccessToken);
     }
 }

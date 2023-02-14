@@ -20,10 +20,6 @@ public class Group extends AuditEntity {
     @NotEmpty(message = "invalid group description format")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private UserApp userApp;
-
     private Group(UUID id, String name, UUID branchOfficeId) {
         this.id = id;
         this.name = name;

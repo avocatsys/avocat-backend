@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
@@ -36,9 +37,11 @@ public class PreventAttackIdorFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+
         String uri = request.getRequestURI();
 
-        if(!whiteList.stream().anyMatch(i -> uri.contains(i))) {
+        if (!whiteList.stream().anyMatch(i -> uri.contains(i))) {
 
             String username = request.getUserPrincipal().getName();
 
@@ -61,7 +64,7 @@ public class PreventAttackIdorFilter implements Filter {
             }
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(request, response);
     }
 
     private static String extractUUID(String uri) {

@@ -55,7 +55,7 @@ public class AuditEntity implements Serializable {
     protected String modifiedBy;
 
     @Column(name = "active")
-    protected String active;
+    protected boolean active = true;
 
     @PrePersist
     public void onPrePersist() {
