@@ -25,10 +25,10 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: code_office
-                  type: varchar(50)
+                  type: varchar(25)
               - column:
                   name: state_registration_name
-                  type: varchar(50)
+                  type: varchar(25)
               - column:
                   name: cpf_cnpj
                   type: varchar(20)

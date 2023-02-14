@@ -15,13 +15,7 @@ public class BranchOfficeControllerTests extends AbstractMockMvcController {
     @Test
     void shouldCreateNewBranchAndReturnHttpStatus201() throws Exception {
 
-        String corporateName = UUID.randomUUID().toString().substring(0, 10);
-        String branchOfficeName = UUID.randomUUID().toString().substring(0, 10);
-        String codeOffice = UUID.randomUUID().toString().substring(0, 5);
-        String stateRegistration = UUID.randomUUID().toString().substring(0, 5);
-        String email = UUID.randomUUID().toString().substring(0, 5) + "@testintegration.com";
-
-        String json = getJsonBrachOffice(corporateName, branchOfficeName, codeOffice, stateRegistration, email);
+        String json = getJsonBrachOffice();
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/branch-offices")
@@ -59,16 +53,22 @@ public class BranchOfficeControllerTests extends AbstractMockMvcController {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-    private String getJsonBrachOffice(String corporateName, String branchOfficeName, String codeOffice, String stateRegistration, String email) {
+    private String getJsonBrachOffice() {
         return """
                 {
                     "corporateName": "%s",
                     "branchOfficeName": "%s",
                     "codeOffice": "%s",
                     "stateRegistration": "%s",
-                    "cpfCnpj": "15660103000155",
+                    "cpfCnpj": "%s",
                     "email": "%s"                                        
                 }
-                """.formatted(corporateName, branchOfficeName, codeOffice, stateRegistration, email);
+                """.formatted(
+                        UUID.randomUUID().toString().substring(0, 10),
+                        UUID.randomUUID().toString().substring(0, 10),
+                        UUID.randomUUID().toString().substring(0, 5),
+                        UUID.randomUUID().toString().substring(0, 5),
+                        UUID.randomUUID().toString().substring(0, 14),
+                        UUID.randomUUID().toString().substring(0, 5) + "@email.com");
     }
 }

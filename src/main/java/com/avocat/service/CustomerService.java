@@ -35,7 +35,7 @@ public class CustomerService {
         var privilege = privilegeRepository.findByName(PrivilegesTypes.ROLE_ADMIN.name());
 
         var userCreated = userRepository.save(
-                new UserApp.Builder(customer.getEmail(), null).name(customer.getFullName()).privilege(privilege).build());
+                new UserApp.Builder(customer.getEmail(), "12345678").name(customer.getFullName()).privilege(privilege).build());
 
         customer.setUser(userCreated);
         var result = customerRepository.save(customer);

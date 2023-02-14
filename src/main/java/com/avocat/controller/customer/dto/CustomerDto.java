@@ -1,19 +1,15 @@
 package com.avocat.controller.customer.dto;
 
 import com.avocat.persistence.entity.Customer;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.util.UUID;
 
+@Getter
 public class CustomerDto {
 
-    @JsonProperty("customer_id")
     private UUID id;
-
-    @JsonProperty("full_name")
     private String fullName;
-
-    @JsonProperty("office_name")
     private String officeName;
 
     private CustomerDto(Customer customer){

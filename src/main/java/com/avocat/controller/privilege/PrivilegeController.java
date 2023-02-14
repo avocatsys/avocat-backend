@@ -12,32 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
 @RestController
 @RequestMapping(path = "/v1/branch-office/{branchOfficeId}/privileges", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PrivilegeController {
 
     @Autowired
     private PrivilegeService privilegeService;
-
-    @PostMapping
-    public ResponseEntity<Privilege> create(@PathVariable("branchOfficeId") UUID id, @RequestBody Privilege obj) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(privilegeService.create(id, obj));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Privilege> update(@PathVariable("id") UUID id, @RequestBody Privilege obj) {
-        return ResponseEntity.ok().body(privilegeService.update(id, obj));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") UUID id) {
-        privilegeService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
 
     @GetMapping
     public ResponseEntity<Page<Privilege>> findAll(
@@ -47,8 +30,8 @@ public class PrivilegeController {
         return ResponseEntity.status(HttpStatus.OK).body(privilegeService.findAll(pageable));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Privilege> findById(@PathVariable("id") UUID id) {
-        return ResponseEntity.status(HttpStatus.OK).body(privilegeService.findById(id));
+    @GetMapping("/{privilegeId}")
+    public ResponseEntity<Privilege> findById(@PathVariable("privilegeId") UUID privilegeId) {
+        return ResponseEntity.status(HttpStatus.OK).body(privilegeService.findById(privilegeId));
     }
 }

@@ -1,6 +1,7 @@
 package com.avocat.controller.authentication;
 
 import com.avocat.controller.authentication.dto.CredentialsDto;
+import com.avocat.controller.authentication.dto.LoginDto;
 import com.avocat.persistence.entity.Customer;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.security.custom.CustomAuthenticationManager;
@@ -30,14 +31,14 @@ public class AuthenticationController {
     private CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<CredentialsDto> authentication(@RequestBody @Valid UserApp userApp) throws Throwable {
+    public ResponseEntity<CredentialsDto> authentication(@RequestBody LoginDto login) throws Throwable {
 
-        var username = userApp.getUsername();
+        var username = login.getUsername();
 
         Customer userLogged = customerService.findCustomerJoinUserAppByUserName(username);
 
         var authentication = customAuthenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, userApp.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(username, login.getPassword()));
 
         var token = jwtTokenProvider.genereToken(authentication);
 
