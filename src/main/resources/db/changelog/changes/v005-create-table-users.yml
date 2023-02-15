@@ -28,9 +28,6 @@ databaseChangeLog:
                   name: password
                   type: varchar(100)
               - column:
-                  name: privilege_id
-                  type: uuid
-              - column:
                   name: branch_office_id
                   type: uuid
               - column:
@@ -42,12 +39,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   defaultValue: true
-        - addForeignKeyConstraint:
-            baseColumnNames: privilege_id
-            baseTableName: users
-            constraintName: fk_users_privileges
-            referencedColumnNames: privilege_id
-            referencedTableName: privileges
         - addForeignKeyConstraint:
             baseColumnNames: branch_office_id
             baseTableName: users
