@@ -4,6 +4,7 @@ import com.avocat.controller.user.dto.UserAppDto;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Privilege;
 import com.avocat.persistence.entity.UserApp;
+import com.avocat.persistence.repository.GroupRepository;
 import com.avocat.persistence.repository.PrivilegeRepository;
 import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.persistence.types.PrivilegesTypes;
@@ -31,6 +32,9 @@ public class UserService {
     @Autowired
     private PrivilegeRepository privilegeRepository;
 
+    @Autowired
+    private GroupRepository groupRepository;
+
     @Transactional
     public UserAppDto create(UUID branchOfficeId, UserApp user) {
         user.setBranchOffice(branchOfficeService.getBranchOffice(branchOfficeId));
@@ -47,12 +51,12 @@ public class UserService {
         var userResult = userAppRepository.findById(user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("user id: " + user.getId() + " not found"));
 
-        if (user.getPrivileges().isEmpty()) {
+        if (user.getPrivileges().isEmpty() && userResult.getPrivileges().isEmpty()) {
             user.setPrivileges(privilegeRepository.findByName(PrivilegesTypes.ROLE_USER.name()));
-        } else {
-            userResult.setPrivileges(user.getPrivileges());
         }
 
+        userResult.setGroup(user.getGroup());
+        userResult.setPrivileges(user.getPrivileges());
         userResult.setUsername(user.getUsername());
         userResult.setBranchOffice(branchOfficeResult);
 

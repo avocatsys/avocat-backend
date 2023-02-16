@@ -1,6 +1,7 @@
 package com.avocat.controller.user.dto;
 
 import com.avocat.controller.branchoffice.dto.BranchOfficeDto;
+import com.avocat.persistence.entity.Group;
 import com.avocat.persistence.entity.Privilege;
 import com.avocat.persistence.entity.UserApp;
 import lombok.Getter;
@@ -16,13 +17,15 @@ public class UserAppDto {
     private String username;
     private Set<Privilege> privileges;
     private BranchOfficeDto branchOffice;
+    private Group group;
 
-    private UserAppDto(UUID id, String name, String username, Set<Privilege> privileges, BranchOfficeDto branchOffice) {
+    private UserAppDto(UUID id, String name, String username, Set<Privilege> privileges, BranchOfficeDto branchOffice, Group group) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.privileges = privileges;
         this.branchOffice = branchOffice;
+        this.group = group;
     }
 
     public static UserAppDto from(UserApp user) {
@@ -31,6 +34,7 @@ public class UserAppDto {
                 user.getName(),
                 user.getUsername(),
                 user.getPrivileges(),
-                new BranchOfficeDto(user.getBranchOffice()));
+                new BranchOfficeDto(user.getBranchOffice()),
+                user.getGroup());
     }
 }
