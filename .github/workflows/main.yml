@@ -19,4 +19,5 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: | 
+          feature/ci_cd_test1
           mvn test -Ddb.host=${{ secrets.DATASOURCE_HOST }} -Ddb.port=${{ secrets.DATASOURCE_PORT }} -Ddb.username=${{ secrets.DATASOURCE_USERNAME }} -Ddb.password=${{ secrets.DATASOURCE_PASSWORD }} -Ddb.database=${{ secrets.DATASOURCE_DATABASE }}
