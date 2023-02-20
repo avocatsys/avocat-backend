@@ -18,4 +18,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn test
+        run: | 
+          mvn test -DATASOURCE_HOST=${{ secrets.DATASOURCE_HOST }} -DATASOURCE_PORT==${{ secrets.DATASOURCE_PORT }} -DATASOURCE_USERNAME==${{ secrets.DATASOURCE_USERNAME }} -DATASOURCE_PASSWORD==${{ secrets.DATASOURCE_PASSWORD }} -DATASOURCE_DATABASE==${{ secrets.DATASOURCE_DATABASE }}
