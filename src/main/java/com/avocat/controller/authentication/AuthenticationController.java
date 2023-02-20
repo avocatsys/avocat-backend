@@ -47,7 +47,7 @@ public class AuthenticationController {
             branchOfficeId = userAuthenticate.getBranchOffice().getId();
 
         return ResponseEntity.ok().body(CredentialsDto
-                .create(token, userAuthenticate.getId(), branchOfficeId, userAuthenticate.getUsername(), userAuthenticate.getName()));
+                .create(token, userAuthenticate.getBranchOffice().getCustomer().getId(), branchOfficeId, userAuthenticate.getUsername(), userAuthenticate.getName()));
     }
 
     @GetMapping("/{token}")
