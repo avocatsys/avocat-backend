@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,7 +32,7 @@ public class AuditEntity implements Serializable {
 
     @Type(type="org.hibernate.type.UUIDCharType")
     @Column(name = "branch_office_ref")
-    protected UUID branchOffice;
+    protected UUID branchOfficeRef;
 
     @Column(name = "created_date")
     protected LocalDateTime createdDate;

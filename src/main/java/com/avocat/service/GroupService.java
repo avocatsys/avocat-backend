@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,7 +24,7 @@ public class GroupService<T extends AuditEntity> {
     @Transactional
     public Group create(UUID branchOfficeId, Group group) {
         var branchOffice = branchOfficeService.getBranchOffice(branchOfficeId);
-        group.setBranchOffice(branchOffice.getId());
+        group.setBranchOfficeRef(branchOffice.getId());
         return groupRepository.save(group);
     }
 
@@ -41,7 +40,7 @@ public class GroupService<T extends AuditEntity> {
     }
 
     public Page<Group> findAll(UUID branchOfficeId, Pageable pageable) {
-        return groupRepository.findAllByBranchOffice(branchOfficeId, pageable);
+        return groupRepository.findAllByBranchOfficeRef(branchOfficeId, pageable);
     }
 
     public Group findById(UUID id) {
