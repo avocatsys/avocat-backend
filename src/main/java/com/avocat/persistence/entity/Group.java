@@ -20,15 +20,15 @@ public class Group extends AuditEntity {
     @NotEmpty(message = "invalid group description format")
     private String name;
 
-    private Group(UUID id, String name, UUID branchOfficeRef) {
+    private Group(UUID id, String name, UUID branchOfficeId) {
         this.id = id;
         this.name = name;
-        this.branchOfficeRef = branchOfficeRef;
+        this.branchOffice = branchOfficeId;
     }
 
-    public static Group create(UUID id, String name, UUID branchOfficeRef) {
-        Assert.notNull(branchOfficeRef, "field branchOffice can not be null");
-        return new Group(id, name, branchOfficeRef);
+    public static Group create(UUID id, String name, UUID branchOfficeId) {
+        Assert.notNull(branchOfficeId, "field branchOffice can not be null");
+        return new Group(id, name, branchOfficeId);
     }
 
     public static Group from(Group source, Group target) {

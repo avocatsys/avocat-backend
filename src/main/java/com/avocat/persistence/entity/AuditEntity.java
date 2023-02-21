@@ -32,7 +32,7 @@ public class AuditEntity implements Serializable {
 
     @Type(type="org.hibernate.type.UUIDCharType")
     @Column(name = "branch_office_ref")
-    protected UUID branchOfficeRef;
+    protected UUID branchOffice;
 
     @Column(name = "created_date")
     protected LocalDateTime createdDate;

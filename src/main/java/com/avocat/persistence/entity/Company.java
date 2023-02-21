@@ -49,5 +49,5 @@ public class Company extends AuditEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_office_id", referencedColumnName = "branch_office_id")
-    private BranchOffice branchOffice;
+    private BranchOffice branch;
 }
