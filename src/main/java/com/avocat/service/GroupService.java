@@ -24,7 +24,7 @@ public class GroupService<T extends AuditEntity> {
     @Transactional
     public Group create(UUID branchOfficeId, Group group) {
         var branchOffice = branchOfficeService.getBranchOffice(branchOfficeId);
-        group.setBranchOfficeRef(branchOffice.getId());
+        group.setBranchOffice(branchOffice.getId());
         return groupRepository.save(group);
     }
 
@@ -40,7 +40,7 @@ public class GroupService<T extends AuditEntity> {
     }
 
     public Page<Group> findAll(UUID branchOfficeId, Pageable pageable) {
-        return groupRepository.findAllByBranchOfficeRef(branchOfficeId, pageable);
+        return groupRepository.findAllByBranchOffice(branchOfficeId, pageable);
     }
 
     public Group findById(UUID id) {
