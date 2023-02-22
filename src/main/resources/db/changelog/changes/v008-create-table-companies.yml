@@ -1,52 +1,66 @@
 databaseChangeLog:
   - changeSet:
-      id: v003
+      id: v008
       author: michael
       changes:
         - createTable:
-            tableName: branch_offices
+            tableName: companies
             columns:
               - column:
-                  name: branch_office_id
+                  name: company_id
                   type: uuid
                   defaultValue: uuid_generate_v4()
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: corporate_name
+                  name: name
                   type: varchar(100)
                   constraints:
                     nullable: false
-              - column:
-                  name: branch_office_name
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: code_office
-                  type: varchar(25)
-              - column:
-                  name: state_registration_name
-                  type: varchar(25)
               - column:
                   name: cpf_cnpj
                   type: varchar(20)
                   constraints:
                     nullable: false
-                    unique: true
               - column:
-                  name: email
+                  name: billing_email
                   type: varchar(100)
                   constraints:
                     nullable: false
                     unique: true
               - column:
+                  name: description
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: company_types
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state_registration
+                  type: varchar(50)
+              - column:
+                  name: issue_day
+                  type: numeric(2)
+              - column:
+                  name: due_date
+                  type: numeric(2)
+              - column:
+                  name: maturity_term
+                  type: numeric(2)
+              - column:
                   name: customer_id
                   type: uuid
+                  constraints:
+                    nullable: false
               - column:
                   name: branch_office_ref
                   type: uuid
+                  constraints:
+                    nullable: false
               - column:
                   name: created_date
                   type: timestamp
@@ -74,7 +88,7 @@ databaseChangeLog:
                   defaultValue: true
         - addForeignKeyConstraint:
             baseColumnNames: customer_id
-            baseTableName: branch_offices
-            constraintName: fk_branch_offices_customers
+            baseTableName: companies
+            constraintName: fk_companies_customer
             referencedColumnNames: customer_id
             referencedTableName: customers

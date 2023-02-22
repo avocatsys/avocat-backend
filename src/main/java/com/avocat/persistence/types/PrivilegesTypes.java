@@ -6,5 +6,6 @@ public enum PrivilegesTypes {
     ROLE_FREE,
     ROLE_USER,
     GROUP_WRITE,
-    GROUP_READ
+    GROUP_READ,
+    ROLE_COMPANY
 }

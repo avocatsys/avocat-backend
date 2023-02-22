@@ -20,7 +20,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: branch_office_ref
-                  type: varchar(100)
+                  type: uuid
                   constraints:
                     nullable: false
                     updatable: false
