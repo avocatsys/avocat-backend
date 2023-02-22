@@ -13,7 +13,7 @@ public class GroupControllerTests extends AbstractMockMvcController {
     @Test
     void shouldGetAllGroupsByBranchOfficeThenWillReturnPageableOfGroupsAndHttpStatus200() throws Exception {
 
-        mockMvc.perform(get("/v1/branch-office/09ce3d5e-e240-4824-95bf-b4a8e5daa8b1/groups")
+        mockMvc.perform(get("/v1/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/groups")
                         .header("Authorization", "Bearer " + defaultAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
