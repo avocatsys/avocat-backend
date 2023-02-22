@@ -30,7 +30,6 @@ public class AuditEntity implements Serializable {
     @GeneratedValue
     protected UUID id;
 
-    @Type(type="org.hibernate.type.UUIDCharType")
     @Column(name = "branch_office_ref")
     protected UUID branchOffice;
 

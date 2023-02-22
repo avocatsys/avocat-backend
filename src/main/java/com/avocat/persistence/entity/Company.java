@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Getter
@@ -22,6 +23,7 @@ public class Company extends AuditEntity {
 
     @NotEmpty(message = "invalid cpf or cnpj format")
     @Column(name = "cpf_cnpj")
+    @Size(min = 14, max = 20)
     private String cpfCnpj;
 
     @NotEmpty(message = "invalid company billing email format")
@@ -48,6 +50,6 @@ public class Company extends AuditEntity {
     private Integer maturityTerm;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_office_id", referencedColumnName = "branch_office_id")
-    private BranchOffice branch;
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    private Customer customer;
 }
