@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: v007
+      id: v008
       author: michael
       changes:
         - createTable:
@@ -19,11 +19,21 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: cpf_cnpj
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
                   name: billing_email
                   type: varchar(100)
                   constraints:
                     nullable: false
                     unique: true
+              - column:
+                  name: description
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
               - column:
                   name: company_types
                   type: varchar(50)
@@ -42,7 +52,12 @@ databaseChangeLog:
                   name: maturity_term
                   type: numeric(2)
               - column:
-                  name: branch_office_id
+                  name: customer_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: branch_office_ref
                   type: uuid
                   constraints:
                     nullable: false
@@ -72,8 +87,8 @@ databaseChangeLog:
                     nullable: false
                   defaultValue: true
         - addForeignKeyConstraint:
-            baseColumnNames: branch_office_id
+            baseColumnNames: customer_id
             baseTableName: companies
-            constraintName: fk_companies_branch_office
-            referencedColumnNames: branch_office_id
-            referencedTableName: branch_offices
+            constraintName: fk_companies_customer
+            referencedColumnNames: customer_id
+            referencedTableName: customers
