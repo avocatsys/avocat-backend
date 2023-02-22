@@ -33,7 +33,7 @@ public class CompanyController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_COMPANY')")
-    @PutMapping("/v1/branch-office/{customerId}/companies")
+    @PutMapping("/companies")
     public ResponseEntity<CompanyDto> update(
             @PathVariable("customerId") UUID customerId,
             @RequestBody Company company) {
@@ -41,13 +41,13 @@ public class CompanyController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_COMPANY')")
-    @DeleteMapping("/v1/branch-office/{customerId}/companies/{id}")
+    @DeleteMapping("/companies/{id}")
     public ResponseEntity delete(@PathVariable("id") UUID id) {
         companyService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/v1/customer/{customerId}/companies")
+    @GetMapping("/companies")
     public ResponseEntity<Page<CompanyDto>> findAll(
             @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
@@ -56,8 +56,8 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(companyService.findAll(customerId, pageable));
     }
 
-    @GetMapping("/v1/branch-office/{customerId}/company/{id}")
-    public ResponseEntity<CompanyDto> findById(@PathVariable("id") UUID id) {
-        return ResponseEntity.status(HttpStatus.OK).body(companyService.findById(id));
+    @GetMapping("/companies/{companyId}")
+    public ResponseEntity<CompanyDto> findById(@PathVariable("companyId") UUID companyId) {
+        return ResponseEntity.status(HttpStatus.OK).body(companyService.findById(companyId));
     }
 }
