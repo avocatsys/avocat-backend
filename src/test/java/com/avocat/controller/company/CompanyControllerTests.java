@@ -8,6 +8,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 public class CompanyControllerTests extends AbstractMockMvcController {
 
     @Test
@@ -23,6 +27,28 @@ public class CompanyControllerTests extends AbstractMockMvcController {
                                 .content(json))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty());
+    }
+
+    @Test
+    void shouldGetAllCompaniesThenWillReturnListOfCompaniesAndHttpStatus200() throws Exception {
+
+        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/companies")
+                        .header("Authorization", "Bearer " + defaultAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldGetCompanyByIdThenWillReturn200() throws Exception {
+
+        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/companies/b3c22e56-e2a5-448a-92a6-91e0ae1f19b1")
+                        .header("Authorization", "Bearer " + defaultAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     private String getJsonCompany() {

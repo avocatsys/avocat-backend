@@ -46,7 +46,7 @@ databaseChangeLog:
                   type: uuid
               - column:
                   name: branch_office_ref
-                  type: varchar(100)
+                  type: uuid
               - column:
                   name: created_date
                   type: timestamp

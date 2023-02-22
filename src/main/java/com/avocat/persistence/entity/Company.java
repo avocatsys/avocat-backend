@@ -1,6 +1,7 @@
 package com.avocat.persistence.entity;
 
 import com.avocat.persistence.types.CompanyTypes;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
@@ -49,7 +51,23 @@ public class Company extends AuditEntity {
     @Column(name = "maturity_term")
     private Integer maturityTerm;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
+
+    public static Company from(Company companyResult, Company company, UUID branchOfficeId) {
+        companyResult.setBranchOffice(branchOfficeId);
+        companyResult.setName(company.getName());
+        companyResult.setCpfCnpj(company.getCpfCnpj());
+        companyResult.setBillingEmail(companyResult.getBillingEmail());
+        companyResult.setDescription(company.getDescription());
+        companyResult.setCompanyTypes(company.getCompanyTypes());
+        companyResult.setStateRegistration(company.getStateRegistration());
+        companyResult.setIssueDay(company.getIssueDay());
+        companyResult.setDueDate(companyResult.getDueDate());
+        companyResult.setMaturityTerm(companyResult.getMaturityTerm());
+        companyResult.setCustomer(company.getCustomer());
+
+        return companyResult;
+    }
 }
