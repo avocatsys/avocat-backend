@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: v009
+      author: michael
+      changes:
+        - createTable:
+            tableName: contracts
+            columns:
+              - column:
+                  name: contract_id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: annotation_billing
+                  type: text
+              - column:
+                  name: general_note
+                  type: text
+              - column:
+                  name: adjustment_date
+                  type: timestamp
+              - column:
+                  name: closing_date
+                  type: timestamp
+              - column:
+                  name: company_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: branch_office_ref
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: removed_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: updated_date
+                  type: timestamp
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true
+        - addForeignKeyConstraint:
+            baseColumnNames: company_id
+            baseTableName: contracts
+            constraintName: fk_contracts_companies
+            referencedColumnNames: company_id
+            referencedTableName: companies
+        - addForeignKeyConstraint:
+            baseColumnNames: customer_id
+            baseTableName: contracts
+            constraintName: fk_contracts_customers
+            referencedColumnNames: customer_id
+            referencedTableName: customers
