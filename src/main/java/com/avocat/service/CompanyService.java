@@ -29,14 +29,14 @@ public class CompanyService {
         var customer = customerService.findById(customerId);
         company.setBranchOffice(branchOfficeId);
         company.setCustomer(customer);
-        return new CompanyDto(companyRepository.save(company));
+        return CompanyDto.from(companyRepository.save(company));
     }
 
     @Transactional
     public CompanyDto update(UUID branchOfficeId, Company company) {
         var companyResult = getCompany(company.getId());
         var saved = companyRepository.save(Company.from(companyResult, company, branchOfficeId));
-        return new CompanyDto(saved);
+        return CompanyDto.from(saved);
     }
 
     @Transactional
@@ -44,14 +44,14 @@ public class CompanyService {
     }
 
     public Page<CompanyDto> findAll(UUID branchOfficeId, Pageable pageable) {
-        return companyRepository.findAllByCustomer_Id(branchOfficeId, pageable).map(CompanyDto::new);
+        return companyRepository.findAllByCustomer_Id(branchOfficeId, pageable).map(CompanyDto::from);
     }
 
     public CompanyDto findById(UUID companyId) {
-        return new CompanyDto(this.getCompany(companyId));
+        return CompanyDto.from(this.getCompany(companyId));
     }
 
-    private Company getCompany(UUID companyId) {
+    public Company getCompany(UUID companyId) {
         return companyRepository.findByIdAndActiveTrue(companyId)
                 .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }

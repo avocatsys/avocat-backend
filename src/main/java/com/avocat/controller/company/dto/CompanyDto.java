@@ -1,6 +1,5 @@
 package com.avocat.controller.company.dto;
 
-import com.avocat.persistence.entity.BranchOffice;
 import com.avocat.persistence.entity.Company;
 import com.avocat.persistence.entity.Customer;
 import com.avocat.persistence.types.CompanyTypes;
@@ -20,7 +19,7 @@ public record CompanyDto(
         Integer maturityTerm,
         Customer customer
 ) {
-    public CompanyDto(Company company) {
+    private CompanyDto(Company company) {
         this(
                 company.getId(),
                 company.getName(),
@@ -34,5 +33,9 @@ public record CompanyDto(
                 company.getMaturityTerm(),
                 company.getCustomer()
         );
+    }
+
+    public static CompanyDto from(Company company) {
+        return new CompanyDto(company);
     }
 }
