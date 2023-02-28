@@ -1,7 +1,6 @@
 package com.avocat.persistence.entity;
 
 import com.avocat.persistence.types.CompanyTypes;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +27,6 @@ public class Company extends AuditEntity {
     @Size(min = 14, max = 20)
     private String cpfCnpj;
 
-    @NotEmpty(message = "invalid company billing email format")
     @Column(name = "billing_email")
     private String billingEmail;
 
@@ -55,6 +53,20 @@ public class Company extends AuditEntity {
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
 
+    public Company(Builder builder) {
+        this.name = builder.name;
+        this.cpfCnpj = builder.cpfCnpj;
+        this.billingEmail = builder.billingEmail;
+        this.description = builder.description;
+        this.companyTypes = builder.companyTypes;
+        this.stateRegistration = builder.stateRegistration;
+        this.issueDay = builder.issueDay;
+        this.dueDate = builder.dueDate;
+        this.maturityTerm = builder.maturityTerm;
+        this.customer = builder.customer;
+        this.branchOffice = builder.branchOfficeRef;
+    }
+
     public static Company from(Company companyResult, Company company, UUID branchOfficeId) {
         companyResult.setBranchOffice(branchOfficeId);
         companyResult.setName(company.getName());
@@ -69,5 +81,65 @@ public class Company extends AuditEntity {
         companyResult.setCustomer(company.getCustomer());
 
         return companyResult;
+    }
+
+    public static class Builder {
+
+        //mandatory
+        private final String name;
+        private final String cpfCnpj;
+        private final CompanyTypes companyTypes;
+        private final UUID branchOfficeRef;
+        private final Customer customer;
+
+        //optional
+        private String billingEmail;
+        private String description;
+        private String stateRegistration;
+        private Integer issueDay;
+        private Integer dueDate;
+        private Integer maturityTerm;
+
+        public Builder(String name, String cpfCnpj, CompanyTypes companyTypes, UUID branchOfficeRef, Customer customer) {
+            this.name = name;
+            this.cpfCnpj = cpfCnpj;
+            this.companyTypes = companyTypes;
+            this.branchOfficeRef = branchOfficeRef;
+            this.customer = customer;
+        }
+
+        public Builder billingEmail(String billingEmail) {
+            this.billingEmail = billingEmail;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder stateRegistration(String stateRegistration) {
+            this.stateRegistration = stateRegistration;
+            return this;
+        }
+
+        public Builder issueDay(Integer issueDay) {
+            this.issueDay = issueDay;
+            return this;
+        }
+
+        public Builder dueDate(Integer dueDate) {
+            this.dueDate = dueDate;
+            return this;
+        }
+
+        public Builder maturityTerm(Integer maturityTerm) {
+            this.maturityTerm = maturityTerm;
+            return this;
+        }
+
+        public Company build() {
+            return new Company(this);
+        }
     }
 }

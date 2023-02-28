@@ -25,10 +25,22 @@ public class CompanyService {
     private CompanyRepository companyRepository;
 
     @Transactional
-    public CompanyDto create(UUID customerId, UUID branchOfficeId, Company company) {
+    public CompanyDto create(UUID customerId, UUID branchOfficeId, CompanyDto companyDto) {
+
         var customer = customerService.findById(customerId);
-        company.setBranchOffice(branchOfficeId);
-        company.setCustomer(customer);
+
+        var branchId = (companyDto.branchOffice() != null) ? companyDto.branchOffice().getId() : branchOfficeId;
+
+        var company = new Company.Builder(
+                companyDto.name(), companyDto.cpfCnpj(), companyDto.companyTypes(), branchId, customer)
+                .billingEmail(companyDto.billingEmail())
+                .description(companyDto.description())
+                .stateRegistration(companyDto.stateRegistration())
+                .issueDay(companyDto.issueDay())
+                .dueDate(companyDto.dueDate())
+                .maturityTerm(companyDto.maturityTerm())
+                .build();
+
         return CompanyDto.from(companyRepository.save(company));
     }
 
