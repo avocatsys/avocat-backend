@@ -1,5 +1,6 @@
 package com.avocat.controller.company.dto;
 
+import com.avocat.persistence.entity.BranchOffice;
 import com.avocat.persistence.entity.Company;
 import com.avocat.persistence.entity.Customer;
 import com.avocat.persistence.types.CompanyTypes;
@@ -14,10 +15,11 @@ public record CompanyDto(
         String description,
         CompanyTypes companyTypes,
         String stateRegistration,
-        Integer issueDay,
-        Integer dueDate,
-        Integer maturityTerm,
-        Customer customer
+        Integer issueDay,//dia de emissão da nota para todos os contratos.
+        Integer dueDate,//dia de vencimento de todos os contratos.
+        Integer maturityTerm,//prazo para vencimento após a emissão da nota 5 dias, 10 dias, 15 dias.
+        Customer customer,
+        BranchOffice branchOffice
 ) {
     private CompanyDto(Company company) {
         this(
@@ -31,7 +33,8 @@ public record CompanyDto(
                 company.getIssueDay(),
                 company.getDueDate(),
                 company.getMaturityTerm(),
-                company.getCustomer()
+                company.getCustomer(),
+                null
         );
     }
 

@@ -28,8 +28,8 @@ public class CompanyController {
     public ResponseEntity<CompanyDto> create(
             @PathVariable("customerId") UUID customerId,
             @PathVariable("branchOfficeId") UUID branchOfficeId,
-            @RequestBody @Valid Company company) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(companyService.create(customerId, branchOfficeId, company));
+            @RequestBody @Valid CompanyDto companyDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(companyService.create(customerId, branchOfficeId, companyDto));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_COMPANY')")

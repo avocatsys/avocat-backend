@@ -26,19 +26,12 @@ databaseChangeLog:
               - column:
                   name: billing_email
                   type: varchar(100)
-                  constraints:
-                    nullable: false
-                    unique: true
               - column:
                   name: description
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
+                  type: text
               - column:
                   name: company_types
                   type: varchar(50)
-                  constraints:
-                    nullable: false
               - column:
                   name: state_registration
                   type: varchar(50)
