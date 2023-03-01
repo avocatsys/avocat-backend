@@ -25,7 +25,7 @@ public record ContractDto(
                 contract.getGeneralNote(),
                 contract.getAdjustmentDate(),
                 contract.getClosingDate(),
-                CompanyDto.from(contract.getCompany()),
+                CompanyDto.getInstance(contract.getCompany()),
                 CustomerDto.from(contract.getCustomer())
         );
     }

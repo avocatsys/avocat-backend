@@ -41,14 +41,14 @@ public class CompanyService {
                 .maturityTerm(companyDto.maturityTerm())
                 .build();
 
-        return CompanyDto.from(companyRepository.save(company));
+        return CompanyDto.getInstance(companyRepository.save(company));
     }
 
     @Transactional
     public CompanyDto update(UUID branchOfficeId, Company company) {
         var companyResult = getCompany(company.getId());
         var saved = companyRepository.save(Company.from(companyResult, company, branchOfficeId));
-        return CompanyDto.from(saved);
+        return CompanyDto.getInstance(saved);
     }
 
     @Transactional
@@ -56,11 +56,13 @@ public class CompanyService {
     }
 
     public Page<CompanyDto> findAll(UUID branchOfficeId, Pageable pageable) {
-        return companyRepository.findAllByCustomer_Id(branchOfficeId, pageable).map(CompanyDto::from);
+        return companyRepository.findAllByCustomer_Id(branchOfficeId, pageable).map(CompanyDto::getInstance);
     }
 
     public CompanyDto findById(UUID companyId) {
-        return CompanyDto.from(this.getCompany(companyId));
+        var company = getCompany(companyId);
+        var branchOffice = branchOfficeService.getBranchOffice(company.getBranchOffice());
+        return CompanyDto.getInstanceWithBranchOffice(company, branchOffice);
     }
 
     public Company getCompany(UUID companyId) {
