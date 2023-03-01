@@ -38,7 +38,28 @@ public record CompanyDto(
         );
     }
 
-    public static CompanyDto from(Company company) {
+    private CompanyDto(Company company, BranchOffice branchOffice) {
+        this(
+                company.getId(),
+                company.getName(),
+                company.getCpfCnpj(),
+                company.getBillingEmail(),
+                company.getDescription(),
+                company.getCompanyTypes(),
+                company.getStateRegistration(),
+                company.getIssueDay(),
+                company.getDueDate(),
+                company.getMaturityTerm(),
+                company.getCustomer(),
+                branchOffice
+        );
+    }
+
+    public static CompanyDto getInstance(Company company) {
         return new CompanyDto(company);
+    }
+
+    public static CompanyDto getInstanceWithBranchOffice(Company company, BranchOffice branchOffice) {
+       return new CompanyDto(company, branchOffice);
     }
 }
