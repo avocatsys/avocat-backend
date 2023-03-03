@@ -35,15 +35,16 @@ public class CompanyController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_COMPANY')")
     @PutMapping("/companies")
     public ResponseEntity<CompanyDto> update(
-            @PathVariable("customerId") UUID customerId,
-            @RequestBody Company company) {
-        return ResponseEntity.status(HttpStatus.OK).body(companyService.update(customerId, company));
+            @RequestBody CompanyDto companyDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(companyService.update(companyDto));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER', 'ROLE_COMPANY')")
-    @DeleteMapping("/companies/{id}")
-    public ResponseEntity delete(@PathVariable("id") UUID id) {
-        companyService.delete(id);
+    @DeleteMapping("/branch-office/{branchOfficeId}/companies/{companyId}")
+    public ResponseEntity delete(
+            @PathVariable("companyId") UUID companyId,
+            @PathVariable("branchOfficeId") UUID branchOfficeId) {
+        companyService.delete(companyId, branchOfficeId);
         return ResponseEntity.noContent().build();
     }
 

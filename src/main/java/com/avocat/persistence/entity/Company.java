@@ -1,5 +1,6 @@
 package com.avocat.persistence.entity;
 
+import com.avocat.controller.company.dto.CompanyDto;
 import com.avocat.persistence.types.CompanyTypes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,18 +68,18 @@ public class Company extends AuditEntity {
         this.branchOffice = builder.branchOfficeRef;
     }
 
-    public static Company from(Company companyResult, Company company, UUID branchOfficeId) {
-        companyResult.setBranchOffice(branchOfficeId);
-        companyResult.setName(company.getName());
-        companyResult.setCpfCnpj(company.getCpfCnpj());
-        companyResult.setBillingEmail(companyResult.getBillingEmail());
-        companyResult.setDescription(company.getDescription());
-        companyResult.setCompanyTypes(company.getCompanyTypes());
-        companyResult.setStateRegistration(company.getStateRegistration());
-        companyResult.setIssueDay(company.getIssueDay());
-        companyResult.setDueDate(companyResult.getDueDate());
-        companyResult.setMaturityTerm(companyResult.getMaturityTerm());
-        companyResult.setCustomer(company.getCustomer());
+    public static Company convertValue(Company companyResult, CompanyDto companyDto) {
+        companyResult.setCustomer(companyResult.getCustomer());
+        companyResult.setBranchOffice(companyDto.branchOffice().getId());
+        companyResult.setName(companyDto.name());
+        companyResult.setCpfCnpj(companyDto.cpfCnpj());
+        companyResult.setBillingEmail(companyDto.billingEmail());
+        companyResult.setDescription(companyDto.description());
+        companyResult.setCompanyTypes(companyDto.companyTypes());
+        companyResult.setStateRegistration(companyDto.stateRegistration());
+        companyResult.setIssueDay(companyDto.issueDay());
+        companyResult.setDueDate(companyDto.dueDate());
+        companyResult.setMaturityTerm(companyDto.maturityTerm());
 
         return companyResult;
     }
@@ -93,6 +94,7 @@ public class Company extends AuditEntity {
         private final Customer customer;
 
         //optional
+        private UUID id;
         private String billingEmail;
         private String description;
         private String stateRegistration;
@@ -106,6 +108,10 @@ public class Company extends AuditEntity {
             this.companyTypes = companyTypes;
             this.branchOfficeRef = branchOfficeRef;
             this.customer = customer;
+        }
+        public Builder id(UUID id) {
+            this.id = id;
+            return this;
         }
 
         public Builder billingEmail(String billingEmail) {
