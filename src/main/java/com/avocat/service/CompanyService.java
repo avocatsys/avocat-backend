@@ -33,6 +33,7 @@ public class CompanyService {
 
         var company = new Company.Builder(
                 companyDto.name(), companyDto.cpfCnpj(), companyDto.companyTypes(), branchId, customer)
+                .id(null)
                 .billingEmail(companyDto.billingEmail())
                 .description(companyDto.description())
                 .stateRegistration(companyDto.stateRegistration())
@@ -45,18 +46,19 @@ public class CompanyService {
     }
 
     @Transactional
-    public CompanyDto update(UUID branchOfficeId, Company company) {
-        var companyResult = getCompany(company.getId());
-        var saved = companyRepository.save(Company.from(companyResult, company, branchOfficeId));
+    public CompanyDto update(CompanyDto companyDto) {
+        var companyResult = getCompany(companyDto.id());
+        var saved = companyRepository.save(Company.convertValue(companyResult, companyDto));
         return CompanyDto.getInstance(saved);
     }
 
     @Transactional
-    public void delete(UUID companyId) {
+    public void delete(UUID companyId, UUID branchOfficeId) {
+        companyRepository.inactiveCompany(companyId, branchOfficeId);
     }
 
     public Page<CompanyDto> findAll(UUID branchOfficeId, Pageable pageable) {
-        return companyRepository.findAllByCustomer_Id(branchOfficeId, pageable).map(CompanyDto::getInstance);
+        return companyRepository.findAllByActiveTrueAndCustomer_Id(branchOfficeId, pageable).map(CompanyDto::getInstance);
     }
 
     public CompanyDto findById(UUID companyId) {
