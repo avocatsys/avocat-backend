@@ -3,6 +3,7 @@ package com.avocat.service;
 import com.avocat.controller.branchoffice.dto.BranchOfficeDto;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.BranchOffice;
+import com.avocat.persistence.entity.Customer;
 import com.avocat.persistence.repository.BranchOfficeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.UUID;
 
 @Service

@@ -43,15 +43,14 @@ public class Contract extends AuditEntity {
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
 
-    public static Contract from(Contract contractResult, Contract contract, UUID branchOfficeId) {
+    public static Contract convertValue(Contract contractResult, Contract contract, Company company, UUID branchOfficeId) {
+        contractResult.setCompany(company);
         contractResult.setBranchOffice(branchOfficeId);
         contractResult.setName(contract.getName());
         contractResult.setAnnotationBilling(contract.getAnnotationBilling());
         contractResult.setGeneralNote(contract.getGeneralNote());
         contractResult.setAdjustmentDate(contract.getAdjustmentDate());
         contractResult.setClosingDate(contract.getClosingDate());
-        contractResult.setCompany(contract.getCompany());
-        contractResult.setCustomer(contract.getCustomer());
         return contractResult;
     }
 }

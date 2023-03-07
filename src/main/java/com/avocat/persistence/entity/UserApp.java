@@ -56,6 +56,7 @@ public class UserApp implements UserDetails {
         this.password = builder.password;
         this.privileges = builder.privileges;
         this.name = builder.name;
+        this.branchOffice = builder.branchOffice;
     }
 
     @Override

@@ -33,16 +33,19 @@ public class ContractController {
         return ResponseEntity.status(HttpStatus.CREATED).body(contractService.create(customerId, branchOfficeId, companyId, contract));
     }
 
-    @PutMapping("/contracts")
+    @PutMapping("/company/{companyId}/contracts")
     public ResponseEntity<ContractDto> update(
             @PathVariable("customerId") UUID customerId,
+            @PathVariable("companyId") UUID companyId,
             @RequestBody Contract contract) {
-        return ResponseEntity.status(HttpStatus.OK).body(contractService.update(customerId, contract));
+        return ResponseEntity.status(HttpStatus.OK).body(contractService.update(customerId, companyId, contract));
     }
 
     @DeleteMapping("/contracts/{contractId}")
-    public ResponseEntity delete(@PathVariable("contractId") UUID id) {
-        contractService.delete(id);
+    public ResponseEntity<Void> delete(
+            @PathVariable("customerId") UUID customerId,
+            @PathVariable("contractId") UUID contractId) {
+        contractService.delete(contractId, customerId);
         return ResponseEntity.noContent().build();
     }
 
