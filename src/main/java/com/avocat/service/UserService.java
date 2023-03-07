@@ -57,6 +57,7 @@ public class UserService {
 
         userResult.setGroup(user.getGroup());
         userResult.setPrivileges(user.getPrivileges());
+        userResult.setName(user.getName());
         userResult.setUsername(user.getUsername());
         userResult.setBranchOffice(branchOfficeResult);
 

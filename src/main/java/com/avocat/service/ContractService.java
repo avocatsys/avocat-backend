@@ -39,20 +39,22 @@ public class ContractService {
     }
 
     @Transactional
-    public ContractDto update(UUID branchOfficeId, Contract contract) {
+    public ContractDto update(UUID branchOfficeId, UUID companyId, Contract contract) {
 
+        var company = companyService.getCompany(companyId);
         var contractResult = getContract(contract.getId());
-        var saved = contractRepository.save(Contract.from(contractResult, contract, branchOfficeId));
+        var saved = contractRepository.save(Contract.convertValue(contractResult, contract, company, branchOfficeId));
 
         return ContractDto.from(saved);
     }
 
     @Transactional
-    public void delete(UUID contractId) {
+    public void delete(UUID contractId, UUID customerId) {
+        contractRepository.inactiveContract(contractId, customerId);
     }
 
     public Page<ContractDto> findAll(UUID branchOfficeId, Pageable pageable) {
-        return contractRepository.findAllByCustomer_Id(branchOfficeId, pageable).map(ContractDto::from);
+        return contractRepository.findAllByActiveTrueAndCustomer_Id(branchOfficeId, pageable).map(ContractDto::from);
     }
 
     public ContractDto findById(UUID customerId, UUID contractId) {

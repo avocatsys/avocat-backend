@@ -3,6 +3,7 @@ package com.avocat.controller.contract.dto;
 import com.avocat.controller.company.dto.CompanyDto;
 import com.avocat.controller.customer.dto.CustomerDto;
 import com.avocat.persistence.entity.Contract;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 import java.util.UUID;
