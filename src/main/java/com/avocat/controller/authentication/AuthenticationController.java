@@ -2,8 +2,10 @@ package com.avocat.controller.authentication;
 
 import com.avocat.controller.authentication.dto.CredentialsDto;
 import com.avocat.controller.authentication.dto.LoginDto;
+import com.avocat.exceptions.InvalidUserException;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.repository.UserAppRepository;
+import com.avocat.persistence.types.UserTypes;
 import com.avocat.security.custom.CustomAuthenticationManager;
 import com.avocat.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,18 +38,22 @@ public class AuthenticationController {
         var userAuthenticate = userAppRepository.findByUsernameAuthenticate(login.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("user not found: " + username));
 
-        var authentication = customAuthenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, login.getPassword()));
+        if(UserTypes.ACTIVE.equals(userAuthenticate.getSituation())) {
+            var authentication = customAuthenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(username, login.getPassword()));
 
-        var token = jwtTokenProvider.genereToken(authentication);
+            var token = jwtTokenProvider.genereToken(authentication);
 
-        UUID branchOfficeId = null;
+            UUID branchOfficeId = null;
 
-        if(userAuthenticate.getBranchOffice() != null)
-            branchOfficeId = userAuthenticate.getBranchOffice().getId();
+            if (userAuthenticate.getBranchOffice() != null)
+                branchOfficeId = userAuthenticate.getBranchOffice().getId();
 
-        return ResponseEntity.ok().body(CredentialsDto
-                .create(token, userAuthenticate.getBranchOffice().getCustomer().getId(), branchOfficeId, userAuthenticate.getUsername(), userAuthenticate.getName()));
+            return ResponseEntity.ok().body(CredentialsDto
+                    .create(token, userAuthenticate.getBranchOffice().getCustomer().getId(), branchOfficeId, userAuthenticate.getUsername(), userAuthenticate.getName()));
+        } else {
+            throw new InvalidUserException("User invalid, blocked or forgot password");
+        }
     }
 
     @GetMapping("/{token}")

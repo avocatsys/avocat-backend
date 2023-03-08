@@ -1,9 +1,6 @@
 package com.avocat.controller;
 
-import com.avocat.exceptions.ErrorDetails;
-import com.avocat.exceptions.IDORException;
-import com.avocat.exceptions.InvalidPermissionOrRoleException;
-import com.avocat.exceptions.ResourceNotFoundException;
+import com.avocat.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({InvalidPermissionOrRoleException.class, IDORException.class})
+    @ExceptionHandler({InvalidPermissionOrRoleException.class, InvalidUserException.class, IDORException.class})
     public ResponseEntity<ErrorDetails> handleAsForbidden(RuntimeException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
@@ -28,5 +25,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleAsNotFound(RuntimeException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({SendEmailException.class})
+    public ResponseEntity<ErrorDetails> handleAsInternalError(SendEmailException ex) {
+        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

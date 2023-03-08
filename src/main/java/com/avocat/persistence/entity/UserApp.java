@@ -1,5 +1,6 @@
 package com.avocat.persistence.entity;
 
+import com.avocat.persistence.types.UserTypes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,10 @@ public class UserApp implements UserDetails {
     @NotEmpty(message = "invalid password format")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "situation")
+    private UserTypes situation;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_privileges",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
@@ -57,6 +62,7 @@ public class UserApp implements UserDetails {
         this.privileges = builder.privileges;
         this.name = builder.name;
         this.branchOffice = builder.branchOffice;
+        this.situation = builder.situation;
     }
 
     @Override
@@ -99,6 +105,7 @@ public class UserApp implements UserDetails {
         private Group group = null;
         private BranchOffice branchOffice;
         private String name;
+        private UserTypes situation;
 
         public Builder(String username, String password) {
             this.username = username;
@@ -125,6 +132,10 @@ public class UserApp implements UserDetails {
             return this;
         }
 
+        public Builder situation(UserTypes situation) {
+            this.situation = situation;
+            return this;
+        }
         public UserApp build() {
             return new UserApp(this);
         }

@@ -4,19 +4,18 @@ import com.avocat.controller.customer.dto.CustomerDto;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.BranchOffice;
 import com.avocat.persistence.entity.Customer;
-import com.avocat.persistence.entity.Privilege;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.persistence.repository.BranchOfficeRepository;
 import com.avocat.persistence.repository.CustomerRepository;
 import com.avocat.persistence.repository.PrivilegeRepository;
 import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.persistence.types.PrivilegesTypes;
+import com.avocat.persistence.types.UserTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -34,6 +33,9 @@ public class CustomerService {
     @Autowired
     private PrivilegeRepository privilegeRepository;
 
+    @Autowired
+    private UserEmailService userEmailService;
+
     @Transactional
     public CustomerDto signupCustomer(Customer customer) {
 
@@ -48,7 +50,10 @@ public class CustomerService {
                         .name(customer.getFullName())
                         .privilege(privilege)
                         .branchOffice(branchOffice)
+                        .situation(UserTypes.FORGOT_PASSWORD)
                         .build());
+
+        userEmailService.sendEmail(userCreated.getUsername(), userCreated.getName());
 
         customer.setUser(userCreated);
         var result = customerRepository.save(customer);
