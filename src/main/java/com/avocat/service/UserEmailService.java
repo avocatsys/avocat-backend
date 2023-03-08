@@ -27,7 +27,10 @@ public class UserEmailService {
         Email from = new Email(emailFrom);
         String subject = "Comece a usar a Avocat";
         Email to = new Email(email.trim());
-        Content content = new Content("text/plain", "Você se cadastrou na Avocat. Acesse o link para cadastrar sua nova senha e ter acesso na plataforma.\n\nhttp:link");
+        Content content = new Content("text/plain", """
+                Você se cadastrou na Avocat.
+                Acesse o link para cadastrar sua nova senha e ter acesso na plataforma.
+                link: http:link""");
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(sendGridApiKey);
