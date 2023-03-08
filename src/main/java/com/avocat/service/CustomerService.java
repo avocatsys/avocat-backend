@@ -45,18 +45,18 @@ public class CustomerService {
 
         var userCreated = userRepository.save(
                 new UserApp.Builder(
-                        customer.getEmail(),
-                        new BCryptPasswordEncoder().encode("12345678"))
+                        customer.getEmail(), null)
                         .name(customer.getFullName())
                         .privilege(privilege)
                         .branchOffice(branchOffice)
                         .situation(UserTypes.FORGOT_PASSWORD)
+                        .oid(UUID.randomUUID())
                         .build());
-
-        userEmailService.sendEmail(userCreated.getUsername(), userCreated.getName());
 
         customer.setUser(userCreated);
         var result = customerRepository.save(customer);
+
+        userEmailService.sendEmailForgotPassword(userCreated.getUsername());
 
         return CustomerDto.from(result);
     }

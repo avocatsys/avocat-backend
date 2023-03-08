@@ -1,6 +1,7 @@
 package com.avocat.service;
 
 import com.avocat.exceptions.SendEmailException;
+import com.avocat.security.jwt.JwtTokenSendEmail;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -8,6 +9,7 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +24,20 @@ public class UserEmailService {
     @Value("${sendgrid.email.from}")
     private String emailFrom;
 
-    public void sendEmail(String email, String resource) {
+    @Autowired
+    private JwtTokenSendEmail jwtTokenSendEmail;
+
+    public void sendEmailForgotPassword(String email) {
+
+        var link = jwtTokenSendEmail.generateTokenToSendEmail(email);
 
         Email from = new Email(emailFrom);
-        String subject = "Comece a usar a Avocat";
+        String subject = "Avocat Support";
         Email to = new Email(email.trim());
         Content content = new Content("text/plain", """
-                Você se cadastrou na Avocat.
                 Acesse o link para cadastrar sua nova senha e ter acesso na plataforma.
-                link: http:link""");
+                
+                %s""".formatted(link));
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(sendGridApiKey);

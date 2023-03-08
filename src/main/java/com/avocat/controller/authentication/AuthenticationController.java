@@ -42,7 +42,7 @@ public class AuthenticationController {
             var authentication = customAuthenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username, login.getPassword()));
 
-            var token = jwtTokenProvider.genereToken(authentication);
+            var token = jwtTokenProvider.generateToken(authentication);
 
             UUID branchOfficeId = null;
 
@@ -52,7 +52,7 @@ public class AuthenticationController {
             return ResponseEntity.ok().body(CredentialsDto
                     .create(token, userAuthenticate.getBranchOffice().getCustomer().getId(), branchOfficeId, userAuthenticate.getUsername(), userAuthenticate.getName()));
         } else {
-            throw new InvalidUserException("User invalid, blocked or forgot password");
+            throw new InvalidUserException("User invalid, blocked or forgot password " + login.getUsername());
         }
     }
 

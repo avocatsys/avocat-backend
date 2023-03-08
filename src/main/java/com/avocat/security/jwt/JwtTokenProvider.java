@@ -40,7 +40,7 @@ public class JwtTokenProvider {
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String genereToken(Authentication auth) {
+    public String generateToken(Authentication auth) {
 
         UserApp userApp = (UserApp) auth.getPrincipal();
 

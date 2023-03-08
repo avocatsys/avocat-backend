@@ -30,16 +30,21 @@ public class UserApp implements UserDetails {
     private String username;
 
     @NotEmpty(message = "invalid name format")
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "password")
-    @NotEmpty(message = "invalid password format")
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "situation")
     private UserTypes situation;
+
+    @Column(name = "oid")
+    private UUID oid;
+
+    @Column(name = "link_forgot")
+    private String linkForgot;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_privileges",
@@ -63,6 +68,7 @@ public class UserApp implements UserDetails {
         this.name = builder.name;
         this.branchOffice = builder.branchOffice;
         this.situation = builder.situation;
+        this.oid = builder.oid;
     }
 
     @Override
@@ -106,6 +112,7 @@ public class UserApp implements UserDetails {
         private BranchOffice branchOffice;
         private String name;
         private UserTypes situation;
+        private UUID oid;
 
         public Builder(String username, String password) {
             this.username = username;
@@ -134,6 +141,11 @@ public class UserApp implements UserDetails {
 
         public Builder situation(UserTypes situation) {
             this.situation = situation;
+            return this;
+        }
+
+        public Builder oid(UUID oid) {
+            this.oid = oid;
             return this;
         }
         public UserApp build() {
