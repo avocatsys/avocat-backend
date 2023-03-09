@@ -35,7 +35,7 @@ public class GroupController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('GROUP_WRITE')")
     @DeleteMapping("/{groupId}")
-    public ResponseEntity delete(@PathVariable("id") UUID groupId) {
+    public ResponseEntity delete(@PathVariable("groupId") UUID groupId) {
         groupService.delete(groupId);
         return ResponseEntity.noContent().build();
     }
@@ -51,7 +51,7 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<Group> findById(@PathVariable("id") UUID groupId) {
+    public ResponseEntity<Group> findById(@PathVariable("groupId") UUID groupId) {
         return ResponseEntity.status(HttpStatus.OK).body(groupService.findById(groupId));
     }
 }
