@@ -1,6 +1,6 @@
 package com.avocat.service;
 
-import com.avocat.controller.user.dto.ForgotPasswordDto;
+import com.avocat.controller.password.dto.ForgotPasswordDto;
 import com.avocat.controller.user.dto.UserAppDto;
 import com.avocat.exceptions.InvalidJwtTokenException;
 import com.avocat.exceptions.ResourceNotFoundException;
@@ -30,6 +30,9 @@ import java.util.*;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private UserEmailService userEmailService;
 
     @Autowired
     private BranchOfficeService branchOfficeService;
@@ -143,5 +146,9 @@ public class UserService {
         } else {
             throw new InvalidJwtTokenException("invalid token jwt" + token);
         }
+    }
+
+    public void sendLinkToRecoverPassword(String email) {
+        userEmailService.sendEmailForgotPassword(email);
     }
 }

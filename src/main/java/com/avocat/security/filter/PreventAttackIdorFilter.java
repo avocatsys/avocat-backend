@@ -28,7 +28,7 @@ public class PreventAttackIdorFilter implements Filter {
 
     private Logger logger = LoggerFactory.getLogger(PreventAttackIdorFilter.class);
 
-    private Set<String> whiteList = Set.of("/v1/account", "/v1/authentication", "/v1/customers/signup", "/v1/users/reset-password");
+    private Set<String> whiteList = Set.of("/v1/account", "/v1/authentication", "/v1/customers/signup", "/v1/password/reset", "/v1/password/forgot");
 
     @Autowired
     private UserService userService;

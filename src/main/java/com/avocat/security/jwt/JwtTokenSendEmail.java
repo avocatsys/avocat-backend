@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
+import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -41,6 +42,7 @@ public class JwtTokenSendEmail {
     @Autowired
     private UserAppRepository userAppRepository;
 
+    @Transactional
     public String generateTokenToSendEmail(String email) {
         var user = userAppRepository.findByUsername(email)
                 .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
