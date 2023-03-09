@@ -1,5 +1,6 @@
 package com.avocat.controller.user;
 
+import com.avocat.controller.user.dto.ForgotPasswordDto;
 import com.avocat.controller.user.dto.UserAppDto;
 import com.avocat.persistence.entity.UserApp;
 import com.avocat.service.UserService;
@@ -13,17 +14,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
     @PostMapping("/v1/branch-office/{branchOfficeId}/users")
     public ResponseEntity<UserAppDto> create(
             @PathVariable("branchOfficeId") UUID branchOfficeId,
@@ -31,6 +33,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(branchOfficeId, user));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
     @PutMapping("/v1/branch-office/{branchOfficeId}/users")
     public ResponseEntity<UserAppDto> update(
             @PathVariable("branchOfficeId") UUID branchOfficeId,
@@ -38,12 +41,22 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(branchOfficeId, user));
     }
 
+    @PutMapping("/v1/users/reset-password")
+    public ResponseEntity<Void> resetPassword(
+            @RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) {
+        var token = request.getHeader("Authorization");
+        userService.resetPassword(forgotPasswordDto, token);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
     @DeleteMapping("/v1/branch-office/{branchOfficeId}/users/{id}")
     public ResponseEntity delete(@PathVariable("id") UUID id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
     @GetMapping("/v1/customer/{customerId}/users")
     public ResponseEntity<Page<UserAppDto>> findAll(
             @PathVariable("customerId") UUID branchOfficeId,
@@ -53,6 +66,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(branchOfficeId, pageable));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER')")
     @GetMapping("/v1/branch-office/{branchOfficeId}/users/{id}")
     public ResponseEntity<UserAppDto> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));

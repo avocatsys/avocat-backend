@@ -1,6 +1,8 @@
 package com.avocat.service;
 
+import com.avocat.controller.user.dto.ForgotPasswordDto;
 import com.avocat.controller.user.dto.UserAppDto;
+import com.avocat.exceptions.InvalidJwtTokenException;
 import com.avocat.exceptions.ResourceNotFoundException;
 import com.avocat.persistence.entity.Privilege;
 import com.avocat.persistence.entity.UserApp;
@@ -8,17 +10,23 @@ import com.avocat.persistence.repository.GroupRepository;
 import com.avocat.persistence.repository.PrivilegeRepository;
 import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.persistence.types.PrivilegesTypes;
+import com.avocat.security.jwt.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -34,6 +42,20 @@ public class UserService {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Value("${token.jwt.secret}")
+    private String jwtSecret;
+
+    private SecretKey secretKey;
+
+    @PostConstruct
+    public void setUpSecretKey() {
+        var secret = Base64.getEncoder().encodeToString(this.jwtSecret.getBytes());
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     @Transactional
     public UserAppDto create(UUID branchOfficeId, UserApp user) {
@@ -94,7 +116,7 @@ public class UserService {
     private Set<Privilege> getPrivileges(Set<Privilege> privilegeSet) {
         Set<Privilege> privileges = new HashSet<>();
 
-        for(Privilege p : privilegeSet) {
+        for (Privilege p : privilegeSet) {
             var result = privilegeRepository.findById(p.getId());
             privileges.add(result.get());
         }
@@ -103,5 +125,23 @@ public class UserService {
 
     public Optional<UserApp> findByUsernameAndBranchOfficeAndCustomer_Id(String username, UUID customerId) {
         return userAppRepository.findByUsernameAndBranchOffice_Customer_Id(username, customerId);
+    }
+
+    @Transactional
+    public void resetPassword(ForgotPasswordDto forgotPasswordDto, String token) {
+        if (jwtTokenProvider.validateToken(token)) {
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(this.secretKey).build().parseClaimsJws(token);
+            var oid = claims.getBody().getSubject();
+
+           if(userAppRepository.findByOid(UUID.fromString(oid)).isPresent()) {
+               userAppRepository.resetPassword(new BCryptPasswordEncoder().encode(forgotPasswordDto.password1()), UUID.fromString(oid));
+               userAppRepository.resetOid(UUID.fromString(oid), UUID.randomUUID());
+           } else {
+              throw new InvalidJwtTokenException("resource not found in token");
+           }
+
+        } else {
+            throw new InvalidJwtTokenException("invalid token jwt" + token);
+        }
     }
 }

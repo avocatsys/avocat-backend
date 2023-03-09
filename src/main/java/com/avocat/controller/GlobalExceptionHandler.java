@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({InvalidPermissionOrRoleException.class, InvalidUserException.class, IDORException.class})
+    @ExceptionHandler({InvalidPermissionOrRoleException.class, InvalidUserException.class, IDORException.class, InvalidJwtTokenException.class})
     public ResponseEntity<ErrorDetails> handleAsForbidden(RuntimeException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);

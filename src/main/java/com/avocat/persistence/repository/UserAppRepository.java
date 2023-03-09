@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,4 +35,14 @@ public interface UserAppRepository extends JpaRepository<UserApp, UUID> {
     @Modifying
     @Query("update UserApp ua set ua.linkForgot = :link where ua.id = :userId")
     void updateLinkForgot(@Param("link") String link, @Param("userId") UUID userId);
+
+    Optional<UserApp> findByOid(@Param("oid") UUID oid);
+
+    @Modifying
+    @Query("update UserApp ua set ua.password = :password, situation = 'ACTIVE' where ua.oid = :oid")
+    void resetPassword(@Param("password") String password, @Param("oid") UUID oid);
+
+    @Modifying
+    @Query("update UserApp ua set ua.oid = :newOid where ua.oid = :oldOid")
+    void resetOid(@Param("oldOid") UUID oldOid, @Param("newOid") UUID newOid);
 }

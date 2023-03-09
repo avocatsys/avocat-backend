@@ -55,7 +55,7 @@ public class JwtTokenSendEmail {
                 .compact();
         //@formatter:on
 
-        var link = String.format("%s/forgot?key=%s", serverAddressHost, token);
+        var link = String.format("%s/#/login?key=%s", serverAddressHost, token);
         userAppRepository.updateLinkForgot(link, user.getId());
         return link;
     }

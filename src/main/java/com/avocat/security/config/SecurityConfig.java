@@ -34,6 +34,7 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
                         .antMatchers(HttpMethod.POST, "/v1/authentication/token").permitAll()
                         .antMatchers(HttpMethod.GET, "/v1/authentication/token/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/v1/customers/signup").permitAll()
+                        .antMatchers(HttpMethod.PUT, "/v1/users/reset-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationManager(authenticationManager)
