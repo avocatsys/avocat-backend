@@ -10,6 +10,7 @@ import com.avocat.persistence.repository.GroupRepository;
 import com.avocat.persistence.repository.PrivilegeRepository;
 import com.avocat.persistence.repository.UserAppRepository;
 import com.avocat.persistence.types.PrivilegesTypes;
+import com.avocat.persistence.types.UserTypes;
 import com.avocat.security.jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -64,8 +65,14 @@ public class UserService {
     public UserAppDto create(UUID branchOfficeId, UserApp user) {
         user.setBranchOffice(branchOfficeService.getBranchOffice(branchOfficeId));
         user.setPrivileges(getPrivileges(user.getPrivileges()));
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return UserAppDto.from(userAppRepository.save(user));
+        user.setSituation(UserTypes.FORGOT_PASSWORD);
+        user.setOid(UUID.randomUUID());
+        user.setPassword(user.getPassword() == null ? null : new BCryptPasswordEncoder().encode(user.getPassword()));
+
+        var userSaved = userAppRepository.save(user);
+        userEmailService.sendEmailForgotPassword(user.getUsername());
+
+        return UserAppDto.from(userSaved);
     }
 
     @Transactional
@@ -91,7 +98,7 @@ public class UserService {
 
     @Transactional
     public void delete(UUID userId) {
-        userAppRepository.delete(getUserApp(userId));
+        userAppRepository.delete(getUser(userId));
     }
 
     public Page<UserAppDto> findAll(UUID branchOfficeId, Pageable pageable) {
@@ -99,7 +106,7 @@ public class UserService {
     }
 
     public UserAppDto findById(UUID userId) {
-        return UserAppDto.from(getUserApp(userId));
+        return UserAppDto.from(getUser(userId));
     }
 
     public UserApp findByUsername(String email) {
@@ -111,7 +118,7 @@ public class UserService {
         return userAppRepository.findByUsernameAndBranchOffice_Id(email, branchOfficeId);
     }
 
-    private UserApp getUserApp(UUID id) {
+    private UserApp getUser(UUID id) {
         return userAppRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }
