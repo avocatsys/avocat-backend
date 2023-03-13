@@ -1,52 +1,62 @@
 package com.avocat.controller.process;
 
+import com.avocat.exceptions.ResourceNotFoundException;
+import com.avocat.persistence.entity.process.Area;
+import com.avocat.persistence.repository.process.AreaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(path = "/v1/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+import javax.transaction.Transactional;
+import java.util.UUID;
+
+@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_WRITE', 'LAWYER_READ')")
+@RequestMapping(path = "/v1/customer/{customerId}/areas", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class AreaController {
 
+    @Autowired
+    private AreaRepository areaRepository;
 
-/*
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_WRITE')")
+    @Transactional
     @PostMapping
     public ResponseEntity<Area> create(@PathVariable(value = "customerId", required = true) UUID customerId, @RequestBody Area area) {
         area.setCustomerId(customerId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(processGenericService.create(area));
+        return ResponseEntity.status(HttpStatus.CREATED).body(areaRepository.save(area));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_WRITE')")
     @PutMapping
-    public ResponseEntity<Group> update(@ @PathVariable("customerId") UUID customerId, RequestBody Group group) {
-        return ResponseEntity.ok().body(groupService.update(group));
+    public ResponseEntity<Area> update(@PathVariable("customerId") UUID customerId, @RequestBody Area area) {
+        return ResponseEntity.ok().body(areaRepository.save(area));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_WRITE')")
-    @DeleteMapping("/{groupId}")
-    public ResponseEntity delete(@PathVariable("customerId") UUID customerId, PathVariable("id") UUID groupId)
-
-    {
-        groupService.delete(groupId);
+    @DeleteMapping("/{areaId}")
+    public ResponseEntity<Void> delete(@PathVariable("customerId") UUID customerId, @PathVariable("areaId") UUID areaId) {
+        areaRepository.deleteById(areaId);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_READ')")
     @GetMapping
-    public ResponseEntity<Page<Group>> findAll(
-            @PathVariable("customerId") UUID customerId,
+    public ResponseEntity<Page<Area>> findAll(
+            @PathVariable("areaId") UUID areaId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(groupService.findAll(branchOfficeId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(areaRepository.findAllByCustomerId(areaId, pageable));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_READ')")
-    @GetMapping("/{groupId}")
-    public ResponseEntity<Group> findById(@PathVariable("id") UUID groupId,
-                                          @PathVariable("customerId") UUID customerId) {
-        return ResponseEntity.status(HttpStatus.OK).body(groupService.findById(groupId));
+    @GetMapping("/{areaId}")
+    public ResponseEntity<Area> findById(@PathVariable("areaId") UUID areaId,
+                                         @PathVariable("customerId") UUID customerId) {
+        var result = areaRepository.findByIdAndCustomerId(areaId, customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-*/}
+}

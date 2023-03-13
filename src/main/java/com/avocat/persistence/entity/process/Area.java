@@ -1,26 +1,19 @@
 package com.avocat.persistence.entity.process;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.UUID;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "areas")
-public class Area {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "active")
-    protected boolean active = true;
-
-    @Column(name = "customer_id")
-    private UUID customerId;
+@AttributeOverride(name = "id", column = @Column(name = "area_id", nullable = false))
+public class Area extends BaseProcess {
 }
