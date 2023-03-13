@@ -1,7 +1,7 @@
 package com.avocat.persistence.entity;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.Assert;
 
@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
+@NoArgsConstructor
 @Setter
 @Getter
 @Entity

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "companies")
-@AttributeOverride(name = "id", column = @Column(name = "action_id", nullable = false))
+@Table(name = "forums")
+@AttributeOverride(name = "id", column = @Column(name = "forum_id", nullable = false))
 public class Forum extends BaseProcess{
 }

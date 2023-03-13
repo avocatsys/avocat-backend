@@ -44,12 +44,12 @@ public class ForumController {
 
     @GetMapping
     public ResponseEntity<Page<Forum>> findAll(
-            @PathVariable("forumId") UUID forumId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(forumRepository.findAllByCustomerId(forumId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(forumRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{forumId}")

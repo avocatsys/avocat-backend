@@ -4,10 +4,10 @@ databaseChangeLog:
       author: michael
       changes:
         - createTable:
-            tableName: process
+            tableName: rites
             columns:
               - column:
-                  name: process_id
+                  name: rite_id
                   type: uuid
                   defaultValue: uuid_generate_v4()
                   constraints:

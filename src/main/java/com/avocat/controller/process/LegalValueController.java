@@ -46,12 +46,12 @@ public class LegalValueController {
 
     @GetMapping
     public ResponseEntity<Page<LegalValue>> findAll(
-            @PathVariable("legalValueId") UUID legalValueId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(legalValueRepository.findAllByCustomerId(legalValueId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(legalValueRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{legalValueId}")

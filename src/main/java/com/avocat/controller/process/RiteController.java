@@ -46,12 +46,12 @@ public class RiteController {
 
     @GetMapping
     public ResponseEntity<Page<Rite>> findAll(
-            @PathVariable("riteId") UUID riteId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(riteRepository.findAllByCustomerId(riteId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(riteRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{riteId}")
