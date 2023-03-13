@@ -46,12 +46,12 @@ public class ProceduralPhaseController {
 
     @GetMapping
     public ResponseEntity<Page<ProceduralPhase>> findAll(
-            @PathVariable("proceduralPhaseId") UUID proceduralPhaseId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(proceduralPhaseRepository.findAllByCustomerId(proceduralPhaseId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(proceduralPhaseRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{proceduralPhaseId}")

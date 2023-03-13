@@ -44,12 +44,12 @@ public class ActionController {
 
     @GetMapping
     public ResponseEntity<Page<Action>> findAll(
-            @PathVariable("actionId") UUID actionId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(actionRepository.findAllByCustomerId(actionId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(actionRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{actionId}")

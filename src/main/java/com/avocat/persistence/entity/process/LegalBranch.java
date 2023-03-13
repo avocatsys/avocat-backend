@@ -14,6 +14,6 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "legal_branch")
-@AttributeOverride(name = "id", column = @Column(name = "branch_id", nullable = false))
+@AttributeOverride(name = "id", column = @Column(name = "legal_branch_id", nullable = false))
 public class LegalBranch extends BaseProcess {
 }

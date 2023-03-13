@@ -46,12 +46,12 @@ public class LegalBranchController {
 
     @GetMapping
     public ResponseEntity<Page<LegalBranch>> findAll(
-            @PathVariable("legalBranchId") UUID legalBranchId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(legalBranchRepository.findAllByCustomerId(legalBranchId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(legalBranchRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{legalBranchId}")

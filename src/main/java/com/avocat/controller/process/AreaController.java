@@ -33,6 +33,7 @@ public class AreaController {
 
     @PutMapping
     public ResponseEntity<Area> update(@PathVariable("customerId") UUID customerId, @RequestBody Area area) {
+        area.setCustomerId(customerId);
         return ResponseEntity.ok().body(areaRepository.save(area));
     }
 
@@ -44,12 +45,12 @@ public class AreaController {
 
     @GetMapping
     public ResponseEntity<Page<Area>> findAll(
-            @PathVariable("areaId") UUID areaId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(areaRepository.findAllByCustomerId(areaId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(areaRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{areaId}")
