@@ -2,16 +2,18 @@ package com.avocat.persistence.entity;
 
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.util.Assert;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
-@NoArgsConstructor
+@Setter
 @Getter
-@Data
 @Entity
 @Table(name = "groups")
 @AttributeOverride(name = "id", column = @Column(name = "group_id", nullable = false))

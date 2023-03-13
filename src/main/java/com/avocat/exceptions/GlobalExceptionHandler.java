@@ -1,4 +1,4 @@
-package com.avocat.controller;
+package com.avocat.exceptions;
 
 import com.avocat.exceptions.ErrorDetails;
 import com.avocat.exceptions.IDORException;
