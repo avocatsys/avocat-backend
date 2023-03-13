@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 import java.util.UUID;
 
 @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_WRITE', 'LAWYER_READ')")
-@RequestMapping(path = "/v1/customer/{customerId}/judicial-districts", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/customer/{customerId}/judicial-district", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class JudicialDistrictController {
 
@@ -46,12 +46,12 @@ public class JudicialDistrictController {
 
     @GetMapping
     public ResponseEntity<Page<JudicialDistrict>> findAll(
-            @PathVariable("judicialDistrictId") UUID judicialDistrictId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(judicialDistrictRepository.findAllByCustomerId(judicialDistrictId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(judicialDistrictRepository.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{judicialDistrictId}")
