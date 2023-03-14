@@ -1,0 +1,160 @@
+databaseChangeLog:
+  - changeSet:
+      id: v020
+      author: michael
+      changes:
+        - createTable:
+            tableName: process
+            columns:
+              - column:
+                  name: process_id
+                  type: uuid
+                  defaultValue: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: process_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: auxiliary_code
+                  type: varchar(50)
+              - column:
+                  name: company_principal_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: company_contrary_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: internal_observation
+                  type: text
+              - column:
+                  name: closing_observation
+                  type: text
+              - column:
+                  name: customer_observation
+                  type: text
+              - column:
+                  name: financial_observation
+                  type: text
+              - column:
+                  name: detail_object
+                  type: varchar(500)
+              - column:
+                  name: date_entry
+                  type: timestamp
+              - column:
+                  name: distribution_date
+                  type: timestamp
+              - column:
+                  name: principal_paper_name
+                  type: varchar(50)
+              - column:
+                  name: contrary_paper_name
+                  type: varchar(50)
+              - column:
+                  name: area_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: action_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phase_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rite_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: judicial_district_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: forum_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: legal_branch_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contract_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: company_principal_id
+            baseTableName: process
+            constraintName: fk_process_company_principal
+            referencedColumnNames: company_id
+            referencedTableName: companies
+        - addForeignKeyConstraint:
+            baseColumnNames: company_contrary_id
+            baseTableName: process
+            constraintName: fk_process_company_contrary
+            referencedColumnNames: company_id
+            referencedTableName: companies
+        - addForeignKeyConstraint:
+            baseColumnNames: area_id
+            baseTableName: process
+            constraintName: fk_process_area
+            referencedColumnNames: area_id
+            referencedTableName: areas
+        - addForeignKeyConstraint:
+            baseColumnNames: action_id
+            baseTableName: process
+            constraintName: fk_process_actions
+            referencedColumnNames: action_id
+            referencedTableName: actions
+        - addForeignKeyConstraint:
+            baseColumnNames: phase_id
+            baseTableName: process
+            constraintName: fk_process_phase
+            referencedColumnNames: phase_id
+            referencedTableName: procedural_phase
+        - addForeignKeyConstraint:
+            baseColumnNames: rite_id
+            baseTableName: process
+            constraintName: fk_process_rites
+            referencedColumnNames: rite_id
+            referencedTableName: rites
+        - addForeignKeyConstraint:
+            baseColumnNames: judicial_district_id
+            baseTableName: process
+            constraintName: fk_process_judicial_district
+            referencedColumnNames: district_id
+            referencedTableName: judicial_district
+        - addForeignKeyConstraint:
+            baseColumnNames: forum_id
+            baseTableName: process
+            constraintName: fk_process_forums
+            referencedColumnNames: forum_id
+            referencedTableName: forums
+        - addForeignKeyConstraint:
+            baseColumnNames: legal_branch_id
+            baseTableName: process
+            constraintName: fk_process_legal_branch
+            referencedColumnNames: legal_branch_id
+            referencedTableName: legal_branch
+        - addForeignKeyConstraint:
+            baseColumnNames: contract_id
+            baseTableName: process
+            constraintName: fk_process_contracts
+            referencedColumnNames: contract_id
+            referencedTableName: contracts
