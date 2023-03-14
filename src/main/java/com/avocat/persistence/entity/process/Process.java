@@ -88,4 +88,137 @@ public class Process extends AuditEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", referencedColumnName = "contract_id", nullable = false)
     private Contract contract;
+
+    private Process(Builder builder) {
+        this.processNumber = builder.processNumber;
+        this.principal = builder.principal;
+        this.contrary = builder.contrary;
+        this.principalPaper = builder.principalPaper;
+        this.contraryPaper = builder.contraryPaper;
+        this.area = builder.area;
+        this.contract = builder.contract;
+
+        //optional
+        this.auxiliaryCode = builder.auxiliaryCode;
+        this.internalObservation = builder.internalObservation;
+        this.closingObservation = builder.closingObservation;
+        this.customerObservation = builder.customerObservation;
+        this.financialObservation = builder.financialObservation;
+        this.detailObject = builder.detailObject;
+        this.dateEntry = builder.dateEntry;
+        this.distributionDate = builder.distributionDate;
+        this.action = builder.action;
+        this.proceduralPhase = builder.proceduralPhase;
+        this.rite = builder.rite;
+        this.judicialDistrict = builder.judicialDistrict;
+        this.forum = builder.forum;
+        this.legalBranch = builder.legalBranch;
+    }
+
+    public static class Builder {
+
+        //mandatory
+        private String processNumber;
+        private Company principal;
+        private Company contrary;
+        private String principalPaper;
+        private String contraryPaper;
+        private Area area;
+        private Contract contract;
+
+        //optional
+        private String auxiliaryCode;
+        private String internalObservation;
+        private String closingObservation;
+        private String customerObservation;
+        private String financialObservation;
+        private String detailObject;
+        private LocalDate dateEntry;
+        private LocalDate distributionDate;
+        private Action action;
+        private ProceduralPhase proceduralPhase;
+        private Rite rite;
+        private JudicialDistrict judicialDistrict;
+        private Forum forum;
+        private LegalBranch legalBranch;
+
+        public Builder(String processNumber, Company principal, Company contrary, String principalPaper, String contraryPaper, Area area, Contract contract) {
+            this.processNumber = processNumber;
+            this.principal = principal;
+            this.contrary = contrary;
+            this.principalPaper = principalPaper;
+            this.contraryPaper = contraryPaper;
+            this.area = area;
+            this.contract = contract;
+        }
+
+        public Builder auxiliaryCode(String auxiliaryCode) {
+            this.auxiliaryCode = auxiliaryCode;
+            return this;
+        }
+
+        public Builder internalObservation(String internalObservation) {
+            this.internalObservation = internalObservation;
+            return this;
+        }
+
+        public Builder closingObservation(String closingObservation) {
+            this.closingObservation = closingObservation;
+            return this;
+        }
+
+        public Builder customerObservation(String customerObservation) {
+            this.customerObservation = customerObservation;
+            return this;
+        }
+
+        public Builder financialObservation(String financialObservation) {
+            this.financialObservation = financialObservation;
+            return this;
+        }
+
+        public Builder detailObject(String detailObject) {
+            this.detailObject = detailObject;
+            return this;
+        }
+
+        public Builder dateEntry(LocalDate dateEntry) {
+            this.dateEntry = dateEntry;
+            return this;
+        }
+
+        public Builder distributionDate(LocalDate distributionDate) {
+            this.distributionDate = distributionDate;
+            return this;
+        }
+
+        public Builder action(Action action) {
+            this.action = action;
+            return this;
+        }
+
+        public Builder proceduralPhase(ProceduralPhase proceduralPhase) {
+            this.proceduralPhase = proceduralPhase;
+            return this;
+        }
+
+        public Builder rite(Rite rite) {
+            this.rite = rite;
+            return this;
+        }
+
+        public Builder judicialDistrict(JudicialDistrict judicialDistrict) {
+            this.judicialDistrict = judicialDistrict;
+            return this;
+        }
+
+        public Builder legalBranch(LegalBranch legalBranch) {
+            this.legalBranch = legalBranch;
+            return this;
+        }
+
+        public Process build() {
+            return new Process(this);
+        }
+    }
 }
