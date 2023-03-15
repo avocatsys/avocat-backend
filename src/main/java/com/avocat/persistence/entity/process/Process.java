@@ -3,11 +3,14 @@ package com.avocat.persistence.entity.process;
 import com.avocat.persistence.entity.AuditEntity;
 import com.avocat.persistence.entity.Company;
 import com.avocat.persistence.entity.Contract;
+import com.avocat.persistence.entity.Customer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -18,17 +21,12 @@ import java.time.LocalDate;
 @AttributeOverride(name = "id", column = @Column(name = "process_id", nullable = false))
 public class Process extends AuditEntity {
 
+    @NotEmpty(message = "invalid format process number")
     @Column(name = "process_number")
     private String processNumber;
 
     @Column(name = "auxiliary_code")
     private String auxiliaryCode;
-
-    @Column(name = "company_principal_id")
-    private Company principal;
-
-    @Column(name = "company_contrary_id")
-    private Company contrary;
 
     @Column(name = "internal_observation")
     private String internalObservation;
@@ -51,11 +49,21 @@ public class Process extends AuditEntity {
     @Column(name = "distribution_date")
     private LocalDate distributionDate;
 
+    @NotEmpty(message = "invalid format principal name")
     @Column(name = "principal_paper_name")
     private String principalPaper;
 
-    @Column(name = "contraty_paper_name")
+    @NotEmpty(message = "invalid format contrary name")
+    @Column(name = "contrary_paper_name")
     private String contraryPaper;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_principal_id")
+    private Company principal;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_contrary_id")
+    private Company contrary;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "area_id")
@@ -86,8 +94,12 @@ public class Process extends AuditEntity {
     private LegalBranch legalBranch;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id", referencedColumnName = "contract_id", nullable = false)
+    @JoinColumn(name = "contract_id", referencedColumnName = "contract_id")
     private Contract contract;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    private Customer customer;
 
     private Process(Builder builder) {
         this.processNumber = builder.processNumber;

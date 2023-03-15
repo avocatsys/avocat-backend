@@ -66,38 +66,62 @@ databaseChangeLog:
               - column:
                   name: action_id
                   type: uuid
-                  constraints:
-                    nullable: false
               - column:
                   name: phase_id
                   type: uuid
-                  constraints:
-                    nullable: false
               - column:
                   name: rite_id
                   type: uuid
-                  constraints:
-                    nullable: false
               - column:
                   name: judicial_district_id
                   type: uuid
-                  constraints:
-                    nullable: false
               - column:
                   name: forum_id
                   type: uuid
-                  constraints:
-                    nullable: false
               - column:
                   name: legal_branch_id
                   type: uuid
-                  constraints:
-                    nullable: false
               - column:
                   name: contract_id
                   type: uuid
                   constraints:
                     nullable: false
+              - column:
+                  name: branch_office_ref
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    updatable: false
+              - column:
+                  name: created_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: removed_date
+                  type: timestamp
+                  constraints:
+                    updatable: false
+              - column:
+                  name: updated_date
+                  type: timestamp
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValue: true
         - addForeignKeyConstraint:
             baseColumnNames: company_principal_id
             baseTableName: process
@@ -158,3 +182,9 @@ databaseChangeLog:
             constraintName: fk_process_contracts
             referencedColumnNames: contract_id
             referencedTableName: contracts
+        - addForeignKeyConstraint:
+            baseColumnNames: customer_id
+            baseTableName: process
+            constraintName: fk_process_customers
+            referencedColumnNames: customer_id
+            referencedTableName: customers
