@@ -3,11 +3,10 @@ package com.avocat.service;
 import com.avocat.controller.process.dto.ProcessDto;
 import com.avocat.persistence.entity.process.Process;
 import com.avocat.persistence.repository.process.ProcessRepository;
-import com.avocat.persistence.types.MessageSystem;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,7 +32,7 @@ public class ProcessService {
     }
 
     @Transactional
-    public Process create(ProcessDto processDto, UUID customerId) {
+    public Optional<Process> create(ProcessDto processDto, UUID customerId) {
 
         var customer = customerService.findById(customerId);
         var contract = contractService.getContract(processDto.contractId());
@@ -64,6 +63,8 @@ public class ProcessService {
                 .rite(processDto.rite())
                 .build();
 
-        return processRepository.save(builder);
+         var result = processRepository.save(builder);
+
+         return Optional.of(result);
     }
 }

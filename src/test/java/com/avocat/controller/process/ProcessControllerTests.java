@@ -26,15 +26,14 @@ class ProcessControllerTests extends AbstractMockMvcController {
                                 .header("Authorization", "Bearer " + defaultAccessToken)
                                 .content(json)
                 ).andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNotEmpty());
+                .andExpect(status().isCreated());
     }
 
     private String getProcessJson() {
         return """
                     {
                     "processNumber":"%s",
-                    "auxiliaryCode":"",
+                    "auxiliaryCode":"1111111",
                     "internalObservation":"Lorem ipsum consectetur vulputate orci lacus proin mollis, urna rutrum dictumst elementum nisi bibendum nostra neque, tellus felis justo lorem maecenas convallis. ornare laoreet quisque ultricies at auctor curae aliquam rhoncus feugiat ac ultricies porttitor mauris imperdiet cras, inceptos aenean vehicula eget in taciti orci non mauris molestie augue venenatis porta tempus. sollicitudin dictum venenatis quisque pulvinar conubia amet duis velit venenatis, nunc mollis varius ipsum tincidunt egestas mattis interdum sodales, turpis aliquet netus enim eu nisi nam dictumst. netus commodo est torquent metus aptent diam mauris cras lacinia, curae quis erat faucibus erat etiam mi nunc tempor, litora consectetur nibh dictumst integer magna molestie quisque.",
                     "closingObservation":"Lorem ipsum consectetur vulputate orci lacus proin mollis, urna rutrum dictumst elementum nisi bibendum nostra neque, tellus felis justo lorem maecenas convallis. ornare laoreet quisque ultricies at auctor curae aliquam rhoncus feugiat ac ultricies porttitor mauris imperdiet cras, inceptos aenean vehicula eget in taciti orci non mauris molestie augue venenatis porta tempus. sollicitudin dictum venenatis quisque pulvinar conubia amet duis velit venenatis, nunc mollis varius ipsum tincidunt egestas mattis interdum sodales, turpis aliquet netus enim eu nisi nam dictumst. netus commodo est torquent metus aptent diam mauris cras lacinia, curae quis erat faucibus erat etiam mi nunc tempor, litora consectetur nibh dictumst integer magna molestie quisque.",
                     "customerObservation":"Lorem ipsum consectetur vulputate orci lacus proin mollis, urna rutrum dictumst elementum nisi bibendum nostra neque, tellus felis justo lorem maecenas convallis. ornare laoreet quisque ultricies at auctor curae aliquam rhoncus feugiat ac ultricies porttitor mauris imperdiet cras, inceptos aenean vehicula eget in taciti orci non mauris molestie augue venenatis porta tempus. sollicitudin dictum venenatis quisque pulvinar conubia amet duis velit venenatis, nunc mollis varius ipsum tincidunt egestas mattis interdum sodales, turpis aliquet netus enim eu nisi nam dictumst. netus commodo est torquent metus aptent diam mauris cras lacinia, curae quis erat faucibus erat etiam mi nunc tempor, litora consectetur nibh dictumst integer magna molestie quisque.",

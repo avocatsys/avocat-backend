@@ -1,7 +1,6 @@
 package com.avocat.controller.process;
 
 import com.avocat.controller.process.dto.ProcessDto;
-import com.avocat.persistence.entity.process.Process;
 import com.avocat.service.ProcessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,9 +22,12 @@ public class ProcessController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_WRITE')")
     @PostMapping
-    public ResponseEntity<Process> create(
+    public ResponseEntity<Void> create(
             @PathVariable(value = "customerId") UUID customerId,
             @RequestBody ProcessDto processDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(processService.create(processDto, customerId));
+
+        processService.create(processDto, customerId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
