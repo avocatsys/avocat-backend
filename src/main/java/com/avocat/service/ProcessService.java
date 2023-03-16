@@ -1,13 +1,18 @@
 package com.avocat.service;
 
+import com.avocat.controller.process.dto.GetProcessDto;
 import com.avocat.controller.process.dto.ProcessDto;
 import com.avocat.persistence.entity.process.Process;
 import com.avocat.persistence.repository.process.ProcessRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProcessService {
@@ -66,5 +71,9 @@ public class ProcessService {
          var result = processRepository.save(builder);
 
          return Optional.of(result);
+    }
+
+    public Page<GetProcessDto> findAll(UUID customerId, Pageable pageable) {
+        return processRepository.findAllByCustomerId(customerId, pageable).map(GetProcessDto::from);
     }
 }
