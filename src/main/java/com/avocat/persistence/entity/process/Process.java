@@ -4,13 +4,14 @@ import com.avocat.persistence.entity.AuditEntity;
 import com.avocat.persistence.entity.Company;
 import com.avocat.persistence.entity.Contract;
 import com.avocat.persistence.entity.Customer;
+import com.avocat.persistence.types.MessageSystem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -102,6 +103,11 @@ public class Process extends AuditEntity {
     private Customer customer;
 
     private Process(Builder builder) {
+
+        this.branchOffice = builder.contract.getBranchOffice();
+
+        Assert.notNull(branchOffice, MessageSystem.BRANCH_OFFICE_NOT_CAN_BE_NULL.getMessage());
+
         this.processNumber = builder.processNumber;
         this.principal = builder.principal;
         this.contrary = builder.contrary;
@@ -109,6 +115,7 @@ public class Process extends AuditEntity {
         this.contraryPaper = builder.contraryPaper;
         this.area = builder.area;
         this.contract = builder.contract;
+        this.customer = builder.customer;
 
         //optional
         this.auxiliaryCode = builder.auxiliaryCode;
@@ -130,13 +137,14 @@ public class Process extends AuditEntity {
     public static class Builder {
 
         //mandatory
-        private String processNumber;
-        private Company principal;
-        private Company contrary;
-        private String principalPaper;
-        private String contraryPaper;
-        private Area area;
-        private Contract contract;
+        private final String processNumber;
+        private final Company principal;
+        private final Company contrary;
+        private final String principalPaper;
+        private final String contraryPaper;
+        private final Area area;
+        private final Contract contract;
+        private final Customer customer;
 
         //optional
         private String auxiliaryCode;
@@ -154,7 +162,15 @@ public class Process extends AuditEntity {
         private Forum forum;
         private LegalBranch legalBranch;
 
-        public Builder(String processNumber, Company principal, Company contrary, String principalPaper, String contraryPaper, Area area, Contract contract) {
+        public Builder(
+                String processNumber,
+                Company principal,
+                Company contrary,
+                String principalPaper,
+                String contraryPaper,
+                Area area,
+                Contract contract,
+                Customer customer) {
             this.processNumber = processNumber;
             this.principal = principal;
             this.contrary = contrary;
@@ -162,6 +178,14 @@ public class Process extends AuditEntity {
             this.contraryPaper = contraryPaper;
             this.area = area;
             this.contract = contract;
+            this.customer = customer;
+
+            Assert.notNull(contract, MessageSystem.CONTRACT_NOT_CAN_BE_NULL.getMessage());
+            Assert.notNull(customer, MessageSystem.CUSTOMER_NOT_CAN_BE_NULL.getMessage());
+            Assert.notNull(processNumber, MessageSystem.PROCESS_NOT_CAN_BE_NULL.getMessage());
+            Assert.notNull(area, MessageSystem.PROCESS_AREA_NOT_CAN_BE_NULL.getMessage());
+            Assert.notNull(principal, MessageSystem.PROCESS_NEEDS_TO_HAVE_MAIN_PART.getMessage());
+            Assert.notNull(contrary, MessageSystem.PROCESS_MUST_HAVE_OPPOSING_PARTY.getMessage());
         }
 
         public Builder auxiliaryCode(String auxiliaryCode) {
@@ -216,6 +240,11 @@ public class Process extends AuditEntity {
 
         public Builder rite(Rite rite) {
             this.rite = rite;
+            return this;
+        }
+
+        public Builder forum(Forum forum) {
+            this.forum = forum;
             return this;
         }
 
