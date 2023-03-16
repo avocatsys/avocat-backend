@@ -1,17 +1,19 @@
 package com.avocat.controller.customer;
 
 import com.avocat.common.AbstractMockMvcController;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CustomerControllerTests extends AbstractMockMvcController {
+class CustomerControllerTests extends AbstractMockMvcController {
 
     @Test
     public void shouldCreateNewCustomerThenWillReturnHttpStatus201() throws Exception {

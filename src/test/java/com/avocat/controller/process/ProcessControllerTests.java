@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProcessControllerTests extends AbstractMockMvcController {
 
     @Test
-    void shouldCreateProcessThenWillReturn201() throws Exception {
+    void shouldCreateNewProcessThenWillReturn201() throws Exception {
 
         var json = getProcessJson();
 
@@ -72,5 +73,17 @@ class ProcessControllerTests extends AbstractMockMvcController {
                     }
                 """.formatted(
                 UUID.randomUUID().toString().substring(0, 20));
+    }
+
+    @Test
+    void shouldGetListAllProcessOfCustomersThenWillReturn200() throws Exception {
+
+        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/process")
+                        .header("Authorization", "Bearer " + defaultAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.empty").value(Boolean.FALSE));
     }
 }

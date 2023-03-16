@@ -60,8 +60,8 @@ public class ContractController {
 
     @GetMapping("/contracts/{contractId}")
     public ResponseEntity<ContractDto> findById(
-            @PathVariable(value = "contractId", required = true) UUID contractId,
-            @PathVariable(value = "customerId", required = true) UUID customerId) {
+            @PathVariable(value = "contractId") UUID contractId,
+            @PathVariable(value = "customerId") UUID customerId) {
         return ResponseEntity.status(HttpStatus.OK).body(contractService.findById(customerId, contractId));
     }
 }

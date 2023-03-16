@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ContractControllerTests extends AbstractMockMvcController {
@@ -25,8 +26,8 @@ public class ContractControllerTests extends AbstractMockMvcController {
                                 .characterEncoding("utf-8")
                                 .header("Authorization", "Bearer " + defaultAccessToken)
                                 .content(json))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNotEmpty());
     }
 
     @Test
