@@ -63,7 +63,7 @@ public class ContractService {
         return ContractDto.from(result);
     }
 
-    private Contract getContract(UUID contractId) {
+    public Contract getContract(UUID contractId) {
         return contractRepository.findByIdAndActiveTrue(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("resource not found"));
     }

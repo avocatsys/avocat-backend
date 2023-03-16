@@ -1,9 +1,8 @@
 package com.avocat.controller.process;
 
-import com.avocat.persistence.entity.process.Forum;
+import com.avocat.controller.process.dto.ProcessDto;
 import com.avocat.persistence.entity.process.Process;
 import com.avocat.service.ProcessService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,17 @@ import java.util.UUID;
 @RestController
 public class ProcessController {
 
-    @Autowired
-    private ProcessService processService;
+    private final ProcessService processService;
+
+    public ProcessController(ProcessService processService) {
+        this.processService = processService;
+    }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('LAWYER_WRITE')")
     @PostMapping
-    public ResponseEntity<Process> create(@PathVariable(value = "customerId", required = true) UUID customerId, @RequestBody Forum forum) {
-        forum.setCustomerId(customerId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(processService.save(forum));
+    public ResponseEntity<Process> create(
+            @PathVariable(value = "customerId") UUID customerId,
+            @RequestBody ProcessDto processDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(processService.create(processDto, customerId));
     }
 }
