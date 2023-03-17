@@ -37,8 +37,7 @@ public class BranchOfficeControllerTests extends AbstractMockMvcController {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .header("Authorization", "Bearer " + defaultAccessToken))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -49,8 +48,7 @@ public class BranchOfficeControllerTests extends AbstractMockMvcController {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .characterEncoding("utf-8")
                                 .header("Authorization", "Bearer " + defaultAccessToken))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     private String getJsonBrachOffice() {

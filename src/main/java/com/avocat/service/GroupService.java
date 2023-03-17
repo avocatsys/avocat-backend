@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Service
-public class GroupService<T extends AuditEntity> {
+public class GroupService {
 
     @Autowired
     private GroupRepository groupRepository;
@@ -22,9 +22,8 @@ public class GroupService<T extends AuditEntity> {
     private BranchOfficeService branchOfficeService;
 
     @Transactional
-    public Group create(UUID branchOfficeId, Group group) {
-        var branchOffice = branchOfficeService.getBranchOffice(branchOfficeId);
-        group.setBranchOffice(branchOffice.getId());
+    public Group create(UUID customerId, Group group) {
+        group.setCustomerId(customerId);
         return groupRepository.save(group);
     }
 
@@ -39,8 +38,8 @@ public class GroupService<T extends AuditEntity> {
         groupRepository.delete(getGroup(id));
     }
 
-    public Page<Group> findAll(UUID branchOfficeId, Pageable pageable) {
-        return groupRepository.findAllByBranchOffice(branchOfficeId, pageable);
+    public Page<Group> findAllByCustomerId(UUID customerId, Pageable pageable) {
+        return groupRepository.findAllByCustomerId(customerId, pageable);
     }
 
     public Group findById(UUID id) {

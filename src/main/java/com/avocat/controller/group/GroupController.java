@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/v1/branch-office/{branchOfficeId}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/customer/{customerId}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GroupController {
 
     @Autowired
@@ -23,8 +23,8 @@ public class GroupController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('GROUP_WRITE')")
     @PostMapping
-    public ResponseEntity<Group> create(@PathVariable("branchOfficeId") UUID branchOfficeId, @RequestBody Group obj) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.create(branchOfficeId, obj));
+    public ResponseEntity<Group> create(@PathVariable("customerId") UUID customerId, @RequestBody Group obj) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(groupService.create(customerId, obj));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OWNER') or hasAuthority('GROUP_WRITE')")
@@ -42,12 +42,12 @@ public class GroupController {
 
     @GetMapping
     public ResponseEntity<Page<Group>> findAll(
-            @PathVariable("branchOfficeId") UUID branchOfficeId,
+            @PathVariable("customerId") UUID customerId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(groupService.findAll(branchOfficeId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(groupService.findAllByCustomerId(customerId, pageable));
     }
 
     @GetMapping("/{groupId}")
