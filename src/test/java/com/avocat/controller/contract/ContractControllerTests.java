@@ -21,7 +21,7 @@ public class ContractControllerTests extends AbstractMockMvcController {
         String json = getJsonCompany();
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/company/fffc0201-e0d6-463f-a004-8e76856a15fd/contracts")
+                        MockMvcRequestBuilders.post("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/company/49fbb8cc-3c47-4177-8bd0-47062c22211c/contracts")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .characterEncoding("utf-8")
                                 .header("Authorization", "Bearer " + defaultAccessToken)
@@ -44,7 +44,7 @@ public class ContractControllerTests extends AbstractMockMvcController {
     @Test
     void shouldGetContractByIdThenWillReturn200() throws Exception {
 
-        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/contracts/e8fa4fdb-f33b-4bc5-ab71-a6c2a5c7f4e0")
+        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/contracts/0735fe7e-182a-4d51-ab10-fbbdf9d289e8")
                         .header("Authorization", "Bearer " + defaultAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))

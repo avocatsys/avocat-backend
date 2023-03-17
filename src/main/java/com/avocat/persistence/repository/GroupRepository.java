@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, UUID> {
 
-    Page<Group> findAllByBranchOffice(UUID branchOfficeId, Pageable pageable);
+    Page<Group> findAllByCustomerId(UUID customerId, Pageable pageable);
 }

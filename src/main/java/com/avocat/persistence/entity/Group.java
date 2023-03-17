@@ -5,10 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.Assert;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
@@ -17,21 +14,28 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "groups")
-@AttributeOverride(name = "id", column = @Column(name = "group_id", nullable = false))
-public class Group extends AuditEntity {
+public class Group {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "group_id")
+    private UUID id;
 
     @NotEmpty(message = "invalid group description format")
     private String name;
 
-    private Group(UUID id, String name, UUID branchOfficeId) {
+    @Column(name = "customer_id")
+    private UUID customerId;
+
+    private Group(UUID id, String name, UUID customerId) {
         this.id = id;
         this.name = name;
-        this.branchOffice = branchOfficeId;
+        this.customerId = customerId;
     }
 
-    public static Group create(UUID id, String name, UUID branchOfficeId) {
-        Assert.notNull(branchOfficeId, "field branchOffice can not be null");
-        return new Group(id, name, branchOfficeId);
+    public static Group create(UUID id, String name, UUID customerId) {
+        Assert.notNull(customerId, "field customerId can not be null");
+        return new Group(id, name, customerId);
     }
 
     public static Group from(Group source, Group target) {
