@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CompanyControllerTests extends AbstractMockMvcController {
+class CompanyControllerTests extends AbstractMockMvcController {
 
     @Test
     void shouldCreateNewCompanyThenWillReturn201() throws Exception {
@@ -43,7 +43,7 @@ public class CompanyControllerTests extends AbstractMockMvcController {
     @Test
     void shouldGetCompanyByIdThenWillReturn200() throws Exception {
 
-        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/companies/3e825563-a7c8-4535-80d6-457fb26c5943")
+        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/companies/fffc0201-e0d6-463f-a004-8e76856a15fd")
                         .header("Authorization", "Bearer " + defaultAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
