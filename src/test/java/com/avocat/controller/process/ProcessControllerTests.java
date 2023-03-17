@@ -42,9 +42,9 @@ class ProcessControllerTests extends AbstractMockMvcController {
                     "detailObject":"Lorem ipsum consectetur vulputate orci lacus proin mollis, urna rutrum dictumst elementum nisi bibendum nostra neque, tellus felis justo lorem maecenas convallis.",
                     "dateEntry":"2001-01-01",
                     "distributionDate":"2011-12-01",
-                    "principalId": "fffc0201-e0d6-463f-a004-8e76856a15fd",
-                    "contraryId": "a0a5bc8c-bf51-4ea7-a360-8d205c291b98",
-                    "contractId": "e8fa4fdb-f33b-4bc5-ab71-a6c2a5c7f4e0",
+                    "principalId": "49fbb8cc-3c47-4177-8bd0-47062c22211c",
+                    "contraryId": "199e0d62-e6bb-441f-a3ff-9dc44b5dfdf3",
+                    "contractId": "0735fe7e-182a-4d51-ab10-fbbdf9d289e8",
                     "area": {
                         "id":"6b51d71c-27f2-4d19-853a-b2fbfe88a9ef",
                         "name":"Trabalhista",

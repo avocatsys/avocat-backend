@@ -8,12 +8,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GroupControllerTests extends AbstractMockMvcController {
+class GroupControllerTests extends AbstractMockMvcController {
 
     @Test
-    void shouldGetAllGroupsByBranchOfficeThenWillReturnPageableOfGroupsAndHttpStatus200() throws Exception {
+    void shouldGetAllGroupsByCustomerThenWillReturnPageableOfGroupsAndHttpStatus200() throws Exception {
 
-        mockMvc.perform(get("/v1/branch-office/65344a5e-81ce-4eb3-b16b-955d26b73ede/groups")
+        mockMvc.perform(get("/v1/customer/d5d7da4a-4520-446e-9a6a-aaf4b76f803f/groups")
                         .header("Authorization", "Bearer " + defaultAccessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
